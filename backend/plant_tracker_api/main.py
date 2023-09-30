@@ -6,7 +6,7 @@ from fastapi_sqlalchemy import DBSessionMiddleware
 from routers import source, plant
 
 
-app = FastAPI()
+app = FastAPI(title="Plant Tracker API")
 app.add_middleware(DBSessionMiddleware, db_url=os.environ["DATABASE_URL"])
 
 app.include_router(source.router)

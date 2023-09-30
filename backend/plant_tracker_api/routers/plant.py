@@ -18,13 +18,13 @@ api_key = os.environ["TREFLE_KEY"]
 router = APIRouter()
 
 
-@router.get("/plant", response_model=List[schema.Plant])
+@router.get("/plant", response_model=List[schema.Plant], tags=["Plant"])
 def get_plant():
     plants = db.session.query(models.Plant).all()
     return plants
 
 
-@router.get("/plant/{plant_id}", response_model=schema.Plant)
+@router.get("/plant/{plant_id}", response_model=schema.Plant, tags=["Plant"])
 def get_plant_by_id(plant_id: UUID4):
     plant = db.session.get(models.Plant, plant_id)
     if not plant:
@@ -32,7 +32,7 @@ def get_plant_by_id(plant_id: UUID4):
     return plant
 
 
-@router.post("/plant", response_model=schema.Plant)
+@router.post("/plant", response_model=schema.Plant, tags=["Plant"])
 def create_plant(data: schema.PlantCreate):
     db_plant = models.Plant(
         name=data.name,
@@ -67,6 +67,7 @@ def create_plant(data: schema.PlantCreate):
     "/plant/trefle/search",
     response_model=List[schema.PlantSearchResultsTrefle],
     description="Search for plant data from Trefle",
+    tags=["Trefle"],
 )
 def search_plant_trefle(data: schema.PlantSearchTrefle):
     search_details = requests.get(
@@ -90,6 +91,7 @@ def search_plant_trefle(data: schema.PlantSearchTrefle):
     "/plant/trefle/create",
     response_model=schema.Plant,
     description="Create a plant entry using data from Trefle",
+    tags=["Trefle"],
 )
 def create_plant_trefle(data: schema.PlantCreateTrefle):
     plant_detail = requests.get(
