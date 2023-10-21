@@ -15,6 +15,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { getDesignTokens, getThemedComponents } from "./theme/Theme";
 import { ColorModeContext } from "./config/color-context";
 import React from "react";
+import { CssBaseline } from "@mui/material";
 
 function App() {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
@@ -45,6 +46,7 @@ function App() {
     <>
       <ColorModeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
+          <CssBaseline />
           <BrowserRouter>
             <Routes>
               <Route path="/myPlants" element={<MyPlants />} />

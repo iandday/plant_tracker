@@ -1,13 +1,20 @@
 import { amber, deepOrange, grey, blue, common } from '@mui/material/colors';
 
 const palette = {
-  light: {
-    primary: {
-      main: '#34C0AC',
-      light: '#B1DED3',
-      dark: '#00765A',
+    light: {
+        primary: {
+            main: '#34C0AC',
+            light: '#B1DED3',
+            dark: '#00765A',
+        },
     },
-  },
+    dark: {
+        primary: {
+            main: '#333',
+            light: '#333',
+            dark: '#333',
+        }
+    }
 };
 
 export const getDesignTokens = (mode) => ({
@@ -28,11 +35,15 @@ export const getDesignTokens = (mode) => ({
           },
         }
       : {
-          primary: deepOrange,
+          primary: {
+            main: palette.dark.primary.main,
+            light: palette.dark.primary.light,
+            dark: palette.dark.primary.dark,
+          },
           divider: deepOrange[700],
           background: {
-            default: deepOrange[900],
-            paper: deepOrange[900],
+            default: '#111',
+            paper: '#171717',
           },
           text: {
             primary: '#fff',
@@ -61,7 +72,7 @@ export const getThemedComponents = (mode) => ({
           MuiAppBar: {
             styleOverrides: {
               colorPrimary: {
-                backgroundColor: grey[800],
+               // backgroundColor: grey[800],
               },
             },
           },
