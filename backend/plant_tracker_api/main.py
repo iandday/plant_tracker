@@ -6,7 +6,11 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from routers import source, plant
 
-origins = ["http://localhost:5173"]
+origins = [
+    "http://localhost:5173",
+    "http://10.168.1.168:5173",
+    "http://10.168.1.200:5173",
+]
 
 
 app = FastAPI(title="Plant Tracker API")
