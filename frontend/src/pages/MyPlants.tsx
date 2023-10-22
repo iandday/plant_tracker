@@ -5,6 +5,7 @@ import {
   ImageList,
   ImageListItem,
   ImageListItemBar,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import usePlants from "../hooks/usePlants";
@@ -67,7 +68,9 @@ const MyPlants = () => {
                         sx={{ color: "rgba(255, 255, 255, 0.54)" }}
                         aria-label={`info about ${plant.name}`}
                       >
-                        <InfoIcon />
+                        <Tooltip title={plant.scientific_name} placement="top">
+                          <InfoIcon />
+                        </Tooltip>
                       </IconButton>
                     }
                     position="bottom"

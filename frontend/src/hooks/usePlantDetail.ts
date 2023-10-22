@@ -1,5 +1,6 @@
-import useData from "./useDataList.ts";
+import useData from "./useData.ts";
 import {Plant} from "./usePlants.ts"
+
 
 
 const usePlantDetail = (id: string) => 

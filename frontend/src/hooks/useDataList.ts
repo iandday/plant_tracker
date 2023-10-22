@@ -23,7 +23,7 @@ const useDataList = <T>(endpoint: string, requestConfig?: AxiosRequestConfig, de
       apiClient
         .get<FetchResponse<T>>(endpoint, {signal: controller.signal, ...requestConfig})
         .then((res) => {
-          setData(res.data);
+          setData(res.data.results);
           setIsLoading(false);
         })
         .catch((err) => {
