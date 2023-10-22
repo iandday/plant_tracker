@@ -41,6 +41,11 @@ class Plant(PlantBase):
     id: UUID4
 
 
+class PlantReturn(BaseModel):
+    count: int
+    results: List[Plant]
+
+
 class PlantCreateTrefle(BaseModel):
     id: int
     name: str

@@ -18,10 +18,11 @@ api_key = os.environ["TREFLE_KEY"]
 router = APIRouter()
 
 
-@router.get("/plant", response_model=List[schema.Plant], tags=["Plant"])
+@router.get("/plant", response_model=schema.PlantReturn, tags=["Plant"])
 def get_plant():
     plants = db.session.query(models.Plant).all()
-    return plants
+    results = {"count": len(plants), "results": plants}
+    return results
 
 
 @router.get("/plant/{plant_id}", response_model=schema.Plant, tags=["Plant"])
