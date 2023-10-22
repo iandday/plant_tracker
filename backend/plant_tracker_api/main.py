@@ -2,12 +2,22 @@ import uvicorn
 import os
 from fastapi import FastAPI
 from fastapi_sqlalchemy import DBSessionMiddleware
+from fastapi.middleware.cors import CORSMiddleware
 
 from routers import source, plant
+
+origins = ["http://localhost:5173"]
 
 
 app = FastAPI(title="Plant Tracker API")
 app.add_middleware(DBSessionMiddleware, db_url=os.environ["DATABASE_URL"])
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(source.router)
 app.include_router(plant.router)

@@ -59,3 +59,7 @@ class PlantSearchResultsTrefle(BaseModel):
 
 class PlantSearchTrefle(BaseModel):
     query: str
+
+
+class PlantDelete(BaseModel):
+    deleted: bool
