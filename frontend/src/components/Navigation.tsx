@@ -24,7 +24,6 @@ export default function LabelBottomNavigation() {
         width: "100%",
         position: "fixed",
         bottom: 0,
-        width: "100%",
       }}
       component="footer"
       square

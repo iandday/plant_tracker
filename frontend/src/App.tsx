@@ -4,6 +4,7 @@ import MyPlants from "./pages/MyPlants";
 import { BrowserRouter, Route } from "react-router-dom";
 import MyActivity from "./pages/MyActivity";
 import UserSettings from "./pages/UserSettings";
+import PlantDetail from "./pages/PlantDetail";
 
 import {
   ThemeProvider,
@@ -50,6 +51,7 @@ function App() {
           <BrowserRouter>
             <Routes>
               <Route path="/myPlants" element={<MyPlants />} />
+              <Route path="/myPlants/:id" element={<PlantDetail />} />
               <Route path="/activity" element={<MyActivity />} />
               <Route path="/settings" element={<UserSettings />} />
             </Routes>
