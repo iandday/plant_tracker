@@ -1,29 +1,154 @@
-import { Grid, Typography } from "@mui/material";
+import {
+  Button,
+  ButtonGroup,
+  Card,
+  CardMedia,
+  ClickAwayListener,
+  Grid,
+  Grow,
+  MenuItem,
+  MenuList,
+  Paper,
+  Typography,
+} from "@mui/material";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
 import { useParams } from "react-router-dom";
 import usePlantDetail from "../hooks/usePlantDetail";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import Popper from "@mui/material/Popper";
+import React from "react";
 
 const PlantDetail = () => {
   const { id } = useParams();
   const { data, error, isLoading } = usePlantDetail(id!);
 
+  // start reference menu item
+  const [open, setOpen] = React.useState(false);
+  const anchorRef = React.useRef<HTMLDivElement>(null);
+
+  const handleToggle = () => {
+    setOpen((prevOpen) => !prevOpen);
+  };
+
+  const handleClose = (event: Event) => {
+    if (
+      anchorRef.current &&
+      anchorRef.current.contains(event.target as HTMLElement)
+    ) {
+      return;
+    }
+
+    setOpen(false);
+  };
+  const handleClick = () => {
+    console.info(`You clicked`);
+  };
+  // end reference menu item
+
   return (
-    <Grid container justifyContent="space-between" alignItems="stretch">
-      <Grid item xs={12}>
-        <Typography variant="h4" align="center">
-          {data?.name}
-        </Typography>
-        <Typography variant="h6">Common Name:</Typography> {data?.common_name}
-        <Typography variant="h6">Scientific Name:</Typography>
-        {data?.scientific_name}
-        <img
-          srcSet={`${data?.photo_url}`}
-          src={`${data?.photo_url}`}
-          alt={data?.name}
-          loading="lazy"
-          style={{ height: 400, width: "auto" }}
-        />
+    <>
+      <Typography variant="h4" align="center">
+        {data?.name}
+      </Typography>
+      <Grid
+        container
+        justifyContent="space-between"
+        alignItems="stretch"
+        columns={{ xs: 2, sm: 3, md: 2 }}
+      >
+        <Grid item marginLeft={2} xs="auto">
+          <Typography variant="button">Common Name:</Typography>
+          <Typography variant="body1" marginLeft={2}>
+            {data?.common_name}
+          </Typography>
+          <Typography variant="button">Scientific Name: </Typography>
+          <Typography variant="body1" marginLeft={2}>
+            {data?.scientific_name}
+          </Typography>
+          <Typography variant="button">Location: </Typography>
+          <Typography variant="body1" marginLeft={2}>
+            {data?.location}
+          </Typography>
+          <Typography variant="button">Purchase Date: </Typography>
+          <Typography variant="body1" marginLeft={2}>
+            {data?.purchase_date}
+          </Typography>
+          <ButtonGroup
+            variant="contained"
+            ref={anchorRef}
+            aria-label="split button"
+          >
+            <Button onClick={handleClick}>Reference</Button>
+            <Button
+              size="medium"
+              aria-controls={open ? "split-button-menu" : undefined}
+              aria-expanded={open ? "true" : undefined}
+              aria-label="select merge strategy"
+              aria-haspopup="menu"
+              onClick={handleToggle}
+            >
+              <ArrowDropDownIcon />
+            </Button>
+          </ButtonGroup>
+          <Popper
+            sx={{
+              zIndex: 1,
+            }}
+            open={open}
+            anchorEl={anchorRef.current}
+            role={undefined}
+            transition
+            disablePortal
+          >
+            {({ TransitionProps, placement }) => (
+              <Grow
+                {...TransitionProps}
+                style={{
+                  transformOrigin:
+                    placement === "bottom" ? "center top" : "center bottom",
+                }}
+              >
+                <Paper>
+                  <ClickAwayListener onClickAway={handleClose}>
+                    <MenuList id="reference" autoFocusItem>
+                      {data?.sources.map((source) => (
+                        <MenuItem
+                          key={source.url}
+                          href={source.url}
+                          target="_blank"
+                          component="a"
+                          selected={false}
+                          onClick={handleClose}
+                        >
+                          {source.name}
+                        </MenuItem>
+                      ))}
+                    </MenuList>
+                  </ClickAwayListener>
+                </Paper>
+              </Grow>
+            )}
+          </Popper>
+        </Grid>
+        <Grid item marginRight={2}>
+          <Card sx={{ maxWidth: 150 }}>
+            <CardMedia
+              component={"img"}
+              src={data?.photo_url}
+              sx={{ height: 240 }}
+            />
+          </Card>
+        </Grid>
       </Grid>
-    </Grid>
+
+      <Typography variant="h6" marginLeft={2}>
+        Activity
+      </Typography>
+    </>
   );
 };
 

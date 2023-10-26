@@ -50,6 +50,7 @@ function App() {
           <CssBaseline />
           <BrowserRouter>
             <Routes>
+              <Route path="/" element={<MyPlants />} />
               <Route path="/myPlants" element={<MyPlants />} />
               <Route path="/myPlants/:id" element={<PlantDetail />} />
               <Route path="/activity" element={<MyActivity />} />
