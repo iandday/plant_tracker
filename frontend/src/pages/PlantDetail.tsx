@@ -16,7 +16,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import usePlantDetail from "../hooks/usePlantDetail";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Popper from "@mui/material/Popper";
@@ -25,6 +25,7 @@ import React from "react";
 const PlantDetail = () => {
   const { id } = useParams();
   const { data, error, isLoading } = usePlantDetail(id!);
+  const navigate = useNavigate();
 
   // start reference menu item
   const [open, setOpen] = React.useState(false);
@@ -82,7 +83,9 @@ const PlantDetail = () => {
             ref={anchorRef}
             aria-label="split button"
           >
-            <Button onClick={handleClick}>Reference</Button>
+            <Button onClick={handleClick} color="secondary">
+              Reference
+            </Button>
             <Button
               size="medium"
               aria-controls={open ? "split-button-menu" : undefined}
@@ -90,8 +93,16 @@ const PlantDetail = () => {
               aria-label="select merge strategy"
               aria-haspopup="menu"
               onClick={handleToggle}
+              color="secondary"
             >
               <ArrowDropDownIcon />
+            </Button>
+            <Button
+              onClick={() => {
+                navigate(`/editPlant/${data?.id}`);
+              }}
+            >
+              Edit
             </Button>
           </ButtonGroup>
           <Popper

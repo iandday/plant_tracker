@@ -17,6 +17,7 @@ import { getDesignTokens, getThemedComponents } from "./theme/Theme";
 import { ColorModeContext } from "./config/color-context";
 import React from "react";
 import { CssBaseline } from "@mui/material";
+import EditPlant from "./pages/EditPlant";
 
 function App() {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
@@ -53,6 +54,7 @@ function App() {
               <Route path="/" element={<MyPlants />} />
               <Route path="/myPlants" element={<MyPlants />} />
               <Route path="/myPlants/:id" element={<PlantDetail />} />
+              <Route path="/editPlant/:id" element={<EditPlant />} />
               <Route path="/activity" element={<MyActivity />} />
               <Route path="/settings" element={<UserSettings />} />
             </Routes>
