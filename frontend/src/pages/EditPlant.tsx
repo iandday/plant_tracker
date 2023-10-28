@@ -1,31 +1,18 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  Button,
-  ButtonGroup,
-  FormControl,
-  FormLabel,
-  Grid,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, ButtonGroup, Grid, Stack, TextField } from "@mui/material";
 import { useForm, SubmitHandler } from "react-hook-form";
 import usePlantAPI, { Plant } from "../hooks/usePlantAPI";
 
 const EditPlant = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const {
-    response: initial_data,
-    error: initial_error,
-    loading: initial_isLoading,
-  } = usePlantAPI({ method: "get", url: `/plant/${id}` });
+  const { response: initial_data, loading: initial_isLoading } =
+    usePlantAPI<Plant>({ method: "get", url: `/plant/${id}` });
 
   const {
     register,
-    control,
     handleSubmit,
     reset,
     formState: { errors },
@@ -39,12 +26,11 @@ const EditPlant = () => {
   }, [initial_isLoading]);
 
   const [updateData, setUpdateData] = useState<Plant | false>(false);
-  const {
-    response: update_data,
-    error: update_error,
-    loading: update_isLoading,
-    sendData: update_sendData,
-  } = usePlantAPI({ method: "patch", url: "/plant", data: updateData });
+  const { sendData: update_sendData } = usePlantAPI({
+    method: "patch",
+    url: "/plant",
+    data: updateData,
+  });
 
   const onSubmit: SubmitHandler<Plant> = (data: Plant) => {
     setUpdateData(data);

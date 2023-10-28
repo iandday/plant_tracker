@@ -1,8 +1,6 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, CanceledError } from "axios";
-import usePatchData from "./usePatchData.ts";
-import {Plant} from "./usePlants.ts"
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
-import apiClient from "../services/apiClient.ts";
+
 
 export interface Plant {
   name: string;
@@ -35,7 +33,7 @@ const usePlantAPI = <T> (axiosParams: AxiosRequestConfig, deps?: any[]) => {
       const result:AxiosResponse = await axios.request(params);
       setResponse(result.data);
       console.log(result.data)
-    } catch( err ) {
+    } catch( err: any ) {
       setError(err);
     } finally {
       setLoading(false);
@@ -50,7 +48,7 @@ const usePlantAPI = <T> (axiosParams: AxiosRequestConfig, deps?: any[]) => {
     if(axiosParams.method === "GET" || axiosParams.method === "get"){
       fetchData(axiosParams);
     }
-  },[]);
+  },deps);
 
   return { response, error, loading, sendData };
 };

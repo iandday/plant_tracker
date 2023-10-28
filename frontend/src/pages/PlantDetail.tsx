@@ -20,12 +20,10 @@ import usePlantAPI, { Plant } from "../hooks/usePlantAPI";
 
 const PlantDetail = () => {
   const { id } = useParams();
-  const {
-    response: data,
-    error: error,
-    loading: isLoading,
-    sendData: sendData,
-  } = usePlantAPI<Plant>({ method: "get", url: `/plant/${id}` });
+  const { response: data } = usePlantAPI<Plant>({
+    method: "get",
+    url: `/plant/${id}`,
+  });
 
   const navigate = useNavigate();
 
@@ -135,7 +133,9 @@ const PlantDetail = () => {
                           target="_blank"
                           component="a"
                           selected={false}
-                          onClick={handleClose}
+                          onClick={() => {
+                            handleClose;
+                          }}
                         >
                           {source.name}
                         </MenuItem>
