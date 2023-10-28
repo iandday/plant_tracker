@@ -22,7 +22,7 @@ export interface PlantList {
 
 axios.defaults.baseURL= 'http://10.168.1.173:8080'
 
-const usePlantAPI = <T> (axiosParams: AxiosRequestConfig, deps?: any[]) => {
+const usePlantAPI = <T> (axiosParams: AxiosRequestConfig, deps: any[]=[]) => {
     
   const [response, setResponse] = useState<T>();
   const [error, setError] = useState<AxiosError>();
@@ -32,7 +32,6 @@ const usePlantAPI = <T> (axiosParams: AxiosRequestConfig, deps?: any[]) => {
     try {
       const result:AxiosResponse = await axios.request(params);
       setResponse(result.data);
-      console.log(result.data)
     } catch( err: any ) {
       setError(err);
     } finally {
