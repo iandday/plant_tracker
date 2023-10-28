@@ -10,10 +10,15 @@ const palette = {
     },
     dark: {
         primary: {
-            main: '#333',
-            light: '#333',
-            dark: '#333',
-        }
+            main: '#AC3D51',
+            light: '',
+            dark: '',
+        },
+        secondary: {
+          main: '#491A2F',
+          light: '',
+          dark: '',
+      }
     }
 };
 
@@ -21,7 +26,8 @@ export const getDesignTokens = (mode) => ({
   palette: {
     mode,
     ...(mode === 'light'
-      ? {
+      ? //light
+      {
           primary: {
             main: palette.light.primary.main,
             light: palette.light.primary.light,
@@ -34,19 +40,26 @@ export const getDesignTokens = (mode) => ({
             secondary: grey[800],
           },
         }
-      : {
+      : 
+      //dark
+      {
           primary: {
             main: palette.dark.primary.main,
             light: palette.dark.primary.light,
             dark: palette.dark.primary.dark,
           },
-          divider: deepOrange[700],
+          secondary: {
+            main: palette.dark.secondary.main,
+            light: palette.dark.secondary.light,
+            dark: palette.dark.secondary.dark,
+          },
+          divider: 'rgba(74,73,73,0.76)',
           background: {
-            default: '#111',
-            paper: '#171717',
+            default: '#0B1029',
+            paper: '#383D59',
           },
           text: {
-            primary: '#fff',
+            primary: '#DDDDDD',
             secondary: grey[500],
           },
         }),
@@ -141,7 +154,13 @@ export const getThemedComponents = (mode) => ({
           },
         }
       : {
-          MuiAppBar: {
+        MuiBottomNavigationAction:{
+          styleOverrides: {
+            "& $elected": {
+              color: blue}
+          }
+        },
+        MuiAppBar: {
             styleOverrides: {
               colorPrimary: {
                 backgroundColor: blue[800],
