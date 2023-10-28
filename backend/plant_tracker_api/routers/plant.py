@@ -43,6 +43,25 @@ def delete_plant_by_id(plant_id: UUID4):
     return {"deleted": True}
 
 
+@router.patch(
+    "/plant",
+    response_model=schema.Plant,
+    tags=["Plant"],
+    description="Update Plant by ID",
+)
+def update_plant(data: schema.PlantPatch):
+    db_plant = db.session.get(models.Plant, data.id)
+    if not db_plant:
+        raise HTTPException(status_code=404, detail="Plant not found")
+    for k, v in data.model_dump().items():
+        logger.error(f"Setting {k} to {v}")
+        setattr(db_plant, k, v)
+    db.session.add(db_plant)
+    db.session.commit()
+    db.session.refresh(db_plant)
+    return db_plant
+
+
 @router.post("/plant", response_model=schema.Plant, tags=["Plant"])
 def create_plant(data: schema.PlantCreate):
     db_plant = models.Plant(

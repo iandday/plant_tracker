@@ -41,6 +41,12 @@ class Plant(PlantBase):
     id: UUID4
 
 
+class PlantPatch(PlantBase):
+    purchase_date: Optional[datetime.date]
+    trefle_id: Optional[int]
+    id: UUID4
+
+
 class PlantReturn(BaseModel):
     count: int
     results: List[Plant]
