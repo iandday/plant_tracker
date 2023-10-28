@@ -11,20 +11,22 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 import { useNavigate, useParams } from "react-router-dom";
-import usePlantDetail from "../hooks/usePlantDetail";
+
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Popper from "@mui/material/Popper";
 import React from "react";
+import usePlantAPI, { Plant } from "../hooks/usePlantAPI";
 
 const PlantDetail = () => {
   const { id } = useParams();
-  const { data, error, isLoading } = usePlantDetail(id!);
+  const {
+    response: data,
+    error: error,
+    loading: isLoading,
+    sendData: sendData,
+  } = usePlantAPI<Plant>({ method: "get", url: `/plant/${id}` });
+
   const navigate = useNavigate();
 
   // start reference menu item

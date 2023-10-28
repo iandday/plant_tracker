@@ -8,12 +8,19 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import usePlants from "../hooks/usePlants";
 import InfoIcon from "@mui/icons-material/Info";
 import { useNavigate } from "react-router-dom";
+import usePlantAPI from "../hooks/usePlantAPI";
+import { PlantList } from "../hooks/usePlantAPI";
 
 const MyPlants = () => {
-  const { data, error, isLoading } = usePlants();
+  const {
+    response: data,
+    error: error,
+    loading: isLoading,
+    sendData: getData,
+  } = usePlantAPI<PlantList>({ method: "get", url: `/plant` });
+
   const navigate = useNavigate();
 
   return (
@@ -34,7 +41,7 @@ const MyPlants = () => {
             }}
             rowHeight={300}
           >
-            {data.map((plant) => (
+            {data?.results.map((plant) => (
               <Card
                 key={plant.id}
                 sx={{ maxWidth: 300 }}
