@@ -21,6 +21,23 @@ plant_source = Table(
 )
 
 
+class Location(Base):
+    __tablename__ = "location"
+    id = Column(UUID(as_uuid=True), primary_key=True, index=True, default=uuid.uuid4)
+    name = Column(String)
+    plants = relationship(
+        "Plant", secondary="plant_location", back_populates="location"
+    )
+
+
+plant_location = Table(
+    "plant_location",
+    Base.metadata,
+    Column("plant_id", ForeignKey("plant.id"), primary_key=True),
+    Column("location_id", ForeignKey("location.id"), primary_key=True),
+)
+
+
 class Plant(Base):
     __tablename__ = "plant"
     id = Column(UUID(as_uuid=True), primary_key=True, index=True, default=uuid.uuid4)
@@ -28,11 +45,15 @@ class Plant(Base):
     purchase_date = Column(Date, nullable=True)
     name = Column(String, nullable=False, unique=True)
     photo_url = Column(String, nullable=True, unique=False)
-    location = Column(String, nullable=False)
     common_name = Column(String)
     scientific_name = Column(String)
     sources = relationship(
         "Source",
         secondary="plant_source",
+        back_populates="plants",
+    )
+    location = relationship(
+        "Location",
+        secondary="plant_location",
         back_populates="plants",
     )

@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi_sqlalchemy import DBSessionMiddleware
 from fastapi.middleware.cors import CORSMiddleware
 
-from routers import source, plant
+from routers import source, plant, location
 
 origins = [
     "http://localhost:5173",
@@ -24,6 +24,7 @@ app.add_middleware(
 )
 
 app.include_router(source.router)
+app.include_router(location.router)
 app.include_router(plant.router)
 
 if __name__ == "__main__":

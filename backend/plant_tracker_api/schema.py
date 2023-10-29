@@ -18,10 +18,22 @@ class Source(SourceBase):
     id: UUID4
 
 
+class LocationBase(BaseModel):
+    name: str
+
+
+class LocationCreate(LocationBase):
+    pass
+
+
+class Location(LocationBase):
+    id: UUID4
+
+
 class PlantBase(BaseModel):
     name: str
     photo_url: Optional[str]
-    location: str
+    location: Location
     common_name: str
     scientific_name: str
     photo_url: str = None
@@ -55,7 +67,7 @@ class PlantReturn(BaseModel):
 class PlantCreateTrefle(BaseModel):
     id: int
     name: str
-    location: str
+    location: Location
     purchase_year: int = None
     purchase_month: int = None
     purchase_day: int = None
