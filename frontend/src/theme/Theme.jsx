@@ -1,5 +1,6 @@
 import { amber, deepOrange, grey, blue, common } from '@mui/material/colors';
 
+//https://coolors.co/0b1029-383d59-ac3d51-491a2f-1c4075
 const palette = {
     light: {
         primary: {

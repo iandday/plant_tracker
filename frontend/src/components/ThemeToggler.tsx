@@ -22,7 +22,8 @@ export default function SubHeaderNavigation() {
         p: 3,
       }}
     >
-      {theme.palette.mode} mode
+      {theme.palette.mode === "dark" && <span>Dark Mode</span>}
+      {theme.palette.mode === "light" && <span>Light Mode</span>}
       <IconButton
         sx={{ ml: 1 }}
         onClick={colorMode.toggleColorMode}
