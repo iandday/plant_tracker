@@ -1,7 +1,10 @@
-import { Grid, Stack, Typography } from "@mui/material";
+import { Button, Grid, Stack, Typography } from "@mui/material";
 import ThemeToggler from "../components/ThemeToggler";
+import { useNavigate } from "react-router-dom";
 
 const UserSettings = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <Grid container justifyContent="center" padding={1}>
@@ -9,6 +12,14 @@ const UserSettings = () => {
       </Grid>
       <Stack>
         <ThemeToggler />
+        <Button
+          variant="text"
+          onClick={() => {
+            navigate(`/locations`);
+          }}
+        >
+          Locations
+        </Button>
       </Stack>
     </>
   );

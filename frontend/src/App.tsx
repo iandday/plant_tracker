@@ -18,6 +18,7 @@ import { ColorModeContext } from "./config/color-context";
 import React from "react";
 import { CssBaseline } from "@mui/material";
 import EditPlant from "./pages/EditPlant";
+import Locations from "./pages/Locations";
 
 function App() {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
@@ -57,6 +58,7 @@ function App() {
               <Route path="/editPlant/:id" element={<EditPlant />} />
               <Route path="/activity" element={<MyActivity />} />
               <Route path="/settings" element={<UserSettings />} />
+              <Route path="/locations" element={<Locations />} />
             </Routes>
             <Navigation />
           </BrowserRouter>

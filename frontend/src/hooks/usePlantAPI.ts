@@ -19,12 +19,28 @@ export interface PlantList {
   results: [Plant]
 }
 
+export interface Location{
+  name: string;
+  id: string;
+}
+
+export interface NewLocation{
+  name: string;
+}
+
+export interface LocationList{
+  count: number;
+  results: [Location];
+}
+
+export interface IDList{id: string}
 
 axios.defaults.baseURL= 'http://10.168.1.173:8080'
 
 const usePlantAPI = <T> (axiosParams: AxiosRequestConfig, deps: any[]=[]) => {
     
   const [response, setResponse] = useState<T>();
+  const [responseCode, setResponseCode] = useState<number>()
   const [error, setError] = useState<AxiosError>();
   const [loading, setLoading] = useState(axiosParams.method === "GET" || axiosParams.method === "get");
 
@@ -32,6 +48,7 @@ const usePlantAPI = <T> (axiosParams: AxiosRequestConfig, deps: any[]=[]) => {
     try {
       const result:AxiosResponse = await axios.request(params);
       setResponse(result.data);
+      setResponseCode(result.status);
     } catch( err: any ) {
       setError(err);
     } finally {
@@ -39,7 +56,7 @@ const usePlantAPI = <T> (axiosParams: AxiosRequestConfig, deps: any[]=[]) => {
     }
   };
 
-  const sendData = () => {
+  const sendData = async () => {
     fetchData(axiosParams);
   }
 
@@ -49,7 +66,7 @@ const usePlantAPI = <T> (axiosParams: AxiosRequestConfig, deps: any[]=[]) => {
     }
   },deps);
 
-  return { response, error, loading, sendData };
+  return { response, responseCode, error, loading, sendData };
 };
 
 
