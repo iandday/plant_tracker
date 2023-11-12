@@ -35,7 +35,7 @@ export interface LocationList{
 
 export interface IDList{id: string}
 
-axios.defaults.baseURL= 'http://10.168.1.173:8080'
+axios.defaults.baseURL= 'http://10.168.1.168:8080'
 
 const usePlantAPI = <T> (axiosParams: AxiosRequestConfig, deps: any[]=[]) => {
     
