@@ -30,6 +30,11 @@ class Location(LocationBase):
     id: UUID4
 
 
+class LocationReturn(BaseModel):
+    count: int
+    results: List[Location]
+
+
 class PlantBase(BaseModel):
     name: str
     photo_url: Optional[str]
@@ -84,5 +89,6 @@ class PlantSearchTrefle(BaseModel):
     query: str
 
 
-class PlantDelete(BaseModel):
+class ItemDelete(BaseModel):
     deleted: bool
+    id: UUID4

@@ -33,14 +33,14 @@ def get_plant_by_id(plant_id: UUID4):
     return plant
 
 
-@router.delete("/plant/{plant_id}", response_model=schema.PlantDelete, tags=["Plant"])
+@router.delete("/plant/{plant_id}", response_model=schema.ItemDelete, tags=["Plant"])
 def delete_plant_by_id(plant_id: UUID4):
     plant = db.session.get(models.Plant, plant_id)
     if not plant:
         raise HTTPException(status_code=404, detail="Plant not found")
     db.session.delete(plant)
     db.session.commit()
-    return {"deleted": True}
+    return {"deleted": True, id: plant_id}
 
 
 @router.patch(
