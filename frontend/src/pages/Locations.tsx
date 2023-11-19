@@ -9,12 +9,15 @@ import {
   ListItemText,
   Stack,
   TextField,
-  Typography
+  Typography,
+  Alert,
+  AlertTitle
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 
 import APIClient, { LocationList, Location, NewLocation } from '../hooks/usePlantAPI';
+import { AxiosError } from 'axios';
 
 const Locations = () => {
   const [locationUpdate, setlocationUpdate] = useState<number>(0);
@@ -29,7 +32,6 @@ const Locations = () => {
         const response = await APIClient.get(`/location`);
         if (response.status === 200) {
           setLocationData(response.data);
-          console.log(response);
         }
       } catch (err) {
         console.error(err);
@@ -41,6 +43,8 @@ const Locations = () => {
 
   const [showEdit, setShowEdit] = useState<boolean>(false);
   const [showNew, setShowNew] = useState<boolean>(false);
+  const [showAlert, setShowAlert] = useState<boolean>(false);
+  const [alertText, setAlertText] = useState<string>();
   // edit location form
 
   //const [editLocationValue, setEditLocationValue] = useState<string>('test');
@@ -53,7 +57,7 @@ const Locations = () => {
   } = useForm<Location>();
 
   // create location form
-  const { register, handleSubmit, reset, control, setValue } = useForm<Location>();
+  const { register, handleSubmit, reset, control, setValue } = useForm<NewLocation>({ defaultValues: { name: '' } });
   const onSubmit = async (data: NewLocation) => {
     try {
       const response = await APIClient.post(`/location/`, { name: data.name });
@@ -61,8 +65,9 @@ const Locations = () => {
         setlocationUpdate(locationUpdate + 1);
         setShowNew((oldValue) => !oldValue);
       }
-    } catch (err) {
-      console.error(err);
+    } catch (err: AxiosError) {
+      setAlertText(err.response.data.detail);
+      setShowAlert((oldValue) => !oldValue);
     }
   };
 
@@ -249,7 +254,14 @@ const Locations = () => {
                     control={control}
                     rules={{ required: true }}
                     render={({ field: { onChange, onBlur, value, ref } }) => (
-                      <TextField onChange={onChange} onBlur={onBlur} variant="filled" label="New Location" fullWidth />
+                      <TextField
+                        onChange={onChange}
+                        onBlur={onBlur}
+                        variant="filled"
+                        label="New Location"
+                        value={value}
+                        fullWidth
+                      />
                     )}
                   />
                 </Grid>
@@ -267,6 +279,18 @@ const Locations = () => {
             </form>
           ) : null}
         </Grid>
+        {showAlert ? (
+          <Alert
+            severity="error"
+            onClose={() => {
+              setShowAlert((oldValue) => !oldValue);
+              reset();
+            }}
+          >
+            <AlertTitle>Error</AlertTitle>
+            <strong>{alertText}</strong>
+          </Alert>
+        ) : null}
       </Grid>
     </>
   );
