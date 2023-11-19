@@ -1,6 +1,6 @@
 import uuid
 from sqlalchemy.orm import declarative_base, relationship
-from sqlalchemy import UUID, Column, ForeignKey, Integer, String, Date, Table
+from sqlalchemy import UUID, Column, ForeignKey, Integer, String, Date, Table, UniqueConstraint
 
 Base = declarative_base()
 
@@ -23,11 +23,10 @@ plant_source = Table(
 
 class Location(Base):
     __tablename__ = "location"
+    __table_args__ = (UniqueConstraint("name"),)
     id = Column(UUID(as_uuid=True), primary_key=True, index=True, default=uuid.uuid4)
     name = Column(String)
-    plants = relationship(
-        "Plant", secondary="plant_location", back_populates="location"
-    )
+    plants = relationship("Plant", secondary="plant_location", back_populates="location")
 
 
 plant_location = Table(

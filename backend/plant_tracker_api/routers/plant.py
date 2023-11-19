@@ -54,7 +54,6 @@ def update_plant(data: schema.PlantPatch):
     if not db_plant:
         raise HTTPException(status_code=404, detail="Plant not found")
     for k, v in data.model_dump().items():
-        logger.error(f"Setting {k} to {v}")
         setattr(db_plant, k, v)
     db.session.add(db_plant)
     db.session.commit()
@@ -74,9 +73,7 @@ def create_plant(data: schema.PlantCreate):
     db.session.add(db_plant)
 
     if data.purchase_day and data.purchase_month and data.purchase_year:
-        db_plant.purchase_date = datetime.date(
-            data.purchase_year, data.purchase_month, data.purchase_day
-        )
+        db_plant.purchase_date = datetime.date(data.purchase_year, data.purchase_month, data.purchase_day)
 
     if data.sources:
         for source in data.sources:
@@ -124,9 +121,7 @@ def search_plant_trefle(data: schema.PlantSearchTrefle):
     tags=["Trefle"],
 )
 def create_plant_trefle(data: schema.PlantCreateTrefle):
-    plant_detail = requests.get(
-        f"https://trefle.io/api/v1/plants/{data.id}?token={api_key}"
-    )
+    plant_detail = requests.get(f"https://trefle.io/api/v1/plants/{data.id}?token={api_key}")
 
     detail = plant_detail.json()["data"]
 
@@ -141,9 +136,7 @@ def create_plant_trefle(data: schema.PlantCreateTrefle):
     db.session.add(db_plant)
 
     if data.purchase_day and data.purchase_month and data.purchase_year:
-        db_plant.purchase_date = datetime.date(
-            data.purchase_year, data.purchase_month, data.purchase_day
-        )
+        db_plant.purchase_date = datetime.date(data.purchase_year, data.purchase_month, data.purchase_day)
 
     for source in detail["sources"]:
         if source["url"] is not None:

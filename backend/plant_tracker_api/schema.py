@@ -35,6 +35,10 @@ class LocationReturn(BaseModel):
     results: List[Location]
 
 
+class LocationPatch(Location):
+    pass
+
+
 class PlantBase(BaseModel):
     name: str
     photo_url: Optional[str]
