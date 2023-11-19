@@ -16,7 +16,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Popper from "@mui/material/Popper";
 import React from "react";
-import usePlantAPI, { Plant } from "../hooks/usePlantAPI";
+import usePlantAPI, { Plant } from "../hooks/usePlantAPIOLD";
 
 const PlantDetail = () => {
   const { id } = useParams();

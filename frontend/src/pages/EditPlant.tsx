@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, ButtonGroup, Grid, Stack, TextField } from "@mui/material";
 import { useForm, SubmitHandler } from "react-hook-form";
-import usePlantAPI, { Plant } from "../hooks/usePlantAPI";
+import usePlantAPI, { Plant } from "../hooks/usePlantAPIOLD";
 
 const EditPlant = () => {
   const { id } = useParams();

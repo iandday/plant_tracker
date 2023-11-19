@@ -9,8 +9,8 @@ import {
 } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import { useNavigate } from "react-router-dom";
-import usePlantAPI from "../hooks/usePlantAPI";
-import { PlantList } from "../hooks/usePlantAPI";
+import usePlantAPI from "../hooks/usePlantAPIOLD";
+import { PlantList } from "../hooks/usePlantAPIOLD";
 
 const MyPlants = () => {
   const { response: data } = usePlantAPI<PlantList>({
