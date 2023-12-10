@@ -1,54 +1,55 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { useNavigate, useParams } from "react-router-dom";
-import { Button, ButtonGroup, Grid, Stack, TextField } from "@mui/material";
-import { useForm, SubmitHandler } from "react-hook-form";
-import usePlantAPI, { Plant } from "../hooks/usePlantAPIOLD";
+import { useNavigate, useParams } from 'react-router-dom';
+import { Button, ButtonGroup, Grid, Stack, TextField } from '@mui/material';
+import { useForm, SubmitHandler } from 'react-hook-form';
 
 const EditPlant = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const { response: initial_data, loading: initial_isLoading } =
-    usePlantAPI<Plant>({ method: "get", url: `/plant/${id}` });
+  //   const { id } = useParams();
+  //   const navigate = useNavigate();
+  //   const { response: initial_data, loading: initial_isLoading } = usePlantAPI<Plant>({
+  //     method: 'get',
+  //     url: `/plant/${id}`
+  //   });
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<Plant>({
-    defaultValues: { ...initial_data },
-  });
+  //   const {
+  //     register,
+  //     handleSubmit,
+  //     reset,
+  //     formState: { errors }
+  //   } = useForm<Plant>({
+  //     defaultValues: { ...initial_data }
+  //   });
 
-  // repopulate fields after API call completes
-  useEffect(() => {
-    reset({ ...initial_data });
-  }, [initial_isLoading]);
+  //   // repopulate fields after API call completes
+  //   useEffect(() => {
+  //     reset({ ...initial_data });
+  //   }, [initial_isLoading]);
 
-  const [updateData, setUpdateData] = useState<Plant | false>(false);
-  const { sendData: update_sendData } = usePlantAPI({
-    method: "patch",
-    url: "/plant",
-    data: updateData,
-  });
+  //   const [updateData, setUpdateData] = useState<Plant | false>(false);
+  //   const { sendData: update_sendData } = usePlantAPI({
+  //     method: 'patch',
+  //     url: '/plant',
+  //     data: updateData
+  //   });
 
-  const onSubmit: SubmitHandler<Plant> = (data: Plant) => {
-    setUpdateData(data);
-    update_sendData();
-  };
+  //   const onSubmit: SubmitHandler<Plant> = (data: Plant) => {
+  //     setUpdateData(data);
+  //     update_sendData();
+  //   };
 
-  // update backend
-  useEffect(() => {
-    // only run when data is available
-    if (updateData) {
-      update_sendData();
-      navigate(`/myPlants/${id}`);
-    }
-  }, [updateData]);
+  //   // update backend
+  //   useEffect(() => {
+  //     // only run when data is available
+  //     if (updateData) {
+  //       update_sendData();
+  //       navigate(`/myPlants/${id}`);
+  //     }
+  //   }, [updateData]);
 
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <></>
+    /* { <form onSubmit={handleSubmit(onSubmit)}>
         <Grid
           container
           spacing={0}
@@ -134,8 +135,8 @@ const EditPlant = () => {
             </Stack>
           </Grid>
         </Grid>
-      </form>
-    </>
+      </form> }
+    </>*/
   );
 };
 

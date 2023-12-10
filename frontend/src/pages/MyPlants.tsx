@@ -1,47 +1,40 @@
-import {
-  Card,
-  Grid,
-  IconButton,
-  ImageListItem,
-  ImageListItemBar,
-  Tooltip,
-  Typography,
-} from "@mui/material";
-import InfoIcon from "@mui/icons-material/Info";
-import { useNavigate } from "react-router-dom";
-import usePlantAPI from "../hooks/usePlantAPIOLD";
-import { PlantList } from "../hooks/usePlantAPIOLD";
+import { Card, Grid, IconButton, ImageListItem, ImageListItemBar, Tooltip, Typography } from '@mui/material';
+import InfoIcon from '@mui/icons-material/Info';
+import { useNavigate } from 'react-router-dom';
+import { PlantApi, PlantReturn } from '../services';
+import { useEffect, useState } from 'react';
 
 const MyPlants = () => {
-  const { response: data } = usePlantAPI<PlantList>({
-    method: "get",
-    url: `/plant`,
-  });
+  const api = new PlantApi();
+  const [plantData, setPlantData] = useState<PlantReturn>();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        //const response = await APIClient.get(`/location`);
+        const response = await api.getPlantPlantGet();
+        if (response.status === 200) {
+          setPlantData(response.data);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchData();
+  }, []);
 
   const navigate = useNavigate();
 
   return (
     <>
-      <Grid
-        container
-        justifyContent="space-between"
-        alignItems="stretch"
-        style={{ marginBottom: 8 }}
-      >
+      <Grid container justifyContent="space-between" alignItems="stretch" style={{ marginBottom: 8 }}>
         <Grid item xs={12}>
           <Typography variant="h4" align="center">
             My Plants
           </Typography>
         </Grid>
       </Grid>
-      <Grid
-        container
-        spacing={2}
-        direction="row"
-        alignItems="center"
-        justifyContent="center"
-      >
-        {data?.results.map((plant) => (
+      <Grid container spacing={2} direction="row" alignItems="center" justifyContent="center">
+        {plantData?.results.map((plant) => (
           <Grid
             item
             xs={12}
@@ -59,12 +52,11 @@ const MyPlants = () => {
                 navigate(`/myPlants/${plant.id}`);
               }}
             >
-              <ImageListItem sx={{ height: "100% !important" }}>
+              <ImageListItem sx={{ height: '100% !important' }}>
                 <ImageListItemBar
                   style={{ width: 300 }}
                   sx={{
-                    background:
-                      "linear-gradient(to bottom, rgba(0,0,0,0.7)0%, rgba(0,0,0,0.3)70%, rgba(0,0,0,0)100%)",
+                    background: 'linear-gradient(to bottom, rgba(0,0,0,0.7)0%, rgba(0,0,0,0.3)70%, rgba(0,0,0,0)100%)'
                   }}
                   title={plant.name}
                   subtitle={plant.location}
@@ -81,10 +73,7 @@ const MyPlants = () => {
                   style={{ width: 300 }}
                   title={plant.common_name}
                   actionIcon={
-                    <IconButton
-                      sx={{ color: "rgba(255, 255, 255, 0.54)" }}
-                      aria-label={`info about ${plant.name}`}
-                    >
+                    <IconButton sx={{ color: 'rgba(255, 255, 255, 0.54)' }} aria-label={`info about ${plant.name}`}>
                       <Tooltip title={plant.scientific_name} placement="top">
                         <InfoIcon />
                       </Tooltip>

@@ -16,20 +16,24 @@ import {
 import React, { useEffect, useState } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 
-import APIClient, { LocationList, Location, NewLocation } from '../hooks/usePlantAPI';
+import { Location, LocationApi, LocationCreate, LocationReturn } from '../services/index';
+
 import { AxiosError } from 'axios';
 
 const Locations = () => {
+  const api = new LocationApi();
+
   const [locationUpdate, setlocationUpdate] = useState<number>(0);
 
   // make a hook
   const [loading, setLoading] = useState(true);
-  const [locationData, setLocationData] = useState<LocationList>();
+  const [locationData, setLocationData] = useState<LocationReturn>();
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await APIClient.get(`/location`);
+        //const response = await APIClient.get(`/location`);
+        const response = await api.getLocationsLocationGet();
         if (response.status === 200) {
           setLocationData(response.data);
         }
@@ -57,10 +61,10 @@ const Locations = () => {
   } = useForm<Location>();
 
   // create location form
-  const { register, handleSubmit, reset, control, setValue } = useForm<NewLocation>({ defaultValues: { name: '' } });
-  const onSubmit = async (data: NewLocation) => {
+  const { register, handleSubmit, reset, control, setValue } = useForm<LocationCreate>({ defaultValues: { name: '' } });
+  const onSubmit = async (data: LocationCreate) => {
     try {
-      const response = await APIClient.post(`/location/`, { name: data.name });
+      const response = await api.createLocationLocationPost({ name: data.name });
       if (response.status === 200) {
         setlocationUpdate(locationUpdate + 1);
         setShowNew((oldValue) => !oldValue);
@@ -100,7 +104,7 @@ const Locations = () => {
   const handleDelete = async () => {
     selectedLocations.map(async (loc) => {
       try {
-        const response = await APIClient.delete(`/location/${loc}`);
+        const response = await api.deleteLocationLocationLocationIdDelete(loc);
         if (response.status === 200) {
           setlocationUpdate(locationUpdate + 1);
         }
@@ -115,7 +119,7 @@ const Locations = () => {
   const editOnSubmit = async (data: Location) => {
     console.log(data);
     try {
-      const response = await APIClient.patch(`/location`, {
+      const response = await api.updateLocationLocationPatch({
         name: data.name,
         id: data.id
       });
