@@ -1,6 +1,6 @@
 import uuid
 from sqlalchemy.orm import declarative_base, relationship
-from sqlalchemy import UUID, Column, ForeignKey, Integer, String, Date, Table, UniqueConstraint
+from sqlalchemy import UUID, Boolean, Column, ForeignKey, Integer, String, Date, Table, UniqueConstraint
 
 Base = declarative_base()
 
@@ -37,6 +37,26 @@ plant_location = Table(
 )
 
 
+class User(Base):
+    __tablename__ = "user"
+    __table_args__ = (UniqueConstraint("email"),)
+    id = Column(UUID(as_uuid=True), primary_key=True, index=True, default=uuid.uuid4)
+    email = Column(String)
+    hashed_password = Column(String)
+    first_name = Column(String)
+    last_name = Column(String)
+    disabled = Column(Boolean)
+    plants = relationship("Plant", secondary="plant_user", back_populates="user")
+
+
+plant_user = Table(
+    "plant_user",
+    Base.metadata,
+    Column("plant_id", ForeignKey("plant.id"), primary_key=True),
+    Column("user_id", ForeignKey("user.id"), primary_key=True),
+)
+
+
 class Plant(Base):
     __tablename__ = "plant"
     id = Column(UUID(as_uuid=True), primary_key=True, index=True, default=uuid.uuid4)
@@ -54,5 +74,10 @@ class Plant(Base):
     location = relationship(
         "Location",
         secondary="plant_location",
+        back_populates="plants",
+    )
+    user = relationship(
+        "User",
+        secondary="plant_user",
         back_populates="plants",
     )

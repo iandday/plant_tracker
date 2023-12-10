@@ -3,6 +3,7 @@ from typing import List, Optional
 from pydantic import BaseModel, UUID4
 from datetime import date
 from sqlalchemy import Date
+from uuid import UUID
 
 
 class SourceBase(BaseModel):
@@ -96,3 +97,47 @@ class PlantSearchTrefle(BaseModel):
 class ItemDelete(BaseModel):
     deleted: bool
     id: UUID4
+
+
+class UserCreate(BaseModel):
+    email: str
+    password: str
+    first_name: str | None = None
+    last_name: str | None = None
+    disabled: bool | None = None
+
+
+class User(BaseModel):
+    id: UUID4
+    email: str
+    first_name: str | None = None
+    last_name: str | None = None
+    disabled: bool | None = None
+
+
+class UserInDB(User):
+    hashed_password: str
+
+
+class UserReturn(BaseModel):
+    count: int
+    results: List[User]
+
+
+class LoginReturn(BaseModel):
+    access_token: str
+    refresh_token: str
+
+
+class TokenPayload(BaseModel):
+    sub: str = None
+    exp: int = None
+
+
+class UserOut(BaseModel):
+    id: UUID
+    email: str
+
+
+class SystemUser(UserOut):
+    password: str
