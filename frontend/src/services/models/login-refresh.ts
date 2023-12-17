@@ -14,9 +14,17 @@
 
 
 
-export * from './apis/location-api';
-export * from './apis/plant-api';
-export * from './apis/source-api';
-export * from './apis/trefle-api';
-export * from './apis/user-api';
+/**
+ * 
+ * @export
+ * @interface LoginRefresh
+ */
+export interface LoginRefresh {
+    /**
+     * 
+     * @type {string}
+     * @memberof LoginRefresh
+     */
+    'refresh_token': string;
+}
 

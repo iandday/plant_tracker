@@ -13,10 +13,27 @@
  */
 
 
+// May contain unused imports in some cases
+// @ts-ignore
+import { User } from './user';
 
-export * from './apis/location-api';
-export * from './apis/plant-api';
-export * from './apis/source-api';
-export * from './apis/trefle-api';
-export * from './apis/user-api';
+/**
+ * 
+ * @export
+ * @interface UserReturn
+ */
+export interface UserReturn {
+    /**
+     * 
+     * @type {number}
+     * @memberof UserReturn
+     */
+    'count': number;
+    /**
+     * 
+     * @type {Array<User>}
+     * @memberof UserReturn
+     */
+    'results': Array<User>;
+}
 

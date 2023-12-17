@@ -1,11 +1,11 @@
 .gitignore
 .npmignore
-.openapi-generator-ignore
 api.ts
 apis/location-api.ts
 apis/plant-api.ts
 apis/source-api.ts
 apis/trefle-api.ts
+apis/user-api.ts
 base.ts
 common.ts
 configuration.ts
@@ -18,6 +18,8 @@ models/location-create.ts
 models/location-patch.ts
 models/location-return.ts
 models/location.ts
+models/login-refresh.ts
+models/login-return.ts
 models/plant-create-trefle.ts
 models/plant-create.ts
 models/plant-patch.ts
@@ -27,5 +29,8 @@ models/plant-search-trefle.ts
 models/plant.ts
 models/source-create.ts
 models/source.ts
+models/user-create.ts
+models/user-return.ts
+models/user.ts
 models/validation-error-loc-inner.ts
 models/validation-error.ts

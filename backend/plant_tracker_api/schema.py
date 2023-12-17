@@ -141,3 +141,7 @@ class UserOut(BaseModel):
 
 class SystemUser(UserOut):
     password: str
+
+
+class LoginRefresh(BaseModel):
+    refresh_token: str

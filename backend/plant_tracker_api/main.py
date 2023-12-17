@@ -5,7 +5,7 @@ from fastapi_sqlalchemy import DBSessionMiddleware
 from fastapi.middleware.cors import CORSMiddleware
 
 
-from routers import source, plant, location, user, login
+from routers import source, plant, location, user
 
 origins = [
     "http://localhost:5173",
@@ -28,7 +28,6 @@ app.include_router(source.router)
 app.include_router(location.router)
 app.include_router(plant.router)
 app.include_router(user.router)
-app.include_router(login.router)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
