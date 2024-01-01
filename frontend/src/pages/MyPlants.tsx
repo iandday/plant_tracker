@@ -3,6 +3,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import { useNavigate } from 'react-router-dom';
 import { PlantApi, PlantReturn } from '../services';
 import { useEffect, useState } from 'react';
+import LabelBottomNavigation from '../components/Navigation';
 
 const MyPlants = () => {
   const api = new PlantApi();
@@ -86,6 +87,7 @@ const MyPlants = () => {
           </Grid>
         ))}
       </Grid>
+      <LabelBottomNavigation />
     </>
   );
 };

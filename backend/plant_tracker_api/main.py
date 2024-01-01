@@ -10,7 +10,7 @@ from routers import source, plant, location, user
 origins = [
     "http://localhost:5173",
     "http://10.168.1.168:5173",
-    "http://10.168.1.200:5173",
+    "http://10.168.1.173:5173",
 ]
 
 
@@ -22,6 +22,7 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"],
 )
 
 app.include_router(source.router)

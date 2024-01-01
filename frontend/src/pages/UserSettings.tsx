@@ -1,6 +1,7 @@
-import { Button, Grid, Stack, Typography } from "@mui/material";
-import ThemeToggler from "../components/ThemeToggler";
-import { useNavigate } from "react-router-dom";
+import { Button, Grid, Stack, Typography } from '@mui/material';
+import ThemeToggler from '../components/ThemeToggler';
+import { useNavigate } from 'react-router-dom';
+import LabelBottomNavigation from '../components/Navigation';
 
 const UserSettings = () => {
   const navigate = useNavigate();
@@ -20,7 +21,16 @@ const UserSettings = () => {
         >
           Locations
         </Button>
+        <Button
+          variant="text"
+          onClick={() => {
+            navigate(`/login`);
+          }}
+        >
+          Login
+        </Button>
       </Stack>
+      <LabelBottomNavigation />
     </>
   );
 };

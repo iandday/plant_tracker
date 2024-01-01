@@ -1,8 +1,9 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi_sqlalchemy import db
 from typing import List
 from sqlalchemy import select
 from pydantic import UUID4
+from dependencies import get_current_user
 import models
 import schema
 import logging
@@ -13,7 +14,7 @@ router = APIRouter()
 
 
 @router.get("/location", response_model=schema.LocationReturn, tags=["Location"])
-def get_locations():
+def get_locations(user: schema.User = Depends(get_current_user)):
     locations = db.session.query(models.Location).all()
     results = {"count": len(locations), "results": locations}
     return results

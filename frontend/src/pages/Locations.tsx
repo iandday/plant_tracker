@@ -16,12 +16,16 @@ import {
 import React, { useEffect, useState } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 
-import { Location, LocationApi, LocationCreate, LocationReturn } from '../services/index';
+import { Configuration, Location, LocationApi, LocationCreate, LocationReturn } from '../services/index';
 
 import { AxiosError } from 'axios';
+import LabelBottomNavigation from '../components/Navigation';
+import axiosInstance from '../provider/CustomAxios';
+import { BASE_PATH } from '../services/base';
 
 const Locations = () => {
-  const api = new LocationApi();
+  const api = new LocationApi(null, BASE_PATH, axiosInstance);
+  //THIS IS WORKING, REPLICATE ON OTHER PAGES
 
   const [locationUpdate, setlocationUpdate] = useState<number>(0);
 
@@ -296,6 +300,7 @@ const Locations = () => {
           </Alert>
         ) : null}
       </Grid>
+      <LabelBottomNavigation />
     </>
   );
 };
