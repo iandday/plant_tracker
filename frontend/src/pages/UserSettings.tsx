@@ -5,6 +5,7 @@ import LabelBottomNavigation from '../components/Navigation';
 
 const UserSettings = () => {
   const navigate = useNavigate();
+  const token = localStorage.getItem('token');
 
   return (
     <>
@@ -21,14 +22,28 @@ const UserSettings = () => {
         >
           Locations
         </Button>
-        <Button
-          variant="text"
-          onClick={() => {
-            navigate(`/login`);
-          }}
-        >
-          Login
-        </Button>
+        {!token && (
+          <Button
+            variant="text"
+            onClick={() => {
+              navigate(`/login`);
+            }}
+          >
+            Login
+          </Button>
+        )}
+        {token && (
+          <Button
+            variant="text"
+            onClick={() => {
+              localStorage.setItem('token', '');
+              localStorage.setItem('refreshToken', '');
+              navigate(`/login`);
+            }}
+          >
+            Logout
+          </Button>
+        )}
       </Stack>
       <LabelBottomNavigation />
     </>
