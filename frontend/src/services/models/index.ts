@@ -17,6 +17,6 @@ export * from './source';
 export * from './source-create';
 export * from './user';
 export * from './user-create';
-export * from './user-return';
+export * from './user-update';
 export * from './validation-error';
 export * from './validation-error-loc-inner';

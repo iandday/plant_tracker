@@ -8,9 +8,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from routers import source, plant, location, user
 
 origins = [
+    "http://localhost",
     "http://localhost:5173",
     "http://10.168.1.168:5173",
     "http://10.168.1.173:5173",
+    "http://10.168.1.168:8080",
+    "http://10.168.1.173:8080",
 ]
 
 

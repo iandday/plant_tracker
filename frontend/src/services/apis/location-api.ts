@@ -128,6 +128,10 @@ export const LocationApiAxiosParamCreator = function (configuration?: Configurat
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication JWT required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "JWT", [], configuration)
+
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);

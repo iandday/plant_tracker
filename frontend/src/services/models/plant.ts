@@ -34,7 +34,7 @@ export interface Plant {
      * @type {string}
      * @memberof Plant
      */
-    'photo_url': string;
+    'photo_url'?: string;
     /**
      * 
      * @type {Location}

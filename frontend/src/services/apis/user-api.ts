@@ -32,7 +32,7 @@ import { User } from '../models';
 // @ts-ignore
 import { UserCreate } from '../models';
 // @ts-ignore
-import { UserReturn } from '../models';
+import { UserUpdate } from '../models';
 /**
  * UserApi - axios parameter creator
  * @export
@@ -97,70 +97,6 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             // authentication JWT required
             // oauth required
             await setOAuthToObject(localVarHeaderParameter, "JWT", [], configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Get User
-         * @param {string} userId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getUserUserUserIdGet: async (userId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'userId' is not null or undefined
-            assertParamExists('getUserUserUserIdGet', 'userId', userId)
-            const localVarPath = `/user/{user_id}`
-                .replace(`{${"user_id"}}`, encodeURIComponent(String(userId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Get users
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getUsersUserGet: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/user`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
 
 
     
@@ -277,6 +213,46 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @summary Update details of currently logged in user
+         * @param {UserUpdate} userUpdate 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateMeUserMePost: async (userUpdate: UserUpdate, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'userUpdate' is not null or undefined
+            assertParamExists('updateMeUserMePost', 'userUpdate', userUpdate)
+            const localVarPath = `/user/me`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication JWT required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "JWT", [], configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(userUpdate, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -314,31 +290,6 @@ export const UserApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Get User
-         * @param {string} userId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getUserUserUserIdGet(userId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<User>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getUserUserUserIdGet(userId, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['UserApi.getUserUserUserIdGet']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary Get users
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getUsersUserGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserReturn>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getUsersUserGet(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['UserApi.getUsersUserGet']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
-        },
-        /**
-         * 
          * @summary Create access and refresh tokens for user
          * @param {string} username 
          * @param {string} password 
@@ -366,6 +317,19 @@ export const UserApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.refreshTokensUserRenewPost(loginRefresh, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['UserApi.refreshTokensUserRenewPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary Update details of currently logged in user
+         * @param {UserUpdate} userUpdate 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateMeUserMePost(userUpdate: UserUpdate, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<User>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateMeUserMePost(userUpdate, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['UserApi.updateMeUserMePost']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
@@ -399,25 +363,6 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
         },
         /**
          * 
-         * @summary Get User
-         * @param {string} userId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getUserUserUserIdGet(userId: string, options?: any): AxiosPromise<User> {
-            return localVarFp.getUserUserUserIdGet(userId, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Get users
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getUsersUserGet(options?: any): AxiosPromise<UserReturn> {
-            return localVarFp.getUsersUserGet(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @summary Create access and refresh tokens for user
          * @param {string} username 
          * @param {string} password 
@@ -440,6 +385,16 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          */
         refreshTokensUserRenewPost(loginRefresh: LoginRefresh, options?: any): AxiosPromise<LoginReturn> {
             return localVarFp.refreshTokensUserRenewPost(loginRefresh, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Update details of currently logged in user
+         * @param {UserUpdate} userUpdate 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateMeUserMePost(userUpdate: UserUpdate, options?: any): AxiosPromise<User> {
+            return localVarFp.updateMeUserMePost(userUpdate, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -476,29 +431,6 @@ export class UserApi extends BaseAPI {
 
     /**
      * 
-     * @summary Get User
-     * @param {string} userId 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UserApi
-     */
-    public getUserUserUserIdGet(userId: string, options?: AxiosRequestConfig) {
-        return UserApiFp(this.configuration).getUserUserUserIdGet(userId, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Get users
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UserApi
-     */
-    public getUsersUserGet(options?: AxiosRequestConfig) {
-        return UserApiFp(this.configuration).getUsersUserGet(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
      * @summary Create access and refresh tokens for user
      * @param {string} username 
      * @param {string} password 
@@ -524,6 +456,18 @@ export class UserApi extends BaseAPI {
      */
     public refreshTokensUserRenewPost(loginRefresh: LoginRefresh, options?: AxiosRequestConfig) {
         return UserApiFp(this.configuration).refreshTokensUserRenewPost(loginRefresh, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Update details of currently logged in user
+     * @param {UserUpdate} userUpdate 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApi
+     */
+    public updateMeUserMePost(userUpdate: UserUpdate, options?: AxiosRequestConfig) {
+        return UserApiFp(this.configuration).updateMeUserMePost(userUpdate, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

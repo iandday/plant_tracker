@@ -107,6 +107,14 @@ class UserCreate(BaseModel):
     disabled: bool | None = None
 
 
+class UserUpdate(BaseModel):
+    email: str | None = None
+    password: str | None = None
+    first_name: str | None = None
+    last_name: str | None = None
+    disabled: bool | None = None
+
+
 class User(BaseModel):
     id: UUID4
     email: str

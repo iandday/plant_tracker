@@ -30,7 +30,7 @@ models/plant.ts
 models/source-create.ts
 models/source.ts
 models/user-create.ts
-models/user-return.ts
+models/user-update.ts
 models/user.ts
 models/validation-error-loc-inner.ts
 models/validation-error.ts

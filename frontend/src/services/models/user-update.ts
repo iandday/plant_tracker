@@ -17,37 +17,37 @@
 /**
  * 
  * @export
- * @interface User
+ * @interface UserUpdate
  */
-export interface User {
+export interface UserUpdate {
     /**
      * 
      * @type {string}
-     * @memberof User
+     * @memberof UserUpdate
      */
-    'id': string;
+    'email'?: string | null;
     /**
      * 
      * @type {string}
-     * @memberof User
+     * @memberof UserUpdate
      */
-    'email': string;
+    'password'?: string | null;
     /**
      * 
      * @type {string}
-     * @memberof User
+     * @memberof UserUpdate
      */
     'first_name'?: string | null;
     /**
      * 
      * @type {string}
-     * @memberof User
+     * @memberof UserUpdate
      */
     'last_name'?: string | null;
     /**
      * 
      * @type {boolean}
-     * @memberof User
+     * @memberof UserUpdate
      */
     'disabled'?: boolean | null;
 }
