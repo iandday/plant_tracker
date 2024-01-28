@@ -18,6 +18,7 @@ python-dotenv = "^1.0.0"
 fastapi-sqlalchemy = "^0.2.1"
 requests = "^2.31.0"
 python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+bcrypt = "^4.1.2"
 passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 python-multipart = "^0.0.6"
 
