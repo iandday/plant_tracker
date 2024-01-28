@@ -28,6 +28,7 @@ axiosInstance.interceptors.response.use(
         const { access_token, refresh_token } = response.data;
 
         localStorage.setItem('token', access_token);
+        localStorage.setItem('refreshToken', refresh_token);
 
         // Retry the original request with the new token
         originalRequest.headers.Authorization = `Bearer ${access_token}`;
