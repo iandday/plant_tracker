@@ -121,7 +121,6 @@ const Locations = () => {
 
   // edit function
   const editOnSubmit = async (data: Location) => {
-    console.log(data);
     try {
       const response = await api.updateLocationLocationPatch({
         name: data.name,

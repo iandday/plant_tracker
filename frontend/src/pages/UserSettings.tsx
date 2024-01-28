@@ -17,11 +17,20 @@ const UserSettings = () => {
         <Button
           variant="text"
           onClick={() => {
+            navigate(`/myProfile`);
+          }}
+        >
+          My Profile
+        </Button>
+        <Button
+          variant="text"
+          onClick={() => {
             navigate(`/locations`);
           }}
         >
           Locations
         </Button>
+
         {!token && (
           <Button
             variant="text"

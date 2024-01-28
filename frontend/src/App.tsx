@@ -16,6 +16,7 @@ import { CssBaseline } from '@mui/material';
 import EditPlant from './pages/EditPlant';
 import Locations from './pages/Locations';
 import Login from './pages/Login';
+import MyProfile from './pages/MyProfile';
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -53,6 +54,7 @@ function App() {
               <Route path="/settings" element={<UserSettings />} />
               <Route path="/locations" element={<Locations />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/myProfile" element={<MyProfile />} />
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
             <Navigation />
