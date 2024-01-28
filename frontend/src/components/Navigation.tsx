@@ -12,9 +12,9 @@ import SpeedDialAction from '@mui/material/SpeedDialAction';
 import PrintIcon from '@mui/icons-material/Print';
 
 const actions = [
-  { icon: <PlantIcon />, name: 'Plant' },
-  { icon: <ReceiptIcon />, name: 'Activity' },
-  { icon: <HomeIcon />, name: 'Location' }
+  { icon: <PlantIcon />, name: 'Plant', path: '/newPlant' },
+  { icon: <ReceiptIcon />, name: 'Activity', path: '/activity' },
+  { icon: <HomeIcon />, name: 'Location', path: '/locations' }
 ];
 
 import { useNavigate } from 'react-router-dom';
@@ -93,7 +93,10 @@ export default function LabelBottomNavigation() {
                 icon={action.icon}
                 tooltipTitle={action.name}
                 tooltipOpen
-                onClick={handleClose}
+                onClick={() => {
+                  setOpen(false);
+                  navigate(action.path);
+                }}
               />
             ))}
           </SpeedDial>

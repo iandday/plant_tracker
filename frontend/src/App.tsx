@@ -17,6 +17,7 @@ import EditPlant from './pages/EditPlant';
 import Locations from './pages/Locations';
 import Login from './pages/Login';
 import MyProfile from './pages/MyProfile';
+import NewPlant from './pages/NewPlant';
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -55,6 +56,7 @@ function App() {
               <Route path="/locations" element={<Locations />} />
               <Route path="/login" element={<Login />} />
               <Route path="/myProfile" element={<MyProfile />} />
+              <Route path="/newPlant" element={<NewPlant />} />
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
             <Navigation />
