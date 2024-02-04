@@ -45,6 +45,7 @@ const MyPlants = () => {
             justifyContent="center"
             justifyItems="center"
             display="flex"
+            key={plant.id}
           >
             <Card
               key={plant.id}
@@ -53,7 +54,7 @@ const MyPlants = () => {
                 navigate(`/myPlants/${plant.id}`);
               }}
             >
-              <ImageListItem sx={{ height: '100% !important' }}>
+              <ImageListItem sx={{ height: '100% !important' }} id={plant.id}>
                 <ImageListItemBar
                   style={{ width: 300 }}
                   sx={{

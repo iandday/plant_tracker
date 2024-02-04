@@ -1,142 +1,155 @@
 import { useEffect, useState } from 'react';
 
 import { useNavigate, useParams } from 'react-router-dom';
-import { Button, ButtonGroup, Grid, Stack, TextField } from '@mui/material';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { Autocomplete, Button, ButtonGroup, Grid, Stack, TextField } from '@mui/material';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { LocationApi, LocationReturn, Plant, PlantApi, PlantPatch } from '../services';
+import { BASE_PATH } from '../services/base';
+import axiosInstance from '../provider/CustomAxios';
 
 const EditPlant = () => {
-  //   const { id } = useParams();
-  //   const navigate = useNavigate();
-  //   const { response: initial_data, loading: initial_isLoading } = usePlantAPI<Plant>({
-  //     method: 'get',
-  //     url: `/plant/${id}`
-  //   });
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-  //   const {
-  //     register,
-  //     handleSubmit,
-  //     reset,
-  //     formState: { errors }
-  //   } = useForm<Plant>({
-  //     defaultValues: { ...initial_data }
-  //   });
+  const api = new PlantApi(null, BASE_PATH, axiosInstance);
+  const [loading, setLoading] = useState(true);
+  const [plantData, setPlantData] = useState<Plant>();
+  const [plantUpdate, setPlantUpdate] = useState<number>(0);
 
-  //   // repopulate fields after API call completes
-  //   useEffect(() => {
-  //     reset({ ...initial_data });
-  //   }, [initial_isLoading]);
+  const locationAPI = new LocationApi(null, BASE_PATH, axiosInstance);
+  const [locationUpdate, setlocationUpdate] = useState<number>(0);
+  const [locationData, setLocationData] = useState<LocationReturn>([]);
 
-  //   const [updateData, setUpdateData] = useState<Plant | false>(false);
-  //   const { sendData: update_sendData } = usePlantAPI({
-  //     method: 'patch',
-  //     url: '/plant',
-  //     data: updateData
-  //   });
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await api.getPlantByIdPlantPlantIdGet(id);
 
-  //   const onSubmit: SubmitHandler<Plant> = (data: Plant) => {
-  //     setUpdateData(data);
-  //     update_sendData();
-  //   };
+        if (response.status === 200) {
+          setPlantData(response.data);
+          const locResponse = await locationAPI.getLocationsLocationGet();
+          if (locResponse.status === 200) {
+            setLocationData(locResponse.data);
+            reset({ ...response.data });
+          }
+        }
+      } catch (err) {}
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
 
-  //   // update backend
-  //   useEffect(() => {
-  //     // only run when data is available
-  //     if (updateData) {
-  //       update_sendData();
-  //       navigate(`/myPlants/${id}`);
-  //     }
-  //   }, [updateData]);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    formState: { errors }
+  } = useForm<PlantPatch>({
+    defaultValues: { ...plantData }
+  });
+  const onSubmit = async (data: PlantPatch) => {
+    try {
+      const response = await api.updatePlantPlantPlantIdPatch(id, { ...data });
+      if (response.status === 200) {
+        navigate(`/myPlants/${id}`);
+      }
+    } catch (err: AxiosError) {
+      console.log(err);
+    }
+  };
 
   return (
-    <></>
-    /* { <form onSubmit={handleSubmit(onSubmit)}>
-        <Grid
-          container
-          spacing={0}
-          direction="column"
-          alignItems="center"
-          sx={{ minHeight: "100vh" }}
-        >
-          <Grid item>
-            <Stack>
-              <TextField
-                required
-                id="name"
-                label="Name"
-                type="filled"
-                {...register("name")}
-                error={errors.name ? true : false}
-                sx={{ pt: 5 }}
-              />
-              <TextField
-                fullWidth
-                required
-                id="common_name"
-                label="Common Name"
-                type="filled"
-                {...register("common_name")}
-                error={errors.name ? true : false}
-                sx={{ pt: 5 }}
-              />
-              <TextField
-                fullWidth
-                required
-                id="scientific_name"
-                label="Scientific Name"
-                type="filled"
-                {...register("scientific_name")}
-                error={errors.name ? true : false}
-                sx={{ pt: 5 }}
-              />
-              <TextField
-                fullWidth
-                required
-                id="location"
-                label="Location"
-                type="filled"
-                {...register("location")}
-                error={errors.name ? true : false}
-                sx={{ pt: 5 }}
-              />
-              <TextField
-                fullWidth
-                id="purchase_date"
-                label="Purchase Date"
-                type="date"
-                {...register("purchase_date")}
-                error={errors.name ? true : false}
-                sx={{ pt: 5 }}
-              />
+    <>
+      {plantData && !loading ? (
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Grid container spacing={0} direction="column" alignItems="center" sx={{ minHeight: '100vh' }}>
+            <Grid item>
+              <Stack>
+                <TextField
+                  required
+                  id="name"
+                  label="Name"
+                  type="filled"
+                  {...register('name')}
+                  error={errors.name ? true : false}
+                  sx={{ pt: 5 }}
+                />
+                <TextField
+                  fullWidth
+                  required
+                  id="common_name"
+                  label="Common Name"
+                  type="filled"
+                  {...register('common_name')}
+                  error={errors.name ? true : false}
+                  sx={{ pt: 5 }}
+                />
+                <TextField
+                  fullWidth
+                  required
+                  id="scientific_name"
+                  label="Scientific Name"
+                  type="filled"
+                  {...register('scientific_name')}
+                  error={errors.name ? true : false}
+                  sx={{ pt: 5 }}
+                />
+                <Controller
+                  control={control}
+                  name="location"
+                  render={({ field: { onChange, value } }) => (
+                    <Autocomplete
+                      id="location_id"
+                      isOptionEqualToValue={(option, value) => option.id === value.id}
+                      options={locationData.results}
+                      getOptionLabel={(option) => option.name}
+                      onChange={(event, data) => {
+                        onChange(data?.id);
+                      }}
+                      defaultValue={locationData.results.find((loc) => loc.id === plantData.location_id)}
+                      renderInput={(params) => <TextField {...params} variant="outlined" label="Location" />}
+                    />
+                  )}
+                />
+                <TextField
+                  fullWidth
+                  id="purchase_date"
+                  label="Purchase Date"
+                  type="date"
+                  {...register('purchase_date')}
+                  error={errors.name ? true : false}
+                  sx={{ pt: 5 }}
+                />
 
-              <ButtonGroup
-                variant="contained"
-                sx={{ pt: 4, paddingLeft: 4, paddingRight: 4 }}
-              >
-                <Button type="submit" sx={{ color: "text.primary" }}>
-                  Submit
-                </Button>
-                <Button
-                  sx={{ color: "warning.main" }}
-                  onClick={() => {
-                    reset({ ...initial_data });
-                  }}
-                >
-                  Reset
-                </Button>
-                <Button
-                  sx={{ color: "error.main" }}
-                  onClick={() => {
-                    navigate(`/myPlants/${id}`);
-                  }}
-                >
-                  Cancel
-                </Button>
-              </ButtonGroup>
-            </Stack>
+                <ButtonGroup variant="contained" sx={{ pt: 4, paddingLeft: 4, paddingRight: 4 }}>
+                  <Button type="submit" sx={{ color: 'text.primary' }}>
+                    Submit
+                  </Button>
+                  <Button
+                    sx={{ color: 'warning.main' }}
+                    onClick={() => {
+                      reset({ ...plantData });
+                    }}
+                  >
+                    Reset
+                  </Button>
+                  <Button
+                    sx={{ color: 'error.main' }}
+                    onClick={() => {
+                      navigate(`/myPlants/${id}`);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                </ButtonGroup>
+              </Stack>
+            </Grid>
           </Grid>
-        </Grid>
-      </form> }
-    </>*/
+        </form>
+      ) : null}
+    </>
   );
 };
 

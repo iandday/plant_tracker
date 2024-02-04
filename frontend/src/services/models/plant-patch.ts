@@ -67,6 +67,6 @@ export interface PlantPatch {
      * @type {string}
      * @memberof PlantPatch
      */
-    'id': string;
+    'user_id': string;
 }
 

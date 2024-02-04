@@ -67,7 +67,7 @@ class Plant(PlantBase):
 class PlantPatch(PlantBase):
     purchase_date: datetime.date = None
     trefle_id: Optional[int]
-    id: UUID4
+    user_id: UUID4
 
 
 class PlantReturn(BaseModel):

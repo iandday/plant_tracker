@@ -174,16 +174,20 @@ export const PlantApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Update Plant by ID
+         * Update Plant
          * @summary Update Plant
+         * @param {string} plantId 
          * @param {PlantPatch} plantPatch 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updatePlantPlantPatch: async (plantPatch: PlantPatch, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updatePlantPlantPlantIdPatch: async (plantId: string, plantPatch: PlantPatch, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'plantId' is not null or undefined
+            assertParamExists('updatePlantPlantPlantIdPatch', 'plantId', plantId)
             // verify required parameter 'plantPatch' is not null or undefined
-            assertParamExists('updatePlantPlantPatch', 'plantPatch', plantPatch)
-            const localVarPath = `/plant`;
+            assertParamExists('updatePlantPlantPlantIdPatch', 'plantPatch', plantPatch)
+            const localVarPath = `/plant/{plant_id}`
+                .replace(`{${"plant_id"}}`, encodeURIComponent(String(plantId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -271,16 +275,17 @@ export const PlantApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
-         * Update Plant by ID
+         * Update Plant
          * @summary Update Plant
+         * @param {string} plantId 
          * @param {PlantPatch} plantPatch 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updatePlantPlantPatch(plantPatch: PlantPatch, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Plant>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.updatePlantPlantPatch(plantPatch, options);
+        async updatePlantPlantPlantIdPatch(plantId: string, plantPatch: PlantPatch, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Plant>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updatePlantPlantPlantIdPatch(plantId, plantPatch, options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['PlantApi.updatePlantPlantPatch']?.[index]?.url;
+            const operationBasePath = operationServerMap['PlantApi.updatePlantPlantPlantIdPatch']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
@@ -333,14 +338,15 @@ export const PlantApiFactory = function (configuration?: Configuration, basePath
             return localVarFp.getPlantPlantGet(options).then((request) => request(axios, basePath));
         },
         /**
-         * Update Plant by ID
+         * Update Plant
          * @summary Update Plant
+         * @param {string} plantId 
          * @param {PlantPatch} plantPatch 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updatePlantPlantPatch(plantPatch: PlantPatch, options?: any): AxiosPromise<Plant> {
-            return localVarFp.updatePlantPlantPatch(plantPatch, options).then((request) => request(axios, basePath));
+        updatePlantPlantPlantIdPatch(plantId: string, plantPatch: PlantPatch, options?: any): AxiosPromise<Plant> {
+            return localVarFp.updatePlantPlantPlantIdPatch(plantId, plantPatch, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -400,15 +406,16 @@ export class PlantApi extends BaseAPI {
     }
 
     /**
-     * Update Plant by ID
+     * Update Plant
      * @summary Update Plant
+     * @param {string} plantId 
      * @param {PlantPatch} plantPatch 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PlantApi
      */
-    public updatePlantPlantPatch(plantPatch: PlantPatch, options?: AxiosRequestConfig) {
-        return PlantApiFp(this.configuration).updatePlantPlantPatch(plantPatch, options).then((request) => request(this.axios, this.basePath));
+    public updatePlantPlantPlantIdPatch(plantId: string, plantPatch: PlantPatch, options?: AxiosRequestConfig) {
+        return PlantApiFp(this.configuration).updatePlantPlantPlantIdPatch(plantId, plantPatch, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

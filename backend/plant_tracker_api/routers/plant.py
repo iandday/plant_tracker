@@ -44,13 +44,13 @@ def delete_plant_by_id(plant_id: UUID4):
 
 
 @router.patch(
-    "/plant",
+    "/plant/{plant_id}",
     response_model=schema.Plant,
     tags=["Plant"],
-    description="Update Plant by ID",
+    description="Update Plant",
 )
-def update_plant(data: schema.PlantPatch):
-    db_plant = db.session.get(models.Plant, data.id)
+def update_plant(plant_id: UUID4, data: schema.PlantPatch):
+    db_plant = db.session.get(models.Plant, plant_id)
     if not db_plant:
         raise HTTPException(status_code=404, detail="Plant not found")
     for k, v in data.model_dump().items():

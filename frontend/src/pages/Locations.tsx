@@ -25,8 +25,6 @@ import { BASE_PATH } from '../services/base';
 
 const Locations = () => {
   const api = new LocationApi(null, BASE_PATH, axiosInstance);
-  //THIS IS WORKING, REPLICATE ON OTHER PAGES
-
   const [locationUpdate, setlocationUpdate] = useState<number>(0);
 
   // make a hook
