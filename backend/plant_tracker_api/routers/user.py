@@ -63,9 +63,9 @@ async def update_me(data: schema.UserUpdate, user: schema.User = Depends(get_cur
 @router.post("/user", summary="Create new user", response_model=schema.User, tags=["User"])
 async def create_user(data: schema.UserCreate):
     if os.getenv("ENABLE_REGISTRATION", "False").lower() in ("true", "1", "t"):
-        db_user = db.session.query(models.Location).filter(models.User.email == data.email)
+        db_user = db.session.query(models.User).filter(models.User.email == data.email)
         if db_user.count() > 0:
-            raise HTTPException(status_code=400, detail="User with this email already exist")
+            raise HTTPException(status_code=400, detail="User with this email already exists")
         user = models.User(
             email=data.email,
             first_name=data.first_name,

@@ -26,15 +26,7 @@ class Location(Base):
     __table_args__ = (UniqueConstraint("name"),)
     id = Column(UUID(as_uuid=True), primary_key=True, index=True, default=uuid.uuid4)
     name = Column(String)
-    plants = relationship("Plant", secondary="plant_location", back_populates="location")
-
-
-plant_location = Table(
-    "plant_location",
-    Base.metadata,
-    Column("plant_id", ForeignKey("plant.id"), primary_key=True),
-    Column("location_id", ForeignKey("location.id"), primary_key=True),
-)
+    # plants = relationship("Plant", back_populates="location")
 
 
 class User(Base):
@@ -46,15 +38,7 @@ class User(Base):
     first_name = Column(String)
     last_name = Column(String)
     disabled = Column(Boolean)
-    plants = relationship("Plant", secondary="plant_user", back_populates="user")
-
-
-plant_user = Table(
-    "plant_user",
-    Base.metadata,
-    Column("plant_id", ForeignKey("plant.id"), primary_key=True),
-    Column("user_id", ForeignKey("user.id"), primary_key=True),
-)
+    # plants = relationship("Plant", back_populates="user")
 
 
 class Plant(Base):
@@ -66,18 +50,18 @@ class Plant(Base):
     photo_url = Column(String, nullable=True, unique=False)
     common_name = Column(String)
     scientific_name = Column(String)
+    # user = relationship(
+    #    "User",
+    #    back_populates="plants",
+    # )
+    user_id = Column("user_id", UUID, ForeignKey("user.id"), nullable=False)
+    # location = relationship(
+    #    "Location",
+    #    back_populates="plants",
+    # )
+    location_id = Column("location_id", UUID, ForeignKey("location.id"), nullable=False)
     sources = relationship(
         "Source",
         secondary="plant_source",
-        back_populates="plants",
-    )
-    location = relationship(
-        "Location",
-        secondary="plant_location",
-        back_populates="plants",
-    )
-    user = relationship(
-        "User",
-        secondary="plant_user",
         back_populates="plants",
     )

@@ -21,7 +21,7 @@ def get_locations(user: schema.User = Depends(get_current_user)):
 
 
 @router.post("/location", response_model=schema.Location, tags=["Location"])
-def create_location(data: schema.LocationCreate):
+def create_location(data: schema.LocationCreate, user: schema.User = Depends(get_current_user)):
     db_location = db.session.query(models.Location).filter(models.Location.name == data.name)
     if db_location.count() > 0:
         raise HTTPException(status_code=400, detail="Location already exists")
@@ -31,9 +31,9 @@ def create_location(data: schema.LocationCreate):
     return location
 
 
-@router.patch("/location", response_model=schema.Location, tags=["Location"])
-def update_location(data: schema.LocationPatch):
-    db_location = db.session.get(models.Location, data.id)
+@router.patch("/location/{location_id}", response_model=schema.Location, tags=["Location"])
+def update_location(location_id: UUID4, data: schema.LocationPatch, user: schema.User = Depends(get_current_user)):
+    db_location = db.session.get(models.Location, location_id)
     if not db_location:
         raise HTTPException(status_code=404, detail="Location not found")
     for k, v in data.model_dump().items():
@@ -45,10 +45,18 @@ def update_location(data: schema.LocationPatch):
 
 
 @router.delete("/location/{location_id}", response_model=schema.ItemDelete, tags=["Location"])
-def delete_location(location_id: UUID4):
+def delete_location(location_id: UUID4, user: schema.User = Depends(get_current_user)):
     location = db.session.get(models.Location, location_id)
     if not location:
         raise HTTPException(status_code=404, detail="Plant not found")
     db.session.delete(location)
     db.session.commit()
     return {"deleted": True, "id": location_id}
+
+
+@router.get("/location/{location_id}", response_model=schema.Location, tags=["Location"])
+def get_location(location_id: UUID4, user: schema.User = Depends(get_current_user)):
+    location = db.session.get(models.Location, location_id)
+    if not location:
+        raise HTTPException(status_code=404, detail="Plant not found")
+    return location

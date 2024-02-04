@@ -1,6 +1,7 @@
 import datetime
 from typing import List, Optional
-from pydantic import BaseModel, UUID4
+from fastapi import Query
+from pydantic import BaseModel, UUID4, constr
 from datetime import date
 from sqlalchemy import Date
 from uuid import UUID
@@ -36,14 +37,14 @@ class LocationReturn(BaseModel):
     results: List[Location]
 
 
-class LocationPatch(Location):
+class LocationPatch(LocationBase):
     pass
 
 
 class PlantBase(BaseModel):
     name: str
     photo_url: Optional[str]
-    location: Location
+    location_id: UUID4
     common_name: str
     scientific_name: str
     photo_url: str = None
@@ -51,20 +52,20 @@ class PlantBase(BaseModel):
 
 class PlantCreate(PlantBase):
     sources: List[SourceCreate] = None
-    purchase_year: int = None
-    purchase_month: int = None
-    purchase_day: int = None
+    purchase_date: datetime.date = None
+    location_id: UUID4
 
 
 class Plant(PlantBase):
-    purchase_date: Optional[datetime.date]
+    purchase_date: datetime.date = None
     sources: Optional[List[Source]]
     trefle_id: Optional[int]
     id: UUID4
+    user_id: UUID4
 
 
 class PlantPatch(PlantBase):
-    purchase_date: Optional[datetime.date]
+    purchase_date: datetime.date = None
     trefle_id: Optional[int]
     id: UUID4
 
@@ -77,10 +78,8 @@ class PlantReturn(BaseModel):
 class PlantCreateTrefle(BaseModel):
     id: int
     name: str
-    location: Location
-    purchase_year: int = None
-    purchase_month: int = None
-    purchase_day: int = None
+    location: UUID4
+    purchase_date: datetime.date = None
 
 
 class PlantSearchResultsTrefle(BaseModel):

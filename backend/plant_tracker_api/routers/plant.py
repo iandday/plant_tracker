@@ -1,13 +1,13 @@
 import datetime
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi_sqlalchemy import db
 from typing import List
 
 import requests
-from pydantic import UUID4
+from pydantic import UUID4, constr
 import models
 import schema
-from dependencies import get_or_create
+from dependencies import get_current_user, get_or_create
 import os
 import logging
 
@@ -120,23 +120,28 @@ def search_plant_trefle(data: schema.PlantSearchTrefle):
     description="Create a plant entry using data from Trefle",
     tags=["Trefle"],
 )
-def create_plant_trefle(data: schema.PlantCreateTrefle):
+def create_plant_trefle(data: schema.PlantCreateTrefle, user: schema.User = Depends(get_current_user)):
     plant_detail = requests.get(f"https://trefle.io/api/v1/plants/{data.id}?token={api_key}")
-
     detail = plant_detail.json()["data"]
+
+    db_location = db.session.get(models.Location, data.location)
+    if not db_location:
+        raise HTTPException(status_code=404, detail="Location not found")
 
     db_plant = models.Plant(
         name=data.name,
-        location=data.location,
+        location_id=db_location.id,
         photo_url=detail["image_url"],
         common_name=detail["common_name"],
         scientific_name=detail["scientific_name"],
         trefle_id=detail["main_species_id"],
+        user_id=user.id,
+        # user=user,
     )
     db.session.add(db_plant)
 
-    if data.purchase_day and data.purchase_month and data.purchase_year:
-        db_plant.purchase_date = datetime.date(data.purchase_year, data.purchase_month, data.purchase_day)
+    if data.purchase_date:
+        db_plant.purchase_date = data.purchase_date
 
     for source in detail["sources"]:
         if source["url"] is not None:
