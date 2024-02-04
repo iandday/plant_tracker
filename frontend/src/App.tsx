@@ -18,6 +18,8 @@ import Locations from './pages/Locations';
 import Login from './pages/Login';
 import MyProfile from './pages/MyProfile';
 import NewPlant from './pages/NewPlant';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -42,27 +44,29 @@ function App() {
 
   return (
     <>
-      <ColorModeContext.Provider value={colorMode}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<MyPlants />} />
-              <Route path="/myPlants" element={<MyPlants />} />
-              <Route path="/myPlants/:id" element={<PlantDetail />} />
-              <Route path="/editPlant/:id" element={<EditPlant />} />
-              <Route path="/activity" element={<MyActivity />} />
-              <Route path="/settings" element={<UserSettings />} />
-              <Route path="/locations" element={<Locations />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/myProfile" element={<MyProfile />} />
-              <Route path="/newPlant" element={<NewPlant />} />
-              <Route path="*" element={<Navigate to="/" />} />
-            </Routes>
-            <Navigation />
-          </BrowserRouter>
-        </ThemeProvider>
-      </ColorModeContext.Provider>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <ColorModeContext.Provider value={colorMode}>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<MyPlants />} />
+                <Route path="/myPlants" element={<MyPlants />} />
+                <Route path="/myPlants/:id" element={<PlantDetail />} />
+                <Route path="/editPlant/:id" element={<EditPlant />} />
+                <Route path="/activity" element={<MyActivity />} />
+                <Route path="/settings" element={<UserSettings />} />
+                <Route path="/locations" element={<Locations />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/myProfile" element={<MyProfile />} />
+                <Route path="/newPlant" element={<NewPlant />} />
+                <Route path="*" element={<Navigate to="/" />} />
+              </Routes>
+              <Navigation />
+            </BrowserRouter>
+          </ThemeProvider>
+        </ColorModeContext.Provider>
+      </LocalizationProvider>
     </>
   );
 }
