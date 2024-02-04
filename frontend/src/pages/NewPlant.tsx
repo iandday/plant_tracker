@@ -25,8 +25,19 @@ import {
 import { Controller, useForm } from 'react-hook-form';
 import { BASE_PATH } from '../services/base';
 import axiosInstance from '../provider/CustomAxios';
+import { DatePicker } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
+import { Navigate, useNavigate } from 'react-router-dom';
 
+interface int_NewPlantForm {
+  id: Number;
+  purchase_date: Date;
+  location: string;
+  name: string;
+}
 const NewPlant = () => {
+  const navigate = useNavigate();
+
   const api = new TrefleApi(null, BASE_PATH, axiosInstance);
   const [loading, setLoading] = useState(true);
   const [searchResults, setSearchResults] = useState<PlantSearchResultsTrefle[]>([]);
@@ -34,7 +45,7 @@ const NewPlant = () => {
 
   const locationAPI = new LocationApi(null, BASE_PATH, axiosInstance);
   const [locationUpdate, setlocationUpdate] = useState<number>(0);
-  const [locationData, setLocationData] = useState<LocationReturn>();
+  const [locationData, setLocationData] = useState<LocationReturn>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,6 +64,25 @@ const NewPlant = () => {
     fetchData();
   }, [locationUpdate]);
 
+  const { register, handleSubmit, reset, control, setValue } = useForm<PlantSearchTrefle>({
+    defaultValues: { query: '' }
+  });
+
+  const {
+    register: newRegister,
+    handleSubmit: newHandleSubmit,
+    reset: newReset,
+    control: newControl,
+    setValue: newSetValue
+  } = useForm<int_NewPlantForm>({
+    defaultValues: {
+      id: Number(selectedPlant),
+      purchase_date: dayjs(Date.now()),
+      location: undefined,
+      name: undefined
+    }
+  });
+
   const onSubmit = async (data: PlantSearchTrefle) => {
     try {
       const response = await api.searchPlantTreflePlantTrefleSearchPost({ ...data });
@@ -64,32 +94,24 @@ const NewPlant = () => {
     }
   };
 
-  const newOnSubmit = async (data: PlantCreateTrefle) => {
+  const newOnSubmit = async (data: int_NewPlantForm) => {
     try {
+      const createData: PlantCreateTrefle = {
+        id: Number(selectedPlant),
+        name: data.name,
+        location: data.location,
+        purchase_date: data.purchase_date.toISOString().split('T')[0]
+      };
       const response = await api.createPlantTreflePlantTrefleCreatePost({
-        ...data
+        ...createData
       });
       if (response.status === 200) {
-        console.log(response.data.id);
+        navigate(`/myPlants/${response.data.id}`);
       }
     } catch (err) {
       console.error(err);
     }
   };
-
-  const { register, handleSubmit, reset, control, setValue } = useForm<PlantSearchTrefle>({
-    defaultValues: {}
-  });
-
-  const {
-    register: newRegister,
-    handleSubmit: newHandleSubmit,
-    reset: newReset,
-    control: newControl,
-    setValue: newSetValue
-  } = useForm<PlantCreateTrefle>({
-    defaultValues: {}
-  });
 
   return (
     <>
@@ -141,7 +163,7 @@ const NewPlant = () => {
           <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
             {searchResults?.map((value) => {
               return (
-                <Grid item xs display="flex" justifyContent="center" alignItems="center">
+                <Grid item xs display="flex" justifyContent="center" alignItems="center" key={value.id}>
                   <Card>
                     <CardActionArea
                       onClick={() => {
@@ -194,12 +216,44 @@ const NewPlant = () => {
                       onBlur={onBlur}
                       variant="filled"
                       label="Name"
-                      value={value}
+                      value={value || ''}
                       fullWidth
                     />
                   )}
                 />
-
+                <Controller
+                  control={newControl}
+                  name="location"
+                  render={({ field: { onChange, value } }) => (
+                    <Autocomplete
+                      id="location"
+                      isOptionEqualToValue={(option, value) => option.id === value.id}
+                      options={locationData.results}
+                      getOptionLabel={(option) => option.name}
+                      onChange={(event, data) => {
+                        onChange(data?.id);
+                      }}
+                      renderInput={(params) => <TextField {...params} variant="outlined" label="Location" />}
+                    />
+                  )}
+                />
+                <Controller
+                  control={newControl}
+                  name="purchase_date"
+                  rules={{ required: true }}
+                  render={({ field }) => {
+                    return (
+                      <DatePicker
+                        label="purchase_date"
+                        value={field.value}
+                        inputRef={field.ref}
+                        onChange={(date) => {
+                          field.onChange(dayjs(date));
+                        }}
+                      />
+                    );
+                  }}
+                />
                 <Button type="submit" variant="contained">
                   Submit
                 </Button>
@@ -208,7 +262,6 @@ const NewPlant = () => {
           </form>
         </Grid>
       ) : null}
-      {/* try automcomplete here */}
     </>
   );
 };
