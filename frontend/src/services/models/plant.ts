@@ -13,9 +13,6 @@
  */
 
 
-// May contain unused imports in some cases
-// @ts-ignore
-import { Location } from './location';
 
 /**
  * 
@@ -37,10 +34,10 @@ export interface Plant {
     'photo_url'?: string;
     /**
      * 
-     * @type {Location}
+     * @type {string}
      * @memberof Plant
      */
-    'location': Location;
+    'location_id': string;
     /**
      * 
      * @type {string}
@@ -58,7 +55,7 @@ export interface Plant {
      * @type {string}
      * @memberof Plant
      */
-    'purchase_date': string | null;
+    'purchase_date'?: string;
     /**
      * 
      * @type {}
@@ -77,5 +74,11 @@ export interface Plant {
      * @memberof Plant
      */
     'id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Plant
+     */
+    'user_id': string;
 }
 

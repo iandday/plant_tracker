@@ -15,9 +15,6 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
-import { Location } from './location';
-// May contain unused imports in some cases
-// @ts-ignore
 import { SourceCreate } from './source-create';
 
 /**
@@ -40,10 +37,10 @@ export interface PlantCreate {
     'photo_url'?: string;
     /**
      * 
-     * @type {Location}
+     * @type {string}
      * @memberof PlantCreate
      */
-    'location': Location;
+    'location_id': string;
     /**
      * 
      * @type {string}
@@ -64,21 +61,9 @@ export interface PlantCreate {
     'sources'?: Array<SourceCreate>;
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof PlantCreate
      */
-    'purchase_year'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof PlantCreate
-     */
-    'purchase_month'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof PlantCreate
-     */
-    'purchase_day'?: number;
+    'purchase_date'?: string;
 }
 

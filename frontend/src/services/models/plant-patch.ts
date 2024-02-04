@@ -13,9 +13,6 @@
  */
 
 
-// May contain unused imports in some cases
-// @ts-ignore
-import { Location } from './location';
 
 /**
  * 
@@ -37,10 +34,10 @@ export interface PlantPatch {
     'photo_url'?: string;
     /**
      * 
-     * @type {Location}
+     * @type {string}
      * @memberof PlantPatch
      */
-    'location': Location;
+    'location_id': string;
     /**
      * 
      * @type {string}
@@ -58,7 +55,7 @@ export interface PlantPatch {
      * @type {string}
      * @memberof PlantPatch
      */
-    'purchase_date': string | null;
+    'purchase_date'?: string;
     /**
      * 
      * @type {number}

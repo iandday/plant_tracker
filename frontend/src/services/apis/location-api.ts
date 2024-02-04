@@ -61,6 +61,10 @@ export const LocationApiAxiosParamCreator = function (configuration?: Configurat
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication JWT required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "JWT", [], configuration)
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -97,6 +101,48 @@ export const LocationApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication JWT required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "JWT", [], configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get Location
+         * @param {string} locationId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getLocationLocationLocationIdGet: async (locationId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'locationId' is not null or undefined
+            assertParamExists('getLocationLocationLocationIdGet', 'locationId', locationId)
+            const localVarPath = `/location/{location_id}`
+                .replace(`{${"location_id"}}`, encodeURIComponent(String(locationId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication JWT required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "JWT", [], configuration)
 
 
     
@@ -146,14 +192,18 @@ export const LocationApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * 
          * @summary Update Location
+         * @param {string} locationId 
          * @param {LocationPatch} locationPatch 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateLocationLocationPatch: async (locationPatch: LocationPatch, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateLocationLocationLocationIdPatch: async (locationId: string, locationPatch: LocationPatch, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'locationId' is not null or undefined
+            assertParamExists('updateLocationLocationLocationIdPatch', 'locationId', locationId)
             // verify required parameter 'locationPatch' is not null or undefined
-            assertParamExists('updateLocationLocationPatch', 'locationPatch', locationPatch)
-            const localVarPath = `/location`;
+            assertParamExists('updateLocationLocationLocationIdPatch', 'locationPatch', locationPatch)
+            const localVarPath = `/location/{location_id}`
+                .replace(`{${"location_id"}}`, encodeURIComponent(String(locationId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -164,6 +214,10 @@ export const LocationApiAxiosParamCreator = function (configuration?: Configurat
             const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication JWT required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "JWT", [], configuration)
 
 
     
@@ -217,6 +271,19 @@ export const LocationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Get Location
+         * @param {string} locationId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getLocationLocationLocationIdGet(locationId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Location>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getLocationLocationLocationIdGet(locationId, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['LocationApi.getLocationLocationLocationIdGet']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * 
          * @summary Get Locations
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -230,14 +297,15 @@ export const LocationApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Update Location
+         * @param {string} locationId 
          * @param {LocationPatch} locationPatch 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateLocationLocationPatch(locationPatch: LocationPatch, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Location>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.updateLocationLocationPatch(locationPatch, options);
+        async updateLocationLocationLocationIdPatch(locationId: string, locationPatch: LocationPatch, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Location>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateLocationLocationLocationIdPatch(locationId, locationPatch, options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['LocationApi.updateLocationLocationPatch']?.[index]?.url;
+            const operationBasePath = operationServerMap['LocationApi.updateLocationLocationLocationIdPatch']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
@@ -272,6 +340,16 @@ export const LocationApiFactory = function (configuration?: Configuration, baseP
         },
         /**
          * 
+         * @summary Get Location
+         * @param {string} locationId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getLocationLocationLocationIdGet(locationId: string, options?: any): AxiosPromise<Location> {
+            return localVarFp.getLocationLocationLocationIdGet(locationId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Get Locations
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -282,12 +360,13 @@ export const LocationApiFactory = function (configuration?: Configuration, baseP
         /**
          * 
          * @summary Update Location
+         * @param {string} locationId 
          * @param {LocationPatch} locationPatch 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateLocationLocationPatch(locationPatch: LocationPatch, options?: any): AxiosPromise<Location> {
-            return localVarFp.updateLocationLocationPatch(locationPatch, options).then((request) => request(axios, basePath));
+        updateLocationLocationLocationIdPatch(locationId: string, locationPatch: LocationPatch, options?: any): AxiosPromise<Location> {
+            return localVarFp.updateLocationLocationLocationIdPatch(locationId, locationPatch, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -325,6 +404,18 @@ export class LocationApi extends BaseAPI {
 
     /**
      * 
+     * @summary Get Location
+     * @param {string} locationId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof LocationApi
+     */
+    public getLocationLocationLocationIdGet(locationId: string, options?: AxiosRequestConfig) {
+        return LocationApiFp(this.configuration).getLocationLocationLocationIdGet(locationId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @summary Get Locations
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -337,13 +428,14 @@ export class LocationApi extends BaseAPI {
     /**
      * 
      * @summary Update Location
+     * @param {string} locationId 
      * @param {LocationPatch} locationPatch 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof LocationApi
      */
-    public updateLocationLocationPatch(locationPatch: LocationPatch, options?: AxiosRequestConfig) {
-        return LocationApiFp(this.configuration).updateLocationLocationPatch(locationPatch, options).then((request) => request(this.axios, this.basePath));
+    public updateLocationLocationLocationIdPatch(locationId: string, locationPatch: LocationPatch, options?: AxiosRequestConfig) {
+        return LocationApiFp(this.configuration).updateLocationLocationLocationIdPatch(locationId, locationPatch, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

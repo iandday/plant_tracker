@@ -26,11 +26,5 @@ export interface LocationPatch {
      * @memberof LocationPatch
      */
     'name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof LocationPatch
-     */
-    'id': string;
 }
 

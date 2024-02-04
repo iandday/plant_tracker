@@ -13,9 +13,6 @@
  */
 
 
-// May contain unused imports in some cases
-// @ts-ignore
-import { Location } from './location';
 
 /**
  * 
@@ -37,27 +34,15 @@ export interface PlantCreateTrefle {
     'name': string;
     /**
      * 
-     * @type {Location}
+     * @type {string}
      * @memberof PlantCreateTrefle
      */
-    'location': Location;
+    'location': string;
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof PlantCreateTrefle
      */
-    'purchase_year'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof PlantCreateTrefle
-     */
-    'purchase_month'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof PlantCreateTrefle
-     */
-    'purchase_day'?: number;
+    'purchase_date'?: string;
 }
 
