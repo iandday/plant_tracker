@@ -13,7 +13,7 @@ import PrintIcon from '@mui/icons-material/Print';
 
 const actions = [
   { icon: <PlantIcon />, name: 'Plant', path: '/newPlant' },
-  { icon: <ReceiptIcon />, name: 'Activity', path: '/activity' },
+  { icon: <ReceiptIcon />, name: 'Entry', path: '/newEntry' },
   { icon: <HomeIcon />, name: 'Location', path: '/locations' }
 ];
 

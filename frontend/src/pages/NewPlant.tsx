@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import {
+  ActivityCreate,
   LocationApi,
   LocationReturn,
   PlantApi,
@@ -96,8 +97,8 @@ const NewPlant = () => {
 
   const newOnSubmit = async (data: int_NewPlantForm) => {
     try {
-      const createData: PlantCreateTrefle = {
-        id: Number(selectedPlant),
+      const createData: ActivityCreate = {
+        plant_id: id,
         name: data.name,
         location: data.location,
         purchase_date: data.purchase_date.toISOString().split('T')[0]

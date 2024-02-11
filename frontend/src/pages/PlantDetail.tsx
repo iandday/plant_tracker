@@ -16,7 +16,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Popper from '@mui/material/Popper';
 import React, { useEffect, useState } from 'react';
-import { Location, LocationApi, Plant, PlantApi, PlantReturn } from '../services';
+import { EntryApi, EntryReturn, Location, LocationApi, Plant, PlantApi, PlantReturn } from '../services';
 import { BASE_PATH } from '../services/base';
 import axiosInstance from '../provider/CustomAxios';
 
@@ -24,10 +24,12 @@ const PlantDetail = () => {
   const { id } = useParams();
   const api = new PlantApi(null, BASE_PATH, axiosInstance);
   const locationApi = new LocationApi(null, BASE_PATH, axiosInstance);
+  const entryApi = new EntryApi(null, BASE_PATH, axiosInstance);
   const [loading, setLoading] = useState(true);
   const [plantUpdate, setPlantUpdate] = useState<number>(0);
   const [locationData, setLocationData] = useState<Location>();
   const [plantData, setPlantData] = useState<Plant>();
+  const [entryData, setEntryData] = useState<EntryReturn>();
 
   // get plant details and then location details
   useEffect(() => {
@@ -42,6 +44,7 @@ const PlantDetail = () => {
         if (locResponse.status === 200) {
           setLocationData(locResponse.data);
         }
+        const entryResponse = await entryApi.# ADD entries by plantID
       } catch (err) {
         console.error(err);
       }
@@ -117,6 +120,13 @@ const PlantDetail = () => {
             >
               Edit
             </Button>
+            <Button
+              onClick={() => {
+                navigate(`/newEntry/${plantData?.id}`);
+              }}
+            >
+              Add Entry
+            </Button>
           </ButtonGroup>
           <Popper
             sx={{
@@ -167,8 +177,9 @@ const PlantDetail = () => {
       </Grid>
 
       <Typography variant="h6" marginLeft={2}>
-        Activity
+        Activity Entries
       </Typography>
+      {entryData?.results.map((entry) => entry.id)}
     </>
   );
 };

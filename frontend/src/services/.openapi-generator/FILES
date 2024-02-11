@@ -1,6 +1,8 @@
 .gitignore
 .npmignore
 api.ts
+apis/activity-api.ts
+apis/entry-api.ts
 apis/location-api.ts
 apis/plant-api.ts
 apis/source-api.ts
@@ -11,6 +13,14 @@ common.ts
 configuration.ts
 git_push.sh
 index.ts
+models/activity-create.ts
+models/activity-patch.ts
+models/activity-return.ts
+models/activity.ts
+models/entry-create.ts
+models/entry-patch.ts
+models/entry-return.ts
+models/entry.ts
 models/httpvalidation-error.ts
 models/index.ts
 models/item-delete.ts

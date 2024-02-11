@@ -1,6 +1,7 @@
 import uuid
+from pydantic import validator
 from sqlalchemy.orm import declarative_base, relationship
-from sqlalchemy import UUID, Boolean, Column, ForeignKey, Integer, String, Date, Table, UniqueConstraint
+from sqlalchemy import UUID, Boolean, Column, DateTime, ForeignKey, Integer, String, Date, Table, UniqueConstraint
 
 Base = declarative_base()
 
@@ -26,7 +27,45 @@ class Location(Base):
     __table_args__ = (UniqueConstraint("name"),)
     id = Column(UUID(as_uuid=True), primary_key=True, index=True, default=uuid.uuid4)
     name = Column(String)
-    # plants = relationship("Plant", back_populates="location")
+
+
+class Activity(Base):
+    __tablename__ = "activity"
+    __table_args__ = (UniqueConstraint("name"),)
+    id = Column(UUID(as_uuid=True), primary_key=True, index=True, default=uuid.uuid4)
+    name = Column(String)
+    entries = relationship("Entry", secondary="entry_activity", back_populates="activities")
+
+
+entry_activity = Table(
+    "entry_activity",
+    Base.metadata,
+    Column("activity_id", ForeignKey("activity.id"), primary_key=True),
+    Column("entry_id", ForeignKey("entry.id"), primary_key=True),
+)
+
+
+class Entry(Base):
+    __tablename__ = "entry"
+    id = Column(UUID(as_uuid=True), primary_key=True, index=True, default=uuid.uuid4)
+    timestamp = Column(DateTime, nullable=False)
+    activities = relationship("Activity", secondary="entry_activity", back_populates="entries")
+    plant_id = Column("plant_id", UUID, ForeignKey("plant.id"), nullable=False)
+    notes = Column(String, nullable=True)
+    plant_health = Column(Integer)
+
+    @validator("plant_health")
+    def clean_space(cls, value, values):
+        if values.get("plant_health") < 0 or values.get("plant_health") > 5:
+            raise ValueError("plant_health must be from 1-5")
+
+
+# entry_plant = Table(
+#     "entry_plant",
+#     Base.metadata,
+#     Column("plant_id", ForeignKey("plant.id"), primary_key=True),
+#     Column("entry_id", ForeignKey("entry.id"), primary_key=True),
+# )
 
 
 class User(Base):
@@ -38,7 +77,6 @@ class User(Base):
     first_name = Column(String)
     last_name = Column(String)
     disabled = Column(Boolean)
-    # plants = relationship("Plant", back_populates="user")
 
 
 class Plant(Base):
@@ -50,18 +88,15 @@ class Plant(Base):
     photo_url = Column(String, nullable=True, unique=False)
     common_name = Column(String)
     scientific_name = Column(String)
-    # user = relationship(
-    #    "User",
-    #    back_populates="plants",
-    # )
     user_id = Column("user_id", UUID, ForeignKey("user.id"), nullable=False)
-    # location = relationship(
-    #    "Location",
-    #    back_populates="plants",
-    # )
     location_id = Column("location_id", UUID, ForeignKey("location.id"), nullable=False)
     sources = relationship(
         "Source",
         secondary="plant_source",
         back_populates="plants",
     )
+    # entries = relationship(
+    #     "Entry",
+    #     secondary="entry_plant",
+    #     back_populates="plants",
+    # )

@@ -20,6 +20,7 @@ import MyProfile from './pages/MyProfile';
 import NewPlant from './pages/NewPlant';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import NewEntry from './pages/NewEntry';
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -60,6 +61,7 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/myProfile" element={<MyProfile />} />
                 <Route path="/newPlant" element={<NewPlant />} />
+                <Route path="/newEntry/:id?" element={<NewEntry />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
               <Navigation />

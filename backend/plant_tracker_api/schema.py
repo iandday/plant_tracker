@@ -41,6 +41,56 @@ class LocationPatch(LocationBase):
     pass
 
 
+class ActivityBase(BaseModel):
+    name: str
+
+
+class ActivityCreate(ActivityBase):
+    pass
+
+
+class Activity(ActivityBase):
+    id: UUID4
+
+
+class ActivityReturn(BaseModel):
+    count: int
+    results: List[Activity]
+
+
+class ActivityPatch(ActivityBase):
+    pass
+
+
+class EntryBase(BaseModel):
+    timestamp: datetime.datetime
+    activities: List[UUID4]
+    plant_id: UUID4
+    notes: Optional[str]
+    plant_health: int
+
+
+class EntryCreate(EntryBase):
+    pass
+
+
+class Entry(BaseModel):
+    id: UUID4
+    activities: List[Activity]
+    plant_id: UUID4
+    notes: Optional[str]
+    plant_health: int
+
+
+class EntryPatch(EntryBase):
+    pass
+
+
+class EntryReturn(BaseModel):
+    count: int
+    results: List[Entry]
+
+
 class PlantBase(BaseModel):
     name: str
     photo_url: Optional[str]

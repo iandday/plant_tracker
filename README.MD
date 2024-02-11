@@ -1,25 +1,14 @@
-
-
-
-
-
 https://docs.trefle.io/docs/guides/getting-started/
 
-
-
-
 Activity
-	Date
-	Notes
-	Associated Item
-	Type
-		Seeding
-		watering
-		fertilizing
-		biostimulating
-		misting
-		transplanting
-		water changing
-		observation
-		treatment
-	photo
+Date
+Notes
+Associated Item
+Type
+
+photo
+
+todo:
+
+- Add activity edit page similiar to location edit page
+- Add description field to activity

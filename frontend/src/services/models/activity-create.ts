@@ -14,11 +14,17 @@
 
 
 
-export * from './apis/activity-api';
-export * from './apis/entry-api';
-export * from './apis/location-api';
-export * from './apis/plant-api';
-export * from './apis/source-api';
-export * from './apis/trefle-api';
-export * from './apis/user-api';
+/**
+ * 
+ * @export
+ * @interface ActivityCreate
+ */
+export interface ActivityCreate {
+    /**
+     * 
+     * @type {string}
+     * @memberof ActivityCreate
+     */
+    'name': string;
+}
 

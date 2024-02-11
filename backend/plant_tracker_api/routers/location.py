@@ -48,7 +48,7 @@ def update_location(location_id: UUID4, data: schema.LocationPatch, user: schema
 def delete_location(location_id: UUID4, user: schema.User = Depends(get_current_user)):
     location = db.session.get(models.Location, location_id)
     if not location:
-        raise HTTPException(status_code=404, detail="Plant not found")
+        raise HTTPException(status_code=404, detail="Location not found")
     db.session.delete(location)
     db.session.commit()
     return {"deleted": True, "id": location_id}
@@ -58,5 +58,5 @@ def delete_location(location_id: UUID4, user: schema.User = Depends(get_current_
 def get_location(location_id: UUID4, user: schema.User = Depends(get_current_user)):
     location = db.session.get(models.Location, location_id)
     if not location:
-        raise HTTPException(status_code=404, detail="Plant not found")
+        raise HTTPException(status_code=404, detail="Location not found")
     return location
