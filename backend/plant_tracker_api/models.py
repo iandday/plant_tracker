@@ -88,6 +88,8 @@ class Plant(Base):
     photo_url = Column(String, nullable=True, unique=False)
     common_name = Column(String)
     scientific_name = Column(String)
+    graveyard = Column(Boolean, default=False)
+    death_date = Column(Date, nullable=True)
     user_id = Column("user_id", UUID, ForeignKey("user.id"), nullable=False)
     location_id = Column("location_id", UUID, ForeignKey("location.id"), nullable=False)
     sources = relationship(

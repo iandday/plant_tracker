@@ -19,9 +19,21 @@ router = APIRouter()
 
 
 @router.get("/plant", response_model=schema.PlantReturn, tags=["Plant"])
-def get_plant():
-    plants = db.session.query(models.Plant).all()
-    results = {"count": len(plants), "results": plants}
+def get_plant(include_graveyard: bool = False, graveyard_only: bool = False):
+    if include_graveyard:
+        plants = db.session.query(models.Plant).all()
+    elif graveyard_only:
+        plants = db.session.query(models.Plant).filter(models.Plant.graveyard == True)
+    else:
+        plants = db.session.query(models.Plant).filter(models.Plant.graveyard == False)
+    output = []
+    for plant in plants:
+        p_output = plant.__dict__
+        p_output["sources"] = db.session.query(models.Source).filter(models.Source.plants.any(plant.id == plant.id))
+        p_output["entries"] = db.session.query(models.Entry).filter(models.Entry.plant_id == plant.id)
+        output.append(p_output)
+
+    results = {"count": len(output), "results": output}
     return results
 
 
@@ -30,7 +42,15 @@ def get_plant_by_id(plant_id: UUID4):
     plant = db.session.get(models.Plant, plant_id)
     if not plant:
         raise HTTPException(status_code=404, detail="Plant not found")
-    return plant
+
+    output = plant.__dict__
+
+    entries = db.session.query(models.Entry).filter(models.Entry.plant_id == plant_id)
+    sources = db.session.query(models.Source).filter(models.Source.plants.any(plant.id == plant_id))
+    output["sources"] = sources
+    output["entries"] = entries
+
+    return output
 
 
 @router.delete("/plant/{plant_id}", response_model=schema.ItemDelete, tags=["Plant"])
@@ -53,12 +73,35 @@ def update_plant(plant_id: UUID4, data: schema.PlantPatch):
     db_plant = db.session.get(models.Plant, plant_id)
     if not db_plant:
         raise HTTPException(status_code=404, detail="Plant not found")
-    for k, v in data.model_dump().items():
+
+    # stored_data = data.model_dump()
+    # stored_model = models.Plant(**stored_data)
+    # update_data = data.model_dump(exclude_unset=True)
+
+    for k, v in data.model_dump(exclude_unset=True).items():
+        print(k)
+
         setattr(db_plant, k, v)
+        if k == "graveyard" and v == True:
+            setattr(db_plant, "death_date", datetime.datetime.now())
+        if k == "sources":
+            for source in v:
+                db_source = db.session.get(models.Source, v)
+                if not db_source:
+                    raise HTTPException(status_code=404, detail=f"Source {source} not found")
+                if db_source not in db_plant.sources:
+                    db_plant.sources.append(db_source)
+
     db.session.add(db_plant)
     db.session.commit()
     db.session.refresh(db_plant)
-    return db_plant
+
+    output = db_plant.__dict__
+    entries = db.session.query(models.Entry).filter(models.Entry.plant_id == plant_id)
+    sources = db.session.query(models.Source).filter(models.Source.plants.any(db_plant.id == plant_id))
+    output["sources"] = sources
+    output["entries"] = entries
+    return output
 
 
 @router.post("/plant", response_model=schema.Plant, tags=["Plant"])

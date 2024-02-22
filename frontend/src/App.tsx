@@ -2,7 +2,7 @@ import { Routes } from 'react-router';
 import Navigation from './components/Navigation';
 import MyPlants from './pages/MyPlants';
 import { BrowserRouter, Navigate, Route } from 'react-router-dom';
-import MyActivity from './pages/MyActivity';
+import MyEntries from './pages/MyEntries';
 import UserSettings from './pages/UserSettings';
 import PlantDetail from './pages/PlantDetail';
 
@@ -21,6 +21,8 @@ import NewPlant from './pages/NewPlant';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import NewEntry from './pages/NewEntry';
+import EntryDetail from './pages/EntryDetail';
+import MyGraveyard from './pages/MyGraveyard';
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -52,10 +54,12 @@ function App() {
             <BrowserRouter>
               <Routes>
                 <Route path="/" element={<MyPlants />} />
+                <Route path="/myGraveyard" element={<MyGraveyard />} />
                 <Route path="/myPlants" element={<MyPlants />} />
                 <Route path="/myPlants/:id" element={<PlantDetail />} />
                 <Route path="/editPlant/:id" element={<EditPlant />} />
-                <Route path="/activity" element={<MyActivity />} />
+                <Route path="/entry" element={<MyEntries />} />
+                <Route path="/entry/:id" element={<EntryDetail />} />
                 <Route path="/settings" element={<UserSettings />} />
                 <Route path="/locations" element={<Locations />} />
                 <Route path="/login" element={<Login />} />

@@ -13,6 +13,9 @@
  */
 
 
+// May contain unused imports in some cases
+// @ts-ignore
+import { Entry } from './entry';
 
 /**
  * 
@@ -55,7 +58,7 @@ export interface Plant {
      * @type {string}
      * @memberof Plant
      */
-    'purchase_date'?: string;
+    'purchase_date': string | null;
     /**
      * 
      * @type {}
@@ -80,5 +83,23 @@ export interface Plant {
      * @memberof Plant
      */
     'user_id': string;
+    /**
+     * 
+     * @type {Array<Entry>}
+     * @memberof Plant
+     */
+    'entries': Array<Entry>;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof Plant
+     */
+    'graveyard': boolean | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof Plant
+     */
+    'death_date': string | null;
 }
 

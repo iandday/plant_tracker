@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Button,
   ButtonGroup,
   Card,
@@ -6,17 +7,23 @@ import {
   ClickAwayListener,
   Grid,
   Grow,
+  ListItemButton,
   MenuItem,
   MenuList,
   Paper,
   Typography
 } from '@mui/material';
-import { useNavigate, useParams } from 'react-router-dom';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import ImageIcon from '@mui/icons-material/Image';
 
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Popper from '@mui/material/Popper';
 import React, { useEffect, useState } from 'react';
-import { EntryApi, EntryReturn, Location, LocationApi, Plant, PlantApi, PlantReturn } from '../services';
+import { Entry, EntryApi, EntryReturn, Location, LocationApi, Plant, PlantApi, PlantReturn } from '../services';
 import { BASE_PATH } from '../services/base';
 import axiosInstance from '../provider/CustomAxios';
 
@@ -24,12 +31,10 @@ const PlantDetail = () => {
   const { id } = useParams();
   const api = new PlantApi(null, BASE_PATH, axiosInstance);
   const locationApi = new LocationApi(null, BASE_PATH, axiosInstance);
-  const entryApi = new EntryApi(null, BASE_PATH, axiosInstance);
   const [loading, setLoading] = useState(true);
   const [plantUpdate, setPlantUpdate] = useState<number>(0);
   const [locationData, setLocationData] = useState<Location>();
   const [plantData, setPlantData] = useState<Plant>();
-  const [entryData, setEntryData] = useState<EntryReturn>();
 
   // get plant details and then location details
   useEffect(() => {
@@ -44,7 +49,6 @@ const PlantDetail = () => {
         if (locResponse.status === 200) {
           setLocationData(locResponse.data);
         }
-        const entryResponse = await entryApi.# ADD entries by plantID
       } catch (err) {
         console.error(err);
       }
@@ -125,7 +129,15 @@ const PlantDetail = () => {
                 navigate(`/newEntry/${plantData?.id}`);
               }}
             >
-              Add Entry
+              Add Activity Entry
+            </Button>
+            <Button
+              onClick={() => {
+                api.updatePlantPlantPlantIdPatch(plantData?.id, { ...plantData, graveyard: true });
+                navigate(`/myPlants}`);
+              }}
+            >
+              Send to Graveyard
             </Button>
           </ButtonGroup>
           <Popper
@@ -176,10 +188,22 @@ const PlantDetail = () => {
         </Grid>
       </Grid>
 
-      <Typography variant="h6" marginLeft={2}>
-        Activity Entries
-      </Typography>
-      {entryData?.results.map((entry) => entry.id)}
+      {plantData?.entries.length > 0 ? (
+        <>
+          <Typography variant="h6" marginLeft={2}>
+            Activity Entries
+          </Typography>
+          <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+            {plantData?.entries.map((e) => (
+              <ListItem key={e.id}>
+                <ListItemButton component="a" href={'/entry/' + e.id}>
+                  <ListItemText primary={e.activities.map((a) => a.name).join(', ')} secondary={e.timestamp} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </>
+      ) : null}
     </>
   );
 };

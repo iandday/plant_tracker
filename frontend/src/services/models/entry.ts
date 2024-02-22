@@ -53,5 +53,11 @@ export interface Entry {
      * @memberof Entry
      */
     'plant_health': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof Entry
+     */
+    'timestamp': string;
 }
 

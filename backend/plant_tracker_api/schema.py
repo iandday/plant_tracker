@@ -80,6 +80,7 @@ class Entry(BaseModel):
     plant_id: UUID4
     notes: Optional[str]
     plant_health: int
+    timestamp: datetime.datetime
 
 
 class EntryPatch(EntryBase):
@@ -107,17 +108,30 @@ class PlantCreate(PlantBase):
 
 
 class Plant(PlantBase):
-    purchase_date: datetime.date = None
+    purchase_date: Optional[datetime.date]
     sources: Optional[List[Source]]
     trefle_id: Optional[int]
     id: UUID4
     user_id: UUID4
+    entries: List[Entry]
+    graveyard: Optional[bool]
+    death_date: Optional[datetime.date]
 
 
-class PlantPatch(PlantBase):
-    purchase_date: datetime.date = None
+class PlantPatch(BaseModel):
+    # __annotations__ = {k: Optional[v] for k, v in Plant.__annotations__.items()}
+    purchase_date: Optional[datetime.date]
+    # sources: Optional[List[Source]]
     trefle_id: Optional[int]
-    user_id: UUID4
+    user_id: Optional[UUID4]
+    graveyard: Optional[bool]
+    death_date: Optional[datetime.date]
+    name: Optional[str]
+    photo_url: Optional[str]
+    location_id: Optional[UUID4]
+    common_name: Optional[str]
+    scientific_name: Optional[str]
+    photo_url: str = Optional[None]
 
 
 class PlantReturn(BaseModel):

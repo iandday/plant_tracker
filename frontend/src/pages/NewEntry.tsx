@@ -8,7 +8,8 @@ import {
   LocationReturn,
   Plant,
   PlantApi,
-  PlantPatch
+  PlantPatch,
+  PlantReturn
 } from '../services';
 import { BASE_PATH } from '../services/base';
 import axiosInstance from '../provider/CustomAxios';
@@ -19,9 +20,14 @@ import {
   Button,
   ButtonGroup,
   Chip,
+  FormControlLabel,
+  FormLabel,
   Grid,
   MenuItem,
+  NativeSelect,
   OutlinedInput,
+  Radio,
+  RadioGroup,
   Select,
   Stack,
   TextField,
@@ -29,6 +35,58 @@ import {
 } from '@mui/material';
 import { DateTimePicker } from '@mui/x-date-pickers';
 import dayjs, { Dayjs } from 'dayjs';
+import MoodBadIcon from '@mui/icons-material/MoodBad';
+import SentimentNeutralIcon from '@mui/icons-material/SentimentNeutral';
+import SickIcon from '@mui/icons-material/Sick';
+import MoodIcon from '@mui/icons-material/Mood';
+import AddReactionIcon from '@mui/icons-material/AddReaction';
+
+import { styled } from '@mui/material/styles';
+import Rating, { IconContainerProps } from '@mui/material/Rating';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
+import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
+import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
+import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAltOutlined';
+import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
+
+const StyledRating = styled(Rating)(({ theme }) => ({
+  '& .MuiRating-iconEmpty .MuiSvgIcon-root': {
+    color: theme.palette.action.disabled
+  }
+}));
+
+const customIcons: {
+  [index: string]: {
+    icon: React.ReactElement;
+    label: string;
+  };
+} = {
+  1: {
+    icon: <SentimentVeryDissatisfiedIcon color="error" />,
+    label: 'Very Dissatisfied'
+  },
+  2: {
+    icon: <SentimentDissatisfiedIcon color="error" />,
+    label: 'Dissatisfied'
+  },
+  3: {
+    icon: <SentimentSatisfiedIcon color="warning" />,
+    label: 'Neutral'
+  },
+  4: {
+    icon: <SentimentSatisfiedAltIcon color="success" />,
+    label: 'Satisfied'
+  },
+  5: {
+    icon: <SentimentVerySatisfiedIcon color="success" />,
+    label: 'Very Satisfied'
+  }
+};
+
+function IconContainer(props: IconContainerProps) {
+  const { value, ...other } = props;
+  return <span {...other}>{customIcons[value].icon}</span>;
+}
 
 const NewEntry = () => {
   const { id } = useParams();
@@ -38,8 +96,10 @@ const NewEntry = () => {
   const [loading, setLoading] = useState(true);
   const [activityUpdate, setActivityUpdate] = useState<number>(0);
   const [activityData, setActivityData] = useState<ActivityReturn>([]);
-
+  const [plantData, setPlantData] = useState<Plant>();
+  const [allPlantData, setAllPlantData] = useState<PlantReturn>();
   const entryAPI = new EntryApi(null, BASE_PATH, axiosInstance);
+  const plantAPI = new PlantApi(null, BASE_PATH, axiosInstance);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,11 +109,30 @@ const NewEntry = () => {
 
         if (response.status === 200) {
           setActivityData(response.data);
+          const presponse = await plantAPI.getPlantByIdPlantPlantIdGet(id);
+          if (presponse.status === 200) {
+            setPlantData(presponse.data);
+          }
         }
       } catch (err) {}
       setLoading(false);
     };
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchPlantData = async () => {
+      setLoading(true);
+      try {
+        const response = await plantAPI.getPlantPlantGet();
+
+        if (response.status === 200) {
+          setAllPlantData(response.data);
+        }
+      } catch (err) {}
+      setLoading(false);
+    };
+    fetchPlantData();
   }, []);
 
   interface EntryCreateForm {
@@ -71,7 +150,7 @@ const NewEntry = () => {
     control,
     formState: { errors }
   } = useForm<EntryCreateForm>({
-    defaultValues: { plant_id: id, timestamp: dayjs(new Date()) }
+    defaultValues: { plant_id: id, timestamp: dayjs(new Date()), plant_health: 5 }
   });
   const onSubmit = async (data: EntryCreateForm) => {
     try {
@@ -92,20 +171,48 @@ const NewEntry = () => {
     }
   };
 
+  const [value, setValue] = React.useState<number | null>(2);
+  const [hover, setHover] = React.useState(1);
+
   return (
     <>
       <Grid container justifyContent="space-between" style={{ marginBottom: 1 }}>
         <Grid item xs={12}>
           <Typography variant="h4" align="center">
-            New Activity Entry
+            New Activity Entry for {plantData?.name}
           </Typography>
         </Grid>
       </Grid>
-      {activityData && !loading ? (
+      {activityData && allPlantData && !loading ? (
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={2} m={2} direction="column" alignItems="center" sx={{ minHeight: '100vh' }}>
             <Grid item>
               <Stack pb={3} pt={3}>
+                <label>Plant</label>
+                <Controller
+                  name="plant_id"
+                  control={control}
+                  rules={{ required: false }}
+                  render={({
+                    field: { onChange, onBlur, value, ref },
+                    fieldState: { invalid, isTouched, isDirty, error }
+                  }) => (
+                    <NativeSelect
+                      label="Plant"
+                      multiple
+                      value={value || []}
+                      onChange={onChange}
+                      input={<OutlinedInput label="Plant" />}
+                    >
+                      {allPlantData.results.map((plant) => (
+                        <option key={plant.name} value={plant.id}>
+                          {plant.name}
+                        </option>
+                      ))}
+                    </NativeSelect>
+                  )}
+                />
+                <label>Timestamp</label>
                 <Controller
                   control={control}
                   name="timestamp"
@@ -113,7 +220,6 @@ const NewEntry = () => {
                   render={({ field }) => {
                     return (
                       <DateTimePicker
-                        label="Timestamp"
                         value={field.value}
                         inputRef={field.ref}
                         onChange={(date) => {
@@ -123,26 +229,7 @@ const NewEntry = () => {
                     );
                   }}
                 />
-                <Controller
-                  name="notes"
-                  control={control}
-                  rules={{ required: false }}
-                  render={({
-                    field: { onChange, onBlur, value, ref },
-                    fieldState: { invalid, isTouched, isDirty, error }
-                  }) => (
-                    <TextField
-                      onChange={onChange}
-                      onBlur={onBlur}
-                      variant="filled"
-                      label="Notes"
-                      value={value || ''}
-                      multiline
-                      maxRows={6}
-                      fullWidth
-                    />
-                  )}
-                />
+                <label>Activities</label>
                 <Controller
                   name="activities"
                   control={control}
@@ -181,10 +268,42 @@ const NewEntry = () => {
                     field: { onChange, onBlur, value, ref },
                     fieldState: { invalid, isTouched, isDirty, error }
                   }) => (
-                    <Select label="Plant Health" value={value || 0} onChange={onChange}>
-                      <MenuItem value={1}>1</MenuItem>
-                      <MenuItem value={2}>1</MenuItem>
-                    </Select>
+                    <>
+                      <FormLabel>Plant Health</FormLabel>
+                      <StyledRating
+                        name="highlight-selected-only"
+                        defaultValue={5}
+                        IconContainerComponent={IconContainer}
+                        getLabelText={(value: number) => customIcons[value].label}
+                        highlightSelectedOnly
+                        value={value || 5}
+                        onChange={onChange}
+                        onChangeActive={(event, newHover) => {
+                          setHover(newHover);
+                        }}
+                      />
+                      {value !== null && <Box sx={{ ml: 2 }}>{customIcons[hover !== -1 ? hover : value].label}</Box>}
+                    </>
+                  )}
+                />
+                <label>Notes</label>
+                <Controller
+                  name="notes"
+                  control={control}
+                  rules={{ required: false }}
+                  render={({
+                    field: { onChange, onBlur, value, ref },
+                    fieldState: { invalid, isTouched, isDirty, error }
+                  }) => (
+                    <TextField
+                      onChange={onChange}
+                      onBlur={onBlur}
+                      variant="filled"
+                      value={value || ''}
+                      multiline
+                      rows={4}
+                      fullWidth
+                    />
                   )}
                 />
                 <ButtonGroup variant="contained" sx={{ pt: 4, paddingLeft: 4, paddingRight: 4 }}>

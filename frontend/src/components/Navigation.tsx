@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
+import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import PrintIcon from '@mui/icons-material/Print';
 
 const actions = [
@@ -47,7 +48,7 @@ export default function LabelBottomNavigation() {
         <Grid item justifyContent="flex-end">
           <BottomNavigation sx={{ width: 500 }} value={value} onChange={handleChange} showLabels>
             <BottomNavigationAction
-              sx={{ pl: 25 }}
+              //sx={{ pl: 25 }}
               label="Plants"
               value="plants"
               onClick={() => navigate('/myPlants')}
@@ -55,17 +56,23 @@ export default function LabelBottomNavigation() {
             />
 
             <BottomNavigationAction
+              label="Graveyard"
+              value="graveyard"
+              onClick={() => navigate('/myGraveyard')}
+              icon={<ReportProblemIcon />}
+            />
+            <BottomNavigationAction
+              //sx={{ pr: 25 }}
+              label="Entries"
+              value="entry"
+              onClick={() => navigate('/entry')}
+              icon={<ReceiptIcon />}
+            />
+            <BottomNavigationAction
               label="Settings"
               value="settings"
               onClick={() => navigate('/settings')}
               icon={<SettingsIcon />}
-            />
-            <BottomNavigationAction
-              sx={{ pr: 25 }}
-              label="Activity"
-              value="activity"
-              onClick={() => navigate('/activity')}
-              icon={<ReceiptIcon />}
             />
           </BottomNavigation>
         </Grid>
