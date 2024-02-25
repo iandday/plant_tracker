@@ -150,7 +150,7 @@ const NewEntry = () => {
     control,
     formState: { errors }
   } = useForm<EntryCreateForm>({
-    defaultValues: { plant_id: id, timestamp: dayjs(new Date()), plant_health: 5 }
+    defaultValues: { plant_id: id, timestamp: dayjs(new Date()), plant_health: 5, activities: [] }
   });
   const onSubmit = async (data: EntryCreateForm) => {
     try {
@@ -161,7 +161,6 @@ const NewEntry = () => {
         timestamp: data.timestamp.toISOString(),
         plant_health: data.plant_health
       };
-      console.log(formData);
       const response = await entryAPI.createEntryEntryPost({ ...formData });
       if (response.status === 200) {
         navigate(`/myPlants/${id}`);
@@ -179,7 +178,7 @@ const NewEntry = () => {
       <Grid container justifyContent="space-between" style={{ marginBottom: 1 }}>
         <Grid item xs={12}>
           <Typography variant="h4" align="center">
-            New Activity Entry for {plantData?.name}
+            New Activity Entry {id ? ' for ' + plantData?.name : null}
           </Typography>
         </Grid>
       </Grid>
@@ -282,7 +281,7 @@ const NewEntry = () => {
                           setHover(newHover);
                         }}
                       />
-                      {value !== null && <Box sx={{ ml: 2 }}>{customIcons[hover !== -1 ? hover : value].label}</Box>}
+                      <Box sx={{ ml: 2 }}>{customIcons[hover !== 1 && hover !== -1 ? hover : value].label}</Box>
                     </>
                   )}
                 />

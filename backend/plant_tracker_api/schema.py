@@ -109,11 +109,11 @@ class PlantCreate(PlantBase):
 
 class Plant(PlantBase):
     purchase_date: Optional[datetime.date]
-    sources: Optional[List[Source]]
+    sources: Optional[List[Source]] = None
     trefle_id: Optional[int]
     id: UUID4
     user_id: UUID4
-    entries: List[Entry]
+    entries: List[Entry] = None
     graveyard: Optional[bool]
     death_date: Optional[datetime.date]
 

@@ -97,8 +97,8 @@ const NewPlant = () => {
 
   const newOnSubmit = async (data: int_NewPlantForm) => {
     try {
-      const createData: ActivityCreate = {
-        plant_id: id,
+      const createData: PlantCreateTrefle = {
+        id: Number(selectedPlant),
         name: data.name,
         location: data.location,
         purchase_date: data.purchase_date.toISOString().split('T')[0]

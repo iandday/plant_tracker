@@ -36,7 +36,7 @@ def create_entry(data: schema.EntryCreate, user: schema.User = Depends(get_curre
     for activity in data.activities:
         db_activity = db.session.get(models.Activity, activity)
         if not db_activity:
-            raise HTTPException(status_code=404, detail="entry not found")
+            raise HTTPException(status_code=404, detail="activity not found")
         entry.activities.append(db_activity)
 
     db.session.add(entry)

@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import LabelBottomNavigation from '../components/Navigation';
 import { Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
 import { EntryApi, EntryReturn, Plant, PlantApi } from '../services';
 import axiosInstance from '../provider/CustomAxios';
 import { BASE_PATH } from '../services/base';
-import PlantDetail from './PlantDetail';
 import { AxiosResponse } from 'axios';
 import { ratingIcons } from '../components/ratings';
 
@@ -26,40 +24,35 @@ const MyEntries = () => {
         const response = await api.getEntriesEntryGet();
         if (response.status === 200) {
           setEntryData(response.data);
+          const temp: Plant[] = [];
+          var results: AxiosResponse<Plant>[] = await Promise.all(
+            response.data.results.map(
+              async (item): Promise => await plantApi.getPlantByIdPlantPlantIdGet(item.plant_id)
+            )
+          );
+
+          results.map((result) => {
+            const found = temp.some((record) => {
+              if (record.id === result.data.id) {
+                return true;
+              }
+              return false;
+            });
+            if (!found) {
+              temp.push(result.data);
+            }
+          });
+
+          setPlantData(temp);
         }
       } catch (err) {
         console.error(err);
       }
+      setLoading(false);
+      setPlantDataLoaded(true);
     };
     fetchData();
   }, [entryUpdate]);
-
-  useEffect(() => {
-    const getPlantData = async () => {
-      if (entryData) {
-        const temp = [...plantData];
-        const myData = await Promise.all(
-          entryData!.results.map((e) => {
-            plantApi.getPlantByIdPlantPlantIdGet(e.plant_id).then((presponse) => {
-              const ifFound = temp.some((record) => {
-                if (record.id === presponse.data.id) {
-                  return true;
-                }
-                return false;
-              });
-              if (!ifFound) {
-                temp.push(presponse.data);
-              }
-            });
-          })
-        );
-        setPlantData(temp);
-        setPlantDataLoaded(true);
-      }
-    };
-
-    getPlantData();
-  }, [entryData]);
 
   function findArrayElementByID(array: Plant[], id: string): Plant {
     const result = array.find((element: Plant) => element.id === id);
@@ -75,11 +68,10 @@ const MyEntries = () => {
   }
   return (
     <>
-      {' '}
       <Grid container justifyContent="space-between" alignItems="stretch" style={{ marginBottom: 8 }}>
         <Grid item xs={12}>
           <Typography variant="h4" align="center" style={{ marginBottom: 12 }}>
-            My Plant Entries
+            My Plant Activity Entries
           </Typography>
         </Grid>
       </Grid>

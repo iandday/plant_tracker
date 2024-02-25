@@ -186,7 +186,7 @@ def create_plant_trefle(data: schema.PlantCreateTrefle, user: schema.User = Depe
     if data.purchase_date:
         db_plant.purchase_date = data.purchase_date
 
-    for source in detail["sources"]:
+    for source in detail.get("sources", []):
         if source["url"] is not None:
             db_source, created = get_or_create(
                 db.session,
@@ -197,4 +197,6 @@ def create_plant_trefle(data: schema.PlantCreateTrefle, user: schema.User = Depe
 
     db.session.commit()
     db.session.refresh(db_plant)
-    return db_plant
+    output = db_plant.__dict__
+
+    return output
