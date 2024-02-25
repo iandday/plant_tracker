@@ -1,15 +1,15 @@
 import React from 'react';
-import { LocationReturn, PlantReturn } from '../services';
+import { AreaReturn, PlantReturn } from '../services';
 import { Grid, Card, ImageListItem, ImageListItemBar, IconButton, Tooltip } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import InfoIcon from '@mui/icons-material/Info';
 
 interface Props {
   plants: PlantReturn;
-  locations: LocationReturn;
+  areas: AreaReturn;
 }
 
-const PlantListing = ({ plants, locations }: Props) => {
+const PlantListing = ({ plants, areas }: Props) => {
   const navigate = useNavigate();
 
   function findArrayElementByID<T>(array: T[], id: string): T {
@@ -49,7 +49,7 @@ const PlantListing = ({ plants, locations }: Props) => {
                     background: 'linear-gradient(to bottom, rgba(0,0,0,0.7)0%, rgba(0,0,0,0.3)70%, rgba(0,0,0,0)100%)'
                   }}
                   title={plant.name}
-                  subtitle={findArrayElementByID(locations.results, plant.location_id).name}
+                  subtitle={findArrayElementByID(areas.results, plant.area_id).name}
                   position="top"
                 />
                 <img

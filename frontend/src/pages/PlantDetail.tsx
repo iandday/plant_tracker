@@ -23,20 +23,20 @@ import ImageIcon from '@mui/icons-material/Image';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Popper from '@mui/material/Popper';
 import React, { useEffect, useState } from 'react';
-import { Entry, EntryApi, EntryReturn, Location, LocationApi, Plant, PlantApi, PlantReturn } from '../services';
+import { Entry, EntryApi, EntryReturn, Area, AreaApi, Plant, PlantApi, PlantReturn } from '../services';
 import { BASE_PATH } from '../services/base';
 import axiosInstance from '../provider/CustomAxios';
 
 const PlantDetail = () => {
   const { id } = useParams();
   const api = new PlantApi(null, BASE_PATH, axiosInstance);
-  const locationApi = new LocationApi(null, BASE_PATH, axiosInstance);
+  const areaApi = new AreaApi(null, BASE_PATH, axiosInstance);
   const [loading, setLoading] = useState(true);
   const [plantUpdate, setPlantUpdate] = useState<number>(0);
-  const [locationData, setLocationData] = useState<Location>();
+  const [areaData, setAreaData] = useState<Area>();
   const [plantData, setPlantData] = useState<Plant>();
 
-  // get plant details and then location details
+  // get plant details and then area details
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -45,9 +45,9 @@ const PlantDetail = () => {
         if (response.status === 200) {
           setPlantData(response.data);
         }
-        const locResponse = await locationApi.getLocationLocationLocationIdGet(response.data.location_id);
+        const locResponse = await areaApi.getAreaAreaAreaIdGet(response.data.area_id);
         if (locResponse.status === 200) {
-          setLocationData(locResponse.data);
+          setAreaData(locResponse.data);
         }
       } catch (err) {
         console.error(err);
@@ -94,14 +94,22 @@ const PlantDetail = () => {
           <Typography variant="body1" marginLeft={2}>
             {plantData?.scientific_name}
           </Typography>
-          <Typography variant="button">Location: </Typography>
+          <Typography variant="button">Area: </Typography>
           <Typography variant="body1" marginLeft={2}>
-            {locationData?.name}
+            {areaData?.name}
           </Typography>
           <Typography variant="button">Purchase Date: </Typography>
           <Typography variant="body1" marginLeft={2}>
             {plantData?.purchase_date}
           </Typography>
+          {plantData?.death_date ? (
+            <>
+              <Typography variant="button">Death Date: </Typography>
+              <Typography variant="body1" marginLeft={2}>
+                {plantData?.death_date}
+              </Typography>
+            </>
+          ) : null}
           <ButtonGroup variant="contained" ref={anchorRef} aria-label="split button">
             <Button onClick={handleClick} color="secondary">
               Reference
@@ -138,6 +146,14 @@ const PlantDetail = () => {
               }}
             >
               Send to Graveyard
+            </Button>
+            <Button
+              onClick={() => {
+                api.deletePlantByIdPlantPlantIdDelete(plantData?.id);
+                navigate(`/myPlants}`);
+              }}
+            >
+              Delete
             </Button>
           </ButtonGroup>
           <Popper

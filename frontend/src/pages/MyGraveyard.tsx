@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { LocationApi, LocationReturn, PlantApi, PlantReturn } from '../services';
+import { AreaApi, AreaReturn, PlantApi, PlantReturn } from '../services';
 import { Grid, Typography } from '@mui/material';
 import PlantListing from '../components/PlantListing';
 import axiosInstance from '../provider/CustomAxios';
@@ -7,23 +7,23 @@ import { BASE_PATH } from '../services/base';
 
 const MyGraveyard = () => {
   const api = new PlantApi(null, BASE_PATH, axiosInstance);
-  const locationApi = new LocationApi(null, BASE_PATH, axiosInstance);
+  const areaApi = new AreaApi(null, BASE_PATH, axiosInstance);
   const [plantData, setPlantData] = useState<PlantReturn>();
-  const [locationData, setLocationData] = useState<LocationReturn>();
+  const [areaData, setAreaData] = useState<AreaReturn>();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.getPlantPlantGet({ params: { graveyard_only: true } });
+        const response = await api.getPlantPlantGet(false, true);
         if (response.status === 200) {
           setPlantData(response.data);
         }
-        const locationResponse = await locationApi.getLocationsLocationGet();
-        if (locationResponse.status === 200) {
-          setLocationData(locationResponse.data);
+        const areaResponse = await areaApi.getAreasAreaGet();
+        if (areaResponse.status === 200) {
+          setAreaData(areaResponse.data);
         }
       } catch (err) {}
-      console.log(locationData);
+      console.log(areaData);
     };
     fetchData();
   }, []);
@@ -31,12 +31,12 @@ const MyGraveyard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const locationResponse = await locationApi.getLocationsLocationGet();
-        if (locationResponse.status === 200) {
-          setLocationData(locationResponse.data);
+        const areaResponse = await areaApi.getAreasAreaGet();
+        if (areaResponse.status === 200) {
+          setAreaData(areaResponse.data);
         }
       } catch (err) {}
-      console.log(locationData);
+      console.log(areaData);
     };
     fetchData();
   }, []);
@@ -50,7 +50,7 @@ const MyGraveyard = () => {
           </Typography>
         </Grid>
       </Grid>
-      {plantData && locationData ? <PlantListing plants={plantData} locations={locationData} /> : null}
+      {plantData && areaData ? <PlantListing plants={plantData} areas={areaData} /> : null}
     </>
   );
 };

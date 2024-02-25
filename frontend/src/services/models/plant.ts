@@ -40,7 +40,7 @@ export interface Plant {
      * @type {string}
      * @memberof Plant
      */
-    'location_id': string;
+    'area_id': string;
     /**
      * 
      * @type {string}
@@ -64,7 +64,7 @@ export interface Plant {
      * @type {}
      * @memberof Plant
      */
-    'sources':  | null;
+    'sources'?:  | null;
     /**
      * 
      * @type {number}
@@ -88,7 +88,7 @@ export interface Plant {
      * @type {Array<Entry>}
      * @memberof Plant
      */
-    'entries': Array<Entry>;
+    'entries'?: Array<Entry>;
     /**
      * 
      * @type {boolean}

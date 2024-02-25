@@ -40,7 +40,7 @@ export interface PlantCreate {
      * @type {string}
      * @memberof PlantCreate
      */
-    'location_id': string;
+    'area_id': string;
     /**
      * 
      * @type {string}

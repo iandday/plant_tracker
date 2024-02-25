@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
+import { BASE_PATH } from '../services/base';
 
 const axiosInstance: AxiosInstance = axios.create();
 
@@ -24,7 +25,7 @@ axiosInstance.interceptors.response.use(
 
       try {
         const refreshToken = localStorage.getItem('refreshToken');
-        const response = await axios.post('/user/renew', { refresh_token: refreshToken });
+        const response = await axios.post(BASE_PATH + '/user/renew', { refresh_token: refreshToken });
         const { access_token, refresh_token } = response.data;
 
         localStorage.setItem('token', access_token);
@@ -34,7 +35,7 @@ axiosInstance.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${access_token}`;
         return axios(originalRequest);
       } catch (error) {
-        window.location.href = `/login`;
+        window.area.href = BASE_PATH + `/login`;
       }
     }
 

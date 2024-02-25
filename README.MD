@@ -10,5 +10,5 @@ photo
 
 todo:
 
-- Add activity edit page similiar to location edit page
+- Add activity edit page similiar to area edit page
 - Add description field to activity

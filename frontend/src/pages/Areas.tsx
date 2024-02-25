@@ -11,33 +11,50 @@ import {
   TextField,
   Typography,
   Alert,
-  AlertTitle
+  AlertTitle,
+  Select,
+  MenuItem,
+  OutlinedInput,
+  Chip,
+  Box,
+  InputLabel,
+  Autocomplete
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 
-import { Configuration, Location, LocationApi, LocationCreate, LocationReturn } from '../services/index';
+import { Configuration, Area, AreaApi, AreaCreate, AreaReturn, LocationApi, Location } from '../services/index';
 
 import { AxiosError } from 'axios';
 import LabelBottomNavigation from '../components/Navigation';
 import axiosInstance from '../provider/CustomAxios';
 import { BASE_PATH } from '../services/base';
 
-const Locations = () => {
-  const api = new LocationApi(null, BASE_PATH, axiosInstance);
-  const [locationUpdate, setlocationUpdate] = useState<number>(0);
+const Areas = () => {
+  const api = new AreaApi(null, BASE_PATH, axiosInstance);
+  const locationApi = new LocationApi(null, BASE_PATH, axiosInstance);
+  const [areaUpdate, setareaUpdate] = useState<number>(0);
 
   // make a hook
   const [loading, setLoading] = useState(true);
+  const [areaData, setAreaData] = useState<AreaReturn>();
   const [locationData, setLocationData] = useState<LocationReturn>();
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        //const response = await APIClient.get(`/location`);
-        const response = await api.getLocationsLocationGet();
+        //const response = await APIClient.get(`/area`);
+        const response = await api.getAreasAreaGet();
         if (response.status === 200) {
-          setLocationData(response.data);
+          setAreaData(response.data);
+          try {
+            const locResponse = await locationApi.getLocationsLocationGet();
+            if (locResponse.status === 200) {
+              setLocationData(locResponse.data);
+            }
+          } catch (err) {
+            console.error(err);
+          }
         }
       } catch (err) {
         console.error(err);
@@ -45,30 +62,32 @@ const Locations = () => {
       setLoading(false);
     };
     fetchData();
-  }, [locationUpdate]);
+  }, [areaUpdate]);
 
   const [showEdit, setShowEdit] = useState<boolean>(false);
   const [showNew, setShowNew] = useState<boolean>(false);
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [alertText, setAlertText] = useState<string>();
-  // edit location form
+  // edit area form
 
-  //const [editLocationValue, setEditLocationValue] = useState<string>('test');
+  //const [editAreaValue, setEditAreaValue] = useState<string>('test');
   const {
     register: editRegister,
     handleSubmit: editHandleSubmit,
     reset: editReset,
     control: editControl,
     setValue: editSetValue
-  } = useForm<Location>();
+  } = useForm<Area>();
 
-  // create location form
-  const { register, handleSubmit, reset, control, setValue } = useForm<LocationCreate>({ defaultValues: { name: '' } });
-  const onSubmit = async (data: LocationCreate) => {
+  // create area form
+  const { register, handleSubmit, reset, control, setValue } = useForm<AreaCreate>({
+    defaultValues: { name: '', location_id: '' }
+  });
+  const onSubmit = async (data: AreaCreate) => {
     try {
-      const response = await api.createLocationLocationPost({ name: data.name });
+      const response = await api.createAreaAreaPost({ name: data.name, location_id: data.location_id });
       if (response.status === 200) {
-        setlocationUpdate(locationUpdate + 1);
+        setareaUpdate(areaUpdate + 1);
         setShowNew((oldValue) => !oldValue);
       }
     } catch (err: AxiosError) {
@@ -77,55 +96,55 @@ const Locations = () => {
     }
   };
 
-  // start selected locations
-  const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
+  // start selected areas
+  const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
   const handleToggle = (value: string) => () => {
-    const currentIndex = selectedLocations.findIndex((obj) => obj === value);
-    const newChecked: string[] = [...selectedLocations];
+    const currentIndex = selectedAreas.findIndex((obj) => obj === value);
+    const newChecked: string[] = [...selectedAreas];
 
     if (currentIndex === -1) {
       newChecked.push(value);
-      setSelectedLocations(newChecked);
+      setSelectedAreas(newChecked);
     } else {
-      setSelectedLocations((selectedLocations) => selectedLocations.filter((data) => data !== value));
+      setSelectedAreas((selectedAreas) => selectedAreas.filter((data) => data !== value));
     }
   };
-  // end selected locations
+  // end selected areas
 
-  // populate edit form with location name based on location ID
+  // populate edit form with area name based on area ID
   useEffect(() => {
-    if (selectedLocations.length == 1) {
-      if (locationData) {
-        var location = locationData.results.filter((loc: Location) => loc.id === selectedLocations[0]);
-        editReset({ ...location[0] });
+    if (selectedAreas.length == 1) {
+      if (areaData) {
+        var area = areaData.results.filter((loc: Area) => loc.id === selectedAreas[0]);
+        editReset({ ...area[0] });
       }
     }
-  }, [selectedLocations]);
+  }, [selectedAreas]);
 
   // delete function
   const handleDelete = async () => {
-    selectedLocations.map(async (loc) => {
+    selectedAreas.map(async (loc) => {
       try {
-        const response = await api.deleteLocationLocationLocationIdDelete(loc);
+        const response = await api.deleteAreaAreaAreaIdDelete(loc);
         if (response.status === 200) {
-          setlocationUpdate(locationUpdate + 1);
+          setareaUpdate(areaUpdate + 1);
         }
       } catch (err) {
         console.error(err);
       }
-      setSelectedLocations(selectedLocations.filter((data) => data !== loc));
+      setSelectedAreas(selectedAreas.filter((data) => data !== loc));
     });
   };
 
   // edit function
-  const editOnSubmit = async (data: Location) => {
+  const editOnSubmit = async (data: Area) => {
     try {
-      const response = await api.updateLocationLocationLocationIdPatch(data.id, { name: data.name });
+      const response = await api.updateAreaAreaAreaIdPatch(data.id, { name: data.name, location_id: data.location_id });
 
       if (response.status === 200) {
-        setlocationUpdate(locationUpdate + 1);
+        setareaUpdate(areaUpdate + 1);
         setShowEdit((oldValue) => !oldValue);
-        setSelectedLocations([]);
+        setSelectedAreas([]);
       }
     } catch (err) {
       console.error(err);
@@ -135,7 +154,7 @@ const Locations = () => {
     <>
       <Grid container justifyContent="space-between" style={{ marginBottom: 1 }}>
         <Grid item xs={12}>
-          <Typography variant="h5">Locations</Typography>
+          <Typography variant="h5">Areas</Typography>
         </Grid>
         <Grid item xs={12} alignItems="center">
           <List
@@ -144,7 +163,7 @@ const Locations = () => {
               mt: 2
             }}
           >
-            {locationData?.results.map((value) => {
+            {areaData?.results.map((value) => {
               const labelId = `checkbox-list-secondary-label-${value.id}`;
               return (
                 <ListItem
@@ -153,7 +172,7 @@ const Locations = () => {
                     <Checkbox
                       edge="end"
                       onChange={handleToggle(value.id)}
-                      checked={selectedLocations.findIndex((obj) => obj === value.id) !== -1}
+                      checked={selectedAreas.findIndex((obj) => obj === value.id) !== -1}
                       inputProps={{ 'aria-labelledby': labelId }}
                     />
                   }
@@ -168,27 +187,17 @@ const Locations = () => {
           </List>
         </Grid>
         <Grid item xs={12} justifyContent="flex-end">
-          {selectedLocations.length == 1 ? (
-            <>
-              <Button
-                variant="contained"
-                onClick={() => {
-                  setShowEdit((oldValue) => !oldValue);
-                }}
-              >
-                Edit
-              </Button>
-              <Button
-                variant="contained"
-                onClick={() => {
-                  localStorage.setItem('defaultLocation', selectedLocations[0]);
-                }}
-              >
-                Make Default
-              </Button>
-            </>
+          {selectedAreas.length == 1 ? (
+            <Button
+              variant="contained"
+              onClick={() => {
+                setShowEdit((oldValue) => !oldValue);
+              }}
+            >
+              Edit
+            </Button>
           ) : null}
-          {selectedLocations.length != 0 ? (
+          {selectedAreas.length != 0 ? (
             <Button onClick={handleDelete} variant="contained" color="error">
               Delete
             </Button>
@@ -220,6 +229,22 @@ const Locations = () => {
                         label="Edit"
                         fullWidth
                         value={value}
+                      />
+                    )}
+                  />
+                  <Controller
+                    control={control}
+                    name="location_id"
+                    render={({ field: { onChange, value } }) => (
+                      <Autocomplete
+                        id="location_id"
+                        isOptionEqualToValue={(option, value) => option.id === value.id}
+                        options={locationData.results}
+                        getOptionLabel={(option) => option.name}
+                        onChange={(event, data: Location) => {
+                          onChange(data?.id);
+                        }}
+                        renderInput={(params) => <TextField {...params} variant="outlined" label="Location" />}
                       />
                     )}
                   />
@@ -269,9 +294,25 @@ const Locations = () => {
                         onChange={onChange}
                         onBlur={onBlur}
                         variant="filled"
-                        label="New Location"
+                        label="New Area"
                         value={value}
                         fullWidth
+                      />
+                    )}
+                  />
+                  <Controller
+                    control={control}
+                    name="location_id"
+                    render={({ field: { onChange, value } }) => (
+                      <Autocomplete
+                        id="location_id"
+                        isOptionEqualToValue={(option, value) => option.id === value.id}
+                        options={locationData.results}
+                        getOptionLabel={(option) => option.name}
+                        onChange={(event, data: Location) => {
+                          onChange(data?.id);
+                        }}
+                        renderInput={(params) => <TextField {...params} variant="outlined" label="Location" />}
                       />
                     )}
                   />
@@ -308,4 +349,4 @@ const Locations = () => {
   );
 };
 
-export default Locations;
+export default Areas;

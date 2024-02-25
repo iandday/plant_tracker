@@ -28,7 +28,15 @@ const UserSettings = () => {
             navigate(`/locations`);
           }}
         >
-          Locations
+          Configure Locations
+        </Button>
+        <Button
+          variant="text"
+          onClick={() => {
+            navigate(`/areas`);
+          }}
+        >
+          Configure Areas
         </Button>
 
         {!token && (

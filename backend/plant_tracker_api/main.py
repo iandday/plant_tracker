@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi_sqlalchemy import DBSessionMiddleware, db
 from fastapi.middleware.cors import CORSMiddleware
 import models
-from routers import source, plant, location, user, activity, entry
+from routers import source, plant, area, user, activity, entry, location
 from sqlalchemy import event
 
 origins = [
@@ -29,12 +29,13 @@ app.add_middleware(
     expose_headers=["*"],
 )
 
-app.include_router(source.router)
-app.include_router(location.router)
 app.include_router(plant.router)
-app.include_router(user.router)
-app.include_router(activity.router)
 app.include_router(entry.router)
+app.include_router(source.router)
+app.include_router(area.router)
+app.include_router(location.router)
+app.include_router(activity.router)
+app.include_router(user.router)
 
 
 @app.on_event("startup")

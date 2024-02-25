@@ -14,7 +14,7 @@ import { ColorModeContext } from './config/color-context';
 import React from 'react';
 import { CssBaseline } from '@mui/material';
 import EditPlant from './pages/EditPlant';
-import Locations from './pages/Locations';
+import Areas from './pages/Areas';
 import Login from './pages/Login';
 import MyProfile from './pages/MyProfile';
 import NewPlant from './pages/NewPlant';
@@ -23,6 +23,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import NewEntry from './pages/NewEntry';
 import EntryDetail from './pages/EntryDetail';
 import MyGraveyard from './pages/MyGraveyard';
+import Locations from './pages/Locations';
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -61,6 +62,7 @@ function App() {
                 <Route path="/entry" element={<MyEntries />} />
                 <Route path="/entry/:id" element={<EntryDetail />} />
                 <Route path="/settings" element={<UserSettings />} />
+                <Route path="/areas" element={<Areas />} />
                 <Route path="/locations" element={<Locations />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/myProfile" element={<MyProfile />} />

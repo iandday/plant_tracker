@@ -2,6 +2,7 @@
 .npmignore
 api.ts
 apis/activity-api.ts
+apis/area-api.ts
 apis/entry-api.ts
 apis/location-api.ts
 apis/plant-api.ts
@@ -17,6 +18,10 @@ models/activity-create.ts
 models/activity-patch.ts
 models/activity-return.ts
 models/activity.ts
+models/area-create.ts
+models/area-patch.ts
+models/area-return.ts
+models/area.ts
 models/entry-create.ts
 models/entry-patch.ts
 models/entry-return.ts

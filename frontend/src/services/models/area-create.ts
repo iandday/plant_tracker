@@ -17,32 +17,20 @@
 /**
  * 
  * @export
- * @interface PlantCreateTrefle
+ * @interface AreaCreate
  */
-export interface PlantCreateTrefle {
-    /**
-     * 
-     * @type {number}
-     * @memberof PlantCreateTrefle
-     */
-    'id': number;
+export interface AreaCreate {
     /**
      * 
      * @type {string}
-     * @memberof PlantCreateTrefle
+     * @memberof AreaCreate
      */
     'name': string;
     /**
      * 
      * @type {string}
-     * @memberof PlantCreateTrefle
+     * @memberof AreaCreate
      */
-    'area': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PlantCreateTrefle
-     */
-    'purchase_date'?: string;
+    'location_id': string;
 }
 

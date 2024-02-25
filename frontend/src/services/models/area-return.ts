@@ -13,36 +13,27 @@
  */
 
 
+// May contain unused imports in some cases
+// @ts-ignore
+import { Area } from './area';
 
 /**
  * 
  * @export
- * @interface PlantCreateTrefle
+ * @interface AreaReturn
  */
-export interface PlantCreateTrefle {
+export interface AreaReturn {
     /**
      * 
      * @type {number}
-     * @memberof PlantCreateTrefle
+     * @memberof AreaReturn
      */
-    'id': number;
+    'count': number;
     /**
      * 
-     * @type {string}
-     * @memberof PlantCreateTrefle
+     * @type {Array<Area>}
+     * @memberof AreaReturn
      */
-    'name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PlantCreateTrefle
-     */
-    'area': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PlantCreateTrefle
-     */
-    'purchase_date'?: string;
+    'results': Array<Area>;
 }
 

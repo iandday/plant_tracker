@@ -1,7 +1,7 @@
 import { Card, Grid, IconButton, ImageListItem, ImageListItemBar, Tooltip, Typography } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import { useNavigate } from 'react-router-dom';
-import { LocationApi, LocationReturn, PlantApi, PlantReturn } from '../services';
+import { AreaApi, AreaReturn, PlantApi, PlantReturn } from '../services';
 import { useEffect, useState } from 'react';
 import LabelBottomNavigation from '../components/Navigation';
 import PlantListing from '../components/PlantListing';
@@ -9,14 +9,14 @@ import axiosInstance from '../provider/CustomAxios';
 import { BASE_PATH } from '../services/base';
 const MyPlants = () => {
   const api = new PlantApi();
-  const locationApi = new LocationApi(null, BASE_PATH, axiosInstance);
-  const [locationData, setLocationData] = useState<LocationReturn>();
+  const areaApi = new AreaApi(null, BASE_PATH, axiosInstance);
+  const [areaData, setAreaData] = useState<AreaReturn>();
   const [plantData, setPlantData] = useState<PlantReturn>();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        //const response = await APIClient.get(`/location`);
+        //const response = await APIClient.get(`/area`);
         const response = await api.getPlantPlantGet();
         if (response.status === 200) {
           setPlantData(response.data);
@@ -30,9 +30,9 @@ const MyPlants = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const locationResponse = await locationApi.getLocationsLocationGet();
-        if (locationResponse.status === 200) {
-          setLocationData(locationResponse.data);
+        const areaResponse = await areaApi.getAreasAreaGet();
+        if (areaResponse.status === 200) {
+          setAreaData(areaResponse.data);
         }
       } catch (err) {}
     };
@@ -49,7 +49,7 @@ const MyPlants = () => {
         </Grid>
       </Grid>
 
-      {plantData && locationData ? <PlantListing plants={plantData} locations={locationData} /> : null}
+      {plantData && areaData ? <PlantListing plants={plantData} areas={areaData} /> : null}
 
       <LabelBottomNavigation />
     </>

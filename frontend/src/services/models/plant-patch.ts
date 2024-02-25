@@ -25,48 +25,60 @@ export interface PlantPatch {
      * @type {string}
      * @memberof PlantPatch
      */
-    'name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PlantPatch
-     */
-    'photo_url'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PlantPatch
-     */
-    'location_id': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PlantPatch
-     */
-    'common_name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PlantPatch
-     */
-    'scientific_name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PlantPatch
-     */
-    'purchase_date'?: string;
+    'purchase_date'?: string | null;
     /**
      * 
      * @type {number}
      * @memberof PlantPatch
      */
-    'trefle_id': number | null;
+    'trefle_id'?: number | null;
     /**
      * 
      * @type {string}
      * @memberof PlantPatch
      */
-    'user_id': string;
+    'user_id'?: string | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PlantPatch
+     */
+    'graveyard'?: boolean | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PlantPatch
+     */
+    'death_date'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PlantPatch
+     */
+    'name'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PlantPatch
+     */
+    'photo_url'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PlantPatch
+     */
+    'area_id'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PlantPatch
+     */
+    'common_name'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PlantPatch
+     */
+    'scientific_name'?: string | null;
 }
 

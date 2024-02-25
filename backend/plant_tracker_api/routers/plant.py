@@ -74,15 +74,9 @@ def update_plant(plant_id: UUID4, data: schema.PlantPatch):
     if not db_plant:
         raise HTTPException(status_code=404, detail="Plant not found")
 
-    # stored_data = data.model_dump()
-    # stored_model = models.Plant(**stored_data)
-    # update_data = data.model_dump(exclude_unset=True)
-
     for k, v in data.model_dump(exclude_unset=True).items():
-        print(k)
-
         setattr(db_plant, k, v)
-        if k == "graveyard" and v == True:
+        if k == "graveyard" and bool(v) == True and not db_plant.death_date:
             setattr(db_plant, "death_date", datetime.datetime.now())
         if k == "sources":
             for source in v:
@@ -108,7 +102,7 @@ def update_plant(plant_id: UUID4, data: schema.PlantPatch):
 def create_plant(data: schema.PlantCreate):
     db_plant = models.Plant(
         name=data.name,
-        location=data.location,
+        area=data.area,
         photo_url=data.photo_url,
         common_name=data.common_name,
         scientific_name=data.scientific_name,
@@ -167,13 +161,13 @@ def create_plant_trefle(data: schema.PlantCreateTrefle, user: schema.User = Depe
     plant_detail = requests.get(f"https://trefle.io/api/v1/plants/{data.id}?token={api_key}")
     detail = plant_detail.json()["data"]
 
-    db_location = db.session.get(models.Location, data.location)
-    if not db_location:
-        raise HTTPException(status_code=404, detail="Location not found")
+    db_area = db.session.get(models.Area, data.area)
+    if not db_area:
+        raise HTTPException(status_code=404, detail="Area not found")
 
     db_plant = models.Plant(
         name=data.name,
-        location_id=db_location.id,
+        area_id=db_area.id,
         photo_url=detail["image_url"],
         common_name=detail["common_name"],
         scientific_name=detail["scientific_name"],

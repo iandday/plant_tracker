@@ -15,7 +15,7 @@ import PrintIcon from '@mui/icons-material/Print';
 const actions = [
   { icon: <PlantIcon />, name: 'Plant', path: '/newPlant' },
   { icon: <ReceiptIcon />, name: 'Entry', path: '/newEntry' },
-  { icon: <HomeIcon />, name: 'Location', path: '/locations' }
+  { icon: <HomeIcon />, name: 'Area', path: '/areas' }
 ];
 
 import { useNavigate } from 'react-router-dom';

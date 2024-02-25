@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Autocomplete, Button, ButtonGroup, Grid, Stack, TextField } from '@mui/material';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
-import { LocationApi, LocationReturn, Plant, PlantApi, PlantPatch } from '../services';
+import { AreaApi, AreaReturn, Plant, PlantApi, PlantPatch } from '../services';
 import { BASE_PATH } from '../services/base';
 import axiosInstance from '../provider/CustomAxios';
 
@@ -16,9 +16,9 @@ const EditPlant = () => {
   const [plantData, setPlantData] = useState<Plant>();
   const [plantUpdate, setPlantUpdate] = useState<number>(0);
 
-  const locationAPI = new LocationApi(null, BASE_PATH, axiosInstance);
-  const [locationUpdate, setlocationUpdate] = useState<number>(0);
-  const [locationData, setLocationData] = useState<LocationReturn>([]);
+  const areaAPI = new AreaApi(null, BASE_PATH, axiosInstance);
+  const [areaUpdate, setareaUpdate] = useState<number>(0);
+  const [areaData, setAreaData] = useState<AreaReturn>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,9 +28,9 @@ const EditPlant = () => {
 
         if (response.status === 200) {
           setPlantData(response.data);
-          const locResponse = await locationAPI.getLocationsLocationGet();
+          const locResponse = await areaAPI.getAreasAreaGet();
           if (locResponse.status === 200) {
-            setLocationData(locResponse.data);
+            setAreaData(locResponse.data);
             reset({ ...response.data });
           }
         }
@@ -98,18 +98,18 @@ const EditPlant = () => {
                 />
                 <Controller
                   control={control}
-                  name="location"
+                  name="area"
                   render={({ field: { onChange, value } }) => (
                     <Autocomplete
-                      id="location_id"
+                      id="area_id"
                       isOptionEqualToValue={(option, value) => option.id === value.id}
-                      options={locationData.results}
+                      options={areaData.results}
                       getOptionLabel={(option) => option.name}
                       onChange={(event, data) => {
                         onChange(data?.id);
                       }}
-                      defaultValue={locationData.results.find((loc) => loc.id === plantData.location_id)}
-                      renderInput={(params) => <TextField {...params} variant="outlined" label="Location" />}
+                      defaultValue={areaData.results.find((loc) => loc.id === plantData.area_id)}
+                      renderInput={(params) => <TextField {...params} variant="outlined" label="Area" />}
                     />
                   )}
                 />

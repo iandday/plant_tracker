@@ -5,7 +5,7 @@ import {
   ActivityReturn,
   EntryApi,
   EntryCreate,
-  LocationReturn,
+  AreaReturn,
   Plant,
   PlantApi,
   PlantPatch,

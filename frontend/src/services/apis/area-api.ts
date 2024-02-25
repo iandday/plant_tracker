@@ -22,34 +22,34 @@ import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObj
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError, operationServerMap } from '../base';
 // @ts-ignore
+import { Area } from '../models';
+// @ts-ignore
+import { AreaCreate } from '../models';
+// @ts-ignore
+import { AreaPatch } from '../models';
+// @ts-ignore
+import { AreaReturn } from '../models';
+// @ts-ignore
 import { HTTPValidationError } from '../models';
 // @ts-ignore
 import { ItemDelete } from '../models';
-// @ts-ignore
-import { Plant } from '../models';
-// @ts-ignore
-import { PlantCreate } from '../models';
-// @ts-ignore
-import { PlantPatch } from '../models';
-// @ts-ignore
-import { PlantReturn } from '../models';
 /**
- * PlantApi - axios parameter creator
+ * AreaApi - axios parameter creator
  * @export
  */
-export const PlantApiAxiosParamCreator = function (configuration?: Configuration) {
+export const AreaApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
-         * @summary Create Plant
-         * @param {PlantCreate} plantCreate 
+         * @summary Create Area
+         * @param {AreaCreate} areaCreate 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createPlantPlantPost: async (plantCreate: PlantCreate, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'plantCreate' is not null or undefined
-            assertParamExists('createPlantPlantPost', 'plantCreate', plantCreate)
-            const localVarPath = `/plant`;
+        createAreaAreaPost: async (areaCreate: AreaCreate, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'areaCreate' is not null or undefined
+            assertParamExists('createAreaAreaPost', 'areaCreate', areaCreate)
+            const localVarPath = `/area`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -61,6 +61,10 @@ export const PlantApiAxiosParamCreator = function (configuration?: Configuration
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication JWT required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "JWT", [], configuration)
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -68,7 +72,7 @@ export const PlantApiAxiosParamCreator = function (configuration?: Configuration
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(plantCreate, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(areaCreate, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -77,16 +81,16 @@ export const PlantApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Delete Plant By Id
-         * @param {string} plantId 
+         * @summary Delete Area
+         * @param {string} areaId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deletePlantByIdPlantPlantIdDelete: async (plantId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'plantId' is not null or undefined
-            assertParamExists('deletePlantByIdPlantPlantIdDelete', 'plantId', plantId)
-            const localVarPath = `/plant/{plant_id}`
-                .replace(`{${"plant_id"}}`, encodeURIComponent(String(plantId)));
+        deleteAreaAreaAreaIdDelete: async (areaId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'areaId' is not null or undefined
+            assertParamExists('deleteAreaAreaAreaIdDelete', 'areaId', areaId)
+            const localVarPath = `/area/{area_id}`
+                .replace(`{${"area_id"}}`, encodeURIComponent(String(areaId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -98,39 +102,9 @@ export const PlantApiAxiosParamCreator = function (configuration?: Configuration
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Get Plant By Id
-         * @param {string} plantId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getPlantByIdPlantPlantIdGet: async (plantId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'plantId' is not null or undefined
-            assertParamExists('getPlantByIdPlantPlantIdGet', 'plantId', plantId)
-            const localVarPath = `/plant/{plant_id}`
-                .replace(`{${"plant_id"}}`, encodeURIComponent(String(plantId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+            // authentication JWT required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "JWT", [], configuration)
 
 
     
@@ -145,14 +119,16 @@ export const PlantApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @summary Get Plant
-         * @param {boolean} [includeGraveyard] 
-         * @param {boolean} [graveyardOnly] 
+         * @summary Get Area
+         * @param {string} areaId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPlantPlantGet: async (includeGraveyard?: boolean, graveyardOnly?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/plant`;
+        getAreaAreaAreaIdGet: async (areaId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'areaId' is not null or undefined
+            assertParamExists('getAreaAreaAreaIdGet', 'areaId', areaId)
+            const localVarPath = `/area/{area_id}`
+                .replace(`{${"area_id"}}`, encodeURIComponent(String(areaId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -164,13 +140,9 @@ export const PlantApiAxiosParamCreator = function (configuration?: Configuration
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            if (includeGraveyard !== undefined) {
-                localVarQueryParameter['include_graveyard'] = includeGraveyard;
-            }
-
-            if (graveyardOnly !== undefined) {
-                localVarQueryParameter['graveyard_only'] = graveyardOnly;
-            }
+            // authentication JWT required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "JWT", [], configuration)
 
 
     
@@ -184,20 +156,54 @@ export const PlantApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * Update Plant
-         * @summary Update Plant
-         * @param {string} plantId 
-         * @param {PlantPatch} plantPatch 
+         * 
+         * @summary Get Areas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updatePlantPlantPlantIdPatch: async (plantId: string, plantPatch: PlantPatch, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'plantId' is not null or undefined
-            assertParamExists('updatePlantPlantPlantIdPatch', 'plantId', plantId)
-            // verify required parameter 'plantPatch' is not null or undefined
-            assertParamExists('updatePlantPlantPlantIdPatch', 'plantPatch', plantPatch)
-            const localVarPath = `/plant/{plant_id}`
-                .replace(`{${"plant_id"}}`, encodeURIComponent(String(plantId)));
+        getAreasAreaGet: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/area`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication JWT required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "JWT", [], configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Update Area
+         * @param {string} areaId 
+         * @param {AreaPatch} areaPatch 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateAreaAreaAreaIdPatch: async (areaId: string, areaPatch: AreaPatch, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'areaId' is not null or undefined
+            assertParamExists('updateAreaAreaAreaIdPatch', 'areaId', areaId)
+            // verify required parameter 'areaPatch' is not null or undefined
+            assertParamExists('updateAreaAreaAreaIdPatch', 'areaPatch', areaPatch)
+            const localVarPath = `/area/{area_id}`
+                .replace(`{${"area_id"}}`, encodeURIComponent(String(areaId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -209,6 +215,10 @@ export const PlantApiAxiosParamCreator = function (configuration?: Configuration
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication JWT required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "JWT", [], configuration)
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -216,7 +226,7 @@ export const PlantApiAxiosParamCreator = function (configuration?: Configuration
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(plantPatch, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(areaPatch, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -227,211 +237,205 @@ export const PlantApiAxiosParamCreator = function (configuration?: Configuration
 };
 
 /**
- * PlantApi - functional programming interface
+ * AreaApi - functional programming interface
  * @export
  */
-export const PlantApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = PlantApiAxiosParamCreator(configuration)
+export const AreaApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = AreaApiAxiosParamCreator(configuration)
     return {
         /**
          * 
-         * @summary Create Plant
-         * @param {PlantCreate} plantCreate 
+         * @summary Create Area
+         * @param {AreaCreate} areaCreate 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createPlantPlantPost(plantCreate: PlantCreate, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Plant>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createPlantPlantPost(plantCreate, options);
+        async createAreaAreaPost(areaCreate: AreaCreate, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Area>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createAreaAreaPost(areaCreate, options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['PlantApi.createPlantPlantPost']?.[index]?.url;
+            const operationBasePath = operationServerMap['AreaApi.createAreaAreaPost']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
-         * @summary Delete Plant By Id
-         * @param {string} plantId 
+         * @summary Delete Area
+         * @param {string} areaId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deletePlantByIdPlantPlantIdDelete(plantId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ItemDelete>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.deletePlantByIdPlantPlantIdDelete(plantId, options);
+        async deleteAreaAreaAreaIdDelete(areaId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ItemDelete>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteAreaAreaAreaIdDelete(areaId, options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['PlantApi.deletePlantByIdPlantPlantIdDelete']?.[index]?.url;
+            const operationBasePath = operationServerMap['AreaApi.deleteAreaAreaAreaIdDelete']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
-         * @summary Get Plant By Id
-         * @param {string} plantId 
+         * @summary Get Area
+         * @param {string} areaId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getPlantByIdPlantPlantIdGet(plantId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Plant>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getPlantByIdPlantPlantIdGet(plantId, options);
+        async getAreaAreaAreaIdGet(areaId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Area>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAreaAreaAreaIdGet(areaId, options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['PlantApi.getPlantByIdPlantPlantIdGet']?.[index]?.url;
+            const operationBasePath = operationServerMap['AreaApi.getAreaAreaAreaIdGet']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
          * 
-         * @summary Get Plant
-         * @param {boolean} [includeGraveyard] 
-         * @param {boolean} [graveyardOnly] 
+         * @summary Get Areas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getPlantPlantGet(includeGraveyard?: boolean, graveyardOnly?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PlantReturn>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getPlantPlantGet(includeGraveyard, graveyardOnly, options);
+        async getAreasAreaGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AreaReturn>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAreasAreaGet(options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['PlantApi.getPlantPlantGet']?.[index]?.url;
+            const operationBasePath = operationServerMap['AreaApi.getAreasAreaGet']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
-         * Update Plant
-         * @summary Update Plant
-         * @param {string} plantId 
-         * @param {PlantPatch} plantPatch 
+         * 
+         * @summary Update Area
+         * @param {string} areaId 
+         * @param {AreaPatch} areaPatch 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updatePlantPlantPlantIdPatch(plantId: string, plantPatch: PlantPatch, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Plant>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.updatePlantPlantPlantIdPatch(plantId, plantPatch, options);
+        async updateAreaAreaAreaIdPatch(areaId: string, areaPatch: AreaPatch, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Area>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateAreaAreaAreaIdPatch(areaId, areaPatch, options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['PlantApi.updatePlantPlantPlantIdPatch']?.[index]?.url;
+            const operationBasePath = operationServerMap['AreaApi.updateAreaAreaAreaIdPatch']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
 };
 
 /**
- * PlantApi - factory interface
+ * AreaApi - factory interface
  * @export
  */
-export const PlantApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = PlantApiFp(configuration)
+export const AreaApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = AreaApiFp(configuration)
     return {
         /**
          * 
-         * @summary Create Plant
-         * @param {PlantCreate} plantCreate 
+         * @summary Create Area
+         * @param {AreaCreate} areaCreate 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createPlantPlantPost(plantCreate: PlantCreate, options?: any): AxiosPromise<Plant> {
-            return localVarFp.createPlantPlantPost(plantCreate, options).then((request) => request(axios, basePath));
+        createAreaAreaPost(areaCreate: AreaCreate, options?: any): AxiosPromise<Area> {
+            return localVarFp.createAreaAreaPost(areaCreate, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @summary Delete Plant By Id
-         * @param {string} plantId 
+         * @summary Delete Area
+         * @param {string} areaId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deletePlantByIdPlantPlantIdDelete(plantId: string, options?: any): AxiosPromise<ItemDelete> {
-            return localVarFp.deletePlantByIdPlantPlantIdDelete(plantId, options).then((request) => request(axios, basePath));
+        deleteAreaAreaAreaIdDelete(areaId: string, options?: any): AxiosPromise<ItemDelete> {
+            return localVarFp.deleteAreaAreaAreaIdDelete(areaId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @summary Get Plant By Id
-         * @param {string} plantId 
+         * @summary Get Area
+         * @param {string} areaId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPlantByIdPlantPlantIdGet(plantId: string, options?: any): AxiosPromise<Plant> {
-            return localVarFp.getPlantByIdPlantPlantIdGet(plantId, options).then((request) => request(axios, basePath));
+        getAreaAreaAreaIdGet(areaId: string, options?: any): AxiosPromise<Area> {
+            return localVarFp.getAreaAreaAreaIdGet(areaId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @summary Get Plant
-         * @param {boolean} [includeGraveyard] 
-         * @param {boolean} [graveyardOnly] 
+         * @summary Get Areas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPlantPlantGet(includeGraveyard?: boolean, graveyardOnly?: boolean, options?: any): AxiosPromise<PlantReturn> {
-            return localVarFp.getPlantPlantGet(includeGraveyard, graveyardOnly, options).then((request) => request(axios, basePath));
+        getAreasAreaGet(options?: any): AxiosPromise<AreaReturn> {
+            return localVarFp.getAreasAreaGet(options).then((request) => request(axios, basePath));
         },
         /**
-         * Update Plant
-         * @summary Update Plant
-         * @param {string} plantId 
-         * @param {PlantPatch} plantPatch 
+         * 
+         * @summary Update Area
+         * @param {string} areaId 
+         * @param {AreaPatch} areaPatch 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updatePlantPlantPlantIdPatch(plantId: string, plantPatch: PlantPatch, options?: any): AxiosPromise<Plant> {
-            return localVarFp.updatePlantPlantPlantIdPatch(plantId, plantPatch, options).then((request) => request(axios, basePath));
+        updateAreaAreaAreaIdPatch(areaId: string, areaPatch: AreaPatch, options?: any): AxiosPromise<Area> {
+            return localVarFp.updateAreaAreaAreaIdPatch(areaId, areaPatch, options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * PlantApi - object-oriented interface
+ * AreaApi - object-oriented interface
  * @export
- * @class PlantApi
+ * @class AreaApi
  * @extends {BaseAPI}
  */
-export class PlantApi extends BaseAPI {
+export class AreaApi extends BaseAPI {
     /**
      * 
-     * @summary Create Plant
-     * @param {PlantCreate} plantCreate 
+     * @summary Create Area
+     * @param {AreaCreate} areaCreate 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof PlantApi
+     * @memberof AreaApi
      */
-    public createPlantPlantPost(plantCreate: PlantCreate, options?: AxiosRequestConfig) {
-        return PlantApiFp(this.configuration).createPlantPlantPost(plantCreate, options).then((request) => request(this.axios, this.basePath));
+    public createAreaAreaPost(areaCreate: AreaCreate, options?: AxiosRequestConfig) {
+        return AreaApiFp(this.configuration).createAreaAreaPost(areaCreate, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
-     * @summary Delete Plant By Id
-     * @param {string} plantId 
+     * @summary Delete Area
+     * @param {string} areaId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof PlantApi
+     * @memberof AreaApi
      */
-    public deletePlantByIdPlantPlantIdDelete(plantId: string, options?: AxiosRequestConfig) {
-        return PlantApiFp(this.configuration).deletePlantByIdPlantPlantIdDelete(plantId, options).then((request) => request(this.axios, this.basePath));
+    public deleteAreaAreaAreaIdDelete(areaId: string, options?: AxiosRequestConfig) {
+        return AreaApiFp(this.configuration).deleteAreaAreaAreaIdDelete(areaId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
-     * @summary Get Plant By Id
-     * @param {string} plantId 
+     * @summary Get Area
+     * @param {string} areaId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof PlantApi
+     * @memberof AreaApi
      */
-    public getPlantByIdPlantPlantIdGet(plantId: string, options?: AxiosRequestConfig) {
-        return PlantApiFp(this.configuration).getPlantByIdPlantPlantIdGet(plantId, options).then((request) => request(this.axios, this.basePath));
+    public getAreaAreaAreaIdGet(areaId: string, options?: AxiosRequestConfig) {
+        return AreaApiFp(this.configuration).getAreaAreaAreaIdGet(areaId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
-     * @summary Get Plant
-     * @param {boolean} [includeGraveyard] 
-     * @param {boolean} [graveyardOnly] 
+     * @summary Get Areas
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof PlantApi
+     * @memberof AreaApi
      */
-    public getPlantPlantGet(includeGraveyard?: boolean, graveyardOnly?: boolean, options?: AxiosRequestConfig) {
-        return PlantApiFp(this.configuration).getPlantPlantGet(includeGraveyard, graveyardOnly, options).then((request) => request(this.axios, this.basePath));
+    public getAreasAreaGet(options?: AxiosRequestConfig) {
+        return AreaApiFp(this.configuration).getAreasAreaGet(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     * Update Plant
-     * @summary Update Plant
-     * @param {string} plantId 
-     * @param {PlantPatch} plantPatch 
+     * 
+     * @summary Update Area
+     * @param {string} areaId 
+     * @param {AreaPatch} areaPatch 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof PlantApi
+     * @memberof AreaApi
      */
-    public updatePlantPlantPlantIdPatch(plantId: string, plantPatch: PlantPatch, options?: AxiosRequestConfig) {
-        return PlantApiFp(this.configuration).updatePlantPlantPlantIdPatch(plantId, plantPatch, options).then((request) => request(this.axios, this.basePath));
+    public updateAreaAreaAreaIdPatch(areaId: string, areaPatch: AreaPatch, options?: AxiosRequestConfig) {
+        return AreaApiFp(this.configuration).updateAreaAreaAreaIdPatch(areaId, areaPatch, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

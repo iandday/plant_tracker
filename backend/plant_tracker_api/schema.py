@@ -41,6 +41,28 @@ class LocationPatch(LocationBase):
     pass
 
 
+class AreaBase(BaseModel):
+    name: str
+    location_id: UUID4
+
+
+class AreaCreate(AreaBase):
+    pass
+
+
+class Area(AreaBase):
+    id: UUID4
+
+
+class AreaReturn(BaseModel):
+    count: int
+    results: List[Area]
+
+
+class AreaPatch(AreaBase):
+    pass
+
+
 class ActivityBase(BaseModel):
     name: str
 
@@ -95,7 +117,7 @@ class EntryReturn(BaseModel):
 class PlantBase(BaseModel):
     name: str
     photo_url: Optional[str]
-    location_id: UUID4
+    area_id: UUID4
     common_name: str
     scientific_name: str
     photo_url: str = None
@@ -104,7 +126,7 @@ class PlantBase(BaseModel):
 class PlantCreate(PlantBase):
     sources: List[SourceCreate] = None
     purchase_date: datetime.date = None
-    location_id: UUID4
+    area_id: UUID4
 
 
 class Plant(PlantBase):
@@ -120,18 +142,18 @@ class Plant(PlantBase):
 
 class PlantPatch(BaseModel):
     # __annotations__ = {k: Optional[v] for k, v in Plant.__annotations__.items()}
-    purchase_date: Optional[datetime.date]
+    purchase_date: datetime.date | None = None
     # sources: Optional[List[Source]]
-    trefle_id: Optional[int]
-    user_id: Optional[UUID4]
-    graveyard: Optional[bool]
-    death_date: Optional[datetime.date]
-    name: Optional[str]
-    photo_url: Optional[str]
-    location_id: Optional[UUID4]
-    common_name: Optional[str]
-    scientific_name: Optional[str]
-    photo_url: str = Optional[None]
+    trefle_id: int | None = None
+    user_id: UUID4 | None = None
+    graveyard: bool | None = None
+    death_date: datetime.date | None = None
+    name: str | None = None
+    photo_url: str | None = None
+    area_id: UUID4 | None = None
+    common_name: str | None = None
+    scientific_name: str | None = None
+    photo_url: str | None = None
 
 
 class PlantReturn(BaseModel):
@@ -142,7 +164,7 @@ class PlantReturn(BaseModel):
 class PlantCreateTrefle(BaseModel):
     id: int
     name: str
-    location: UUID4
+    area: UUID4
     purchase_date: datetime.date = None
 
 

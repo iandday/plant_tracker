@@ -29,6 +29,14 @@ class Location(Base):
     name = Column(String)
 
 
+class Area(Base):
+    __tablename__ = "area"
+    __table_args__ = (UniqueConstraint("name"),)
+    id = Column(UUID(as_uuid=True), primary_key=True, index=True, default=uuid.uuid4)
+    name = Column(String)
+    location_id = Column("location_id", UUID, ForeignKey("location.id"), nullable=False)
+
+
 class Activity(Base):
     __tablename__ = "activity"
     __table_args__ = (UniqueConstraint("name"),)
@@ -91,7 +99,7 @@ class Plant(Base):
     graveyard = Column(Boolean, default=False)
     death_date = Column(Date, nullable=True)
     user_id = Column("user_id", UUID, ForeignKey("user.id"), nullable=False)
-    location_id = Column("location_id", UUID, ForeignKey("location.id"), nullable=False)
+    area_id = Column("area_id", UUID, ForeignKey("area.id"), nullable=False)
     sources = relationship(
         "Source",
         secondary="plant_source",

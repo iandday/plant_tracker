@@ -15,8 +15,8 @@ import {
 import React, { useEffect, useState } from 'react';
 import {
   ActivityCreate,
-  LocationApi,
-  LocationReturn,
+  AreaApi,
+  AreaReturn,
   PlantApi,
   PlantCreateTrefle,
   PlantSearchResultsTrefle,
@@ -33,7 +33,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 interface int_NewPlantForm {
   id: Number;
   purchase_date: Date;
-  location: string;
+  area: string;
   name: string;
 }
 const NewPlant = () => {
@@ -44,18 +44,18 @@ const NewPlant = () => {
   const [searchResults, setSearchResults] = useState<PlantSearchResultsTrefle[]>([]);
   const [selectedPlant, setSelectedPlant] = useState<Number>();
 
-  const locationAPI = new LocationApi(null, BASE_PATH, axiosInstance);
-  const [locationUpdate, setlocationUpdate] = useState<number>(0);
-  const [locationData, setLocationData] = useState<LocationReturn>([]);
+  const areaAPI = new AreaApi(null, BASE_PATH, axiosInstance);
+  const [areaUpdate, setareaUpdate] = useState<number>(0);
+  const [areaData, setAreaData] = useState<AreaReturn>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        //const response = await APIClient.get(`/location`);
-        const response = await locationAPI.getLocationsLocationGet();
+        //const response = await APIClient.get(`/area`);
+        const response = await areaAPI.getAreasAreaGet();
         if (response.status === 200) {
-          setLocationData(response.data);
+          setAreaData(response.data);
         }
       } catch (err) {
         console.error(err);
@@ -63,7 +63,7 @@ const NewPlant = () => {
       setLoading(false);
     };
     fetchData();
-  }, [locationUpdate]);
+  }, [areaUpdate]);
 
   const { register, handleSubmit, reset, control, setValue } = useForm<PlantSearchTrefle>({
     defaultValues: { query: '' }
@@ -79,7 +79,7 @@ const NewPlant = () => {
     defaultValues: {
       id: Number(selectedPlant),
       purchase_date: dayjs(Date.now()),
-      location: undefined,
+      area: undefined,
       name: undefined
     }
   });
@@ -100,7 +100,7 @@ const NewPlant = () => {
       const createData: PlantCreateTrefle = {
         id: Number(selectedPlant),
         name: data.name,
-        location: data.location,
+        area: data.area,
         purchase_date: data.purchase_date.toISOString().split('T')[0]
       };
       const response = await api.createPlantTreflePlantTrefleCreatePost({
@@ -224,17 +224,17 @@ const NewPlant = () => {
                 />
                 <Controller
                   control={newControl}
-                  name="location"
+                  name="area"
                   render={({ field: { onChange, value } }) => (
                     <Autocomplete
-                      id="location"
+                      id="area"
                       isOptionEqualToValue={(option, value) => option.id === value.id}
-                      options={locationData.results}
+                      options={areaData.results}
                       getOptionLabel={(option) => option.name}
                       onChange={(event, data) => {
                         onChange(data?.id);
                       }}
-                      renderInput={(params) => <TextField {...params} variant="outlined" label="Location" />}
+                      renderInput={(params) => <TextField {...params} variant="outlined" label="Area" />}
                     />
                   )}
                 />
