@@ -19,7 +19,9 @@ router = APIRouter()
 
 
 @router.get("/plant", response_model=schema.PlantReturn, tags=["Plant"])
-def get_plant(include_graveyard: bool = False, graveyard_only: bool = False):
+def get_plant(
+    include_graveyard: bool = False, graveyard_only: bool = False, user: schema.User = Depends(get_current_user)
+):
     if include_graveyard:
         plants = db.session.query(models.Plant).all()
     elif graveyard_only:
@@ -38,7 +40,7 @@ def get_plant(include_graveyard: bool = False, graveyard_only: bool = False):
 
 
 @router.get("/plant/{plant_id}", response_model=schema.Plant, tags=["Plant"])
-def get_plant_by_id(plant_id: UUID4):
+def get_plant_by_id(plant_id: UUID4, user: schema.User = Depends(get_current_user)):
     plant = db.session.get(models.Plant, plant_id)
     if not plant:
         raise HTTPException(status_code=404, detail="Plant not found")
@@ -54,7 +56,7 @@ def get_plant_by_id(plant_id: UUID4):
 
 
 @router.delete("/plant/{plant_id}", response_model=schema.ItemDelete, tags=["Plant"])
-def delete_plant_by_id(plant_id: UUID4):
+def delete_plant_by_id(plant_id: UUID4, user: schema.User = Depends(get_current_user)):
     plant = db.session.get(models.Plant, plant_id)
     if not plant:
         raise HTTPException(status_code=404, detail="Plant not found")
@@ -69,7 +71,7 @@ def delete_plant_by_id(plant_id: UUID4):
     tags=["Plant"],
     description="Update Plant",
 )
-def update_plant(plant_id: UUID4, data: schema.PlantPatch):
+def update_plant(plant_id: UUID4, data: schema.PlantPatch, user: schema.User = Depends(get_current_user)):
     db_plant = db.session.get(models.Plant, plant_id)
     if not db_plant:
         raise HTTPException(status_code=404, detail="Plant not found")
@@ -99,7 +101,7 @@ def update_plant(plant_id: UUID4, data: schema.PlantPatch):
 
 
 @router.post("/plant", response_model=schema.Plant, tags=["Plant"])
-def create_plant(data: schema.PlantCreate):
+def create_plant(data: schema.PlantCreate, user: schema.User = Depends(get_current_user)):
     db_plant = models.Plant(
         name=data.name,
         area=data.area,
@@ -133,7 +135,7 @@ def create_plant(data: schema.PlantCreate):
     description="Search for plant data from Trefle",
     tags=["Trefle"],
 )
-def search_plant_trefle(data: schema.PlantSearchTrefle):
+def search_plant_trefle(data: schema.PlantSearchTrefle, user: schema.User = Depends(get_current_user)):
     search_details = requests.get(
         f"https://trefle.io/api/v1/plants/search/",
         params={"token": api_key, "q": data.query},
