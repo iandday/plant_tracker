@@ -1,3 +1,4 @@
+from contextlib import asynccontextmanager
 import json
 import logging
 import uvicorn
@@ -9,11 +10,9 @@ import models
 from routers import source, plant, area, user, activity, entry, location
 from sqlalchemy import event
 from alembic.config import Config
-from alembic.command import upgrade
+from alembic import command
 
-
-logger = logging.getLogger(__name__)
-
+logger = logging.getLogger("uvicorn")
 
 origins = [
     "http://localhost",
@@ -25,28 +24,7 @@ origins = [
 ]
 
 
-app = FastAPI(title="Plant Tracker API")
-app.add_middleware(DBSessionMiddleware, db_url=os.environ["DATABASE_URL"])
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-    expose_headers=["*"],
-)
-
-app.include_router(plant.router)
-app.include_router(entry.router)
-app.include_router(source.router)
-app.include_router(area.router)
-app.include_router(location.router)
-app.include_router(activity.router)
-app.include_router(user.router)
-
-
-@app.on_event("startup")
-async def seed_database():
+def seed_database():
     logger.info("Seeding the database")
     initial_data = {
         "Activity": [
@@ -73,12 +51,39 @@ async def seed_database():
         db.session.commit()
 
 
-@app.on_event("startup")
-async def run_migrations():
-    logger.info("Running migrations")
-    with db():
-        upgrade(Config("alembic.ini"), "Head")
-    logger.info("Migrations complete")
+def run_migrations():
+    logger.info("run alembic upgrade head...")
+    alembic_cfg = Config("alembic.ini")
+    command.upgrade(alembic_cfg, "head")
+
+
+@asynccontextmanager
+async def lifespan(app_: FastAPI):
+    logger.info("Starting up...")
+    run_migrations()
+    seed_database()
+    yield
+    logger.info("Shutting down...")
+
+
+app = FastAPI(title="Plant Tracker API", lifespan=lifespan)
+app.add_middleware(DBSessionMiddleware, db_url=os.environ["DATABASE_URL"])
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+    expose_headers=["*"],
+)
+
+app.include_router(plant.router)
+app.include_router(entry.router)
+app.include_router(source.router)
+app.include_router(area.router)
+app.include_router(location.router)
+app.include_router(activity.router)
+app.include_router(user.router)
 
 
 if __name__ == "__main__":
