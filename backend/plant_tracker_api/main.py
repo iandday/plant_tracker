@@ -14,14 +14,7 @@ from alembic import command
 
 logger = logging.getLogger("uvicorn")
 
-origins = [
-    "http://localhost",
-    "http://localhost:5173",
-    "http://10.168.1.168:5173",
-    "http://10.168.1.173:5173",
-    "http://10.168.1.168:8080",
-    "http://10.168.1.173:8080",
-]
+origins = [os.getenv("FRONTEND_URL")]
 
 
 def seed_database():
