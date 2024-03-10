@@ -1,4 +1,5 @@
 import json
+import logging
 import uvicorn
 import os
 from fastapi import FastAPI
@@ -7,6 +8,12 @@ from fastapi.middleware.cors import CORSMiddleware
 import models
 from routers import source, plant, area, user, activity, entry, location
 from sqlalchemy import event
+from alembic.config import Config
+from alembic.command import upgrade
+
+
+logger = logging.getLogger(__name__)
+
 
 origins = [
     "http://localhost",
@@ -39,7 +46,8 @@ app.include_router(user.router)
 
 
 @app.on_event("startup")
-def seed_database():
+async def seed_database():
+    logger.info("Seeding the database")
     initial_data = {
         "Activity": [
             {"name": "Water"},
@@ -53,7 +61,6 @@ def seed_database():
             {"name": "Observation"},
             {"name": "Cleaning"},
             {"name": "Misting"},
-            {"name": "Misting2"},
         ]
     }
     with db():
@@ -64,6 +71,14 @@ def seed_database():
                 if db_check.count() == 0:
                     db.session.add(db_model(**entry))
         db.session.commit()
+
+
+@app.on_event("startup")
+async def run_migrations():
+    logger.info("Running migrations")
+    with db():
+        upgrade(Config("alembic.ini"), "Head")
+    logger.info("Migrations complete")
 
 
 if __name__ == "__main__":
