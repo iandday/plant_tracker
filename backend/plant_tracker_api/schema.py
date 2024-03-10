@@ -100,7 +100,7 @@ class Entry(BaseModel):
     id: UUID4
     activities: List[Activity]
     plant_id: UUID4
-    notes: Optional[str]
+    notes: str | None = None
     plant_health: int
     timestamp: datetime.datetime
 
@@ -116,7 +116,7 @@ class EntryReturn(BaseModel):
 
 class PlantBase(BaseModel):
     name: str
-    photo_url: Optional[str]
+    photo_url: str | None = None
     area_id: UUID4
     common_name: str
     scientific_name: str
@@ -130,14 +130,14 @@ class PlantCreate(PlantBase):
 
 
 class Plant(PlantBase):
-    purchase_date: Optional[datetime.date]
-    sources: Optional[List[Source]] = None
-    trefle_id: Optional[int]
+    purchase_date: datetime.date | None = None
+    sources: List[Source] = []
+    trefle_id: int | None = None
     id: UUID4
     user_id: UUID4
-    entries: List[Entry] = None
-    graveyard: Optional[bool]
-    death_date: Optional[datetime.date]
+    entries: List[Entry] = []
+    graveyard: bool | None = None
+    death_date: datetime.date | None = None
 
 
 class PlantPatch(BaseModel):
@@ -170,9 +170,9 @@ class PlantCreateTrefle(BaseModel):
 
 class PlantSearchResultsTrefle(BaseModel):
     id: int
-    common_name: Optional[str]
+    common_name: str | None = None
     scientific_name: str
-    photo_url: Optional[str]
+    photo_url: str | None = None
 
 
 class PlantSearchTrefle(BaseModel):

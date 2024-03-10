@@ -31,7 +31,7 @@ export interface PlantSearchResultsTrefle {
      * @type {string}
      * @memberof PlantSearchResultsTrefle
      */
-    'common_name': string | null;
+    'common_name'?: string | null;
     /**
      * 
      * @type {string}
@@ -43,6 +43,6 @@ export interface PlantSearchResultsTrefle {
      * @type {string}
      * @memberof PlantSearchResultsTrefle
      */
-    'photo_url': string | null;
+    'photo_url'?: string | null;
 }
 

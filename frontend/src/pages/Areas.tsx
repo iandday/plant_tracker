@@ -7,32 +7,24 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
-  Stack,
   TextField,
   Typography,
   Alert,
   AlertTitle,
-  Select,
-  MenuItem,
-  OutlinedInput,
-  Chip,
-  Box,
-  InputLabel,
   Autocomplete
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { useForm, Controller, SubmitHandler } from 'react-hook-form';
+import { useEffect, useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 
-import { Configuration, Area, AreaApi, AreaCreate, AreaReturn, LocationApi, Location } from '../services/index';
+import { Area, AreaApi, AreaCreate, AreaReturn, LocationApi, Location, LocationReturn } from '../services/index';
 
-import { AxiosError } from 'axios';
 import LabelBottomNavigation from '../components/Navigation';
 import axiosInstance from '../provider/CustomAxios';
 import { BASE_PATH } from '../services/base';
 
 const Areas = () => {
-  const api = new AreaApi(null, BASE_PATH, axiosInstance);
-  const locationApi = new LocationApi(null, BASE_PATH, axiosInstance);
+  const api = new AreaApi(undefined, BASE_PATH, axiosInstance);
+  const locationApi = new LocationApi(undefined, BASE_PATH, axiosInstance);
   const [areaUpdate, setareaUpdate] = useState<number>(0);
 
   // make a hook
@@ -43,7 +35,6 @@ const Areas = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        //const response = await APIClient.get(`/area`);
         const response = await api.getAreasAreaGet();
         if (response.status === 200) {
           setAreaData(response.data);
@@ -68,19 +59,24 @@ const Areas = () => {
   const [showNew, setShowNew] = useState<boolean>(false);
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [alertText, setAlertText] = useState<string>();
-  // edit area form
 
-  //const [editAreaValue, setEditAreaValue] = useState<string>('test');
+  // edit area form
   const {
-    register: editRegister,
+    //register: editRegister,
     handleSubmit: editHandleSubmit,
     reset: editReset,
-    control: editControl,
-    setValue: editSetValue
+    control: editControl
+    //setValue: editSetValue
   } = useForm<Area>();
 
   // create area form
-  const { register, handleSubmit, reset, control, setValue } = useForm<AreaCreate>({
+  const {
+    //register,
+    handleSubmit,
+    reset,
+    control
+    //setValue
+  } = useForm<AreaCreate>({
     defaultValues: { name: '', location_id: '' }
   });
   const onSubmit = async (data: AreaCreate) => {
@@ -90,7 +86,7 @@ const Areas = () => {
         setareaUpdate(areaUpdate + 1);
         setShowNew((oldValue) => !oldValue);
       }
-    } catch (err: AxiosError) {
+    } catch (err: any) {
       setAlertText(err.response.data.detail);
       setShowAlert((oldValue) => !oldValue);
     }
@@ -150,7 +146,7 @@ const Areas = () => {
       console.error(err);
     }
   };
-  return (
+  return loading ? (
     <>
       <Grid container justifyContent="space-between" style={{ marginBottom: 1 }}>
         <Grid item xs={12}>
@@ -214,14 +210,14 @@ const Areas = () => {
           </Button>
 
           {showEdit ? (
-            <form onSubmit={editHandleSubmit(editOnSubmit)} onReset={editReset}>
+            <form onSubmit={editHandleSubmit(editOnSubmit)} onReset={() => editReset}>
               <Grid container>
                 <Grid item xs={7} justifyContent="flex-start">
                   <Controller
                     name="name"
                     control={editControl}
                     rules={{ required: true }}
-                    render={({ field: { onChange, onBlur, value, ref } }) => (
+                    render={({ field: { onChange, onBlur, value } }) => (
                       <TextField
                         onChange={onChange}
                         onBlur={onBlur}
@@ -235,14 +231,15 @@ const Areas = () => {
                   <Controller
                     control={control}
                     name="location_id"
-                    render={({ field: { onChange, value } }) => (
+                    render={({ field: { onChange } }) => (
                       <Autocomplete
                         id="location_id"
                         isOptionEqualToValue={(option, value) => option.id === value.id}
-                        options={locationData.results}
+                        options={locationData?.results!}
                         getOptionLabel={(option) => option.name}
-                        onChange={(event, data: Location) => {
+                        onChange={(event, data) => {
                           onChange(data?.id);
+                          console.log(event);
                         }}
                         renderInput={(params) => <TextField {...params} variant="outlined" label="Location" />}
                       />
@@ -252,7 +249,7 @@ const Areas = () => {
                     name="id"
                     control={editControl}
                     rules={{ required: true }}
-                    render={({ field: { onChange, onBlur, value, ref } }) => (
+                    render={({ field: { onChange, onBlur, value } }) => (
                       <TextField
                         onChange={onChange}
                         onBlur={onBlur}
@@ -270,7 +267,13 @@ const Areas = () => {
                     <Button type="submit" variant="contained" sx={{ mt: 0 }}>
                       Submit
                     </Button>
-                    <Button variant="contained" onClick={reset} sx={{ mt: 0 }}>
+                    <Button
+                      variant="contained"
+                      onClick={() => {
+                        reset;
+                      }}
+                      sx={{ mt: 0 }}
+                    >
                       Reset
                     </Button>
                   </ButtonGroup>
@@ -289,7 +292,7 @@ const Areas = () => {
                     name="name"
                     control={control}
                     rules={{ required: true }}
-                    render={({ field: { onChange, onBlur, value, ref } }) => (
+                    render={({ field: { onChange, onBlur, value } }) => (
                       <TextField
                         onChange={onChange}
                         onBlur={onBlur}
@@ -303,14 +306,15 @@ const Areas = () => {
                   <Controller
                     control={control}
                     name="location_id"
-                    render={({ field: { onChange, value } }) => (
+                    render={({ field: { onChange } }) => (
                       <Autocomplete
                         id="location_id"
                         isOptionEqualToValue={(option, value) => option.id === value.id}
-                        options={locationData.results}
+                        options={locationData!.results}
                         getOptionLabel={(option) => option.name}
-                        onChange={(event, data: Location) => {
+                        onChange={(event, data: Location | null) => {
                           onChange(data?.id);
+                          console.log(event);
                         }}
                         renderInput={(params) => <TextField {...params} variant="outlined" label="Location" />}
                       />
@@ -322,7 +326,7 @@ const Areas = () => {
                     <Button type="submit" variant="contained" sx={{ mt: 0 }}>
                       Submit
                     </Button>
-                    <Button variant="contained" onClick={reset} sx={{ mt: 0 }}>
+                    <Button variant="contained" onClick={() => reset} sx={{ mt: 0 }}>
                       Reset
                     </Button>
                   </ButtonGroup>
@@ -346,7 +350,7 @@ const Areas = () => {
       </Grid>
       <LabelBottomNavigation />
     </>
-  );
+  ) : null;
 };
 
 export default Areas;

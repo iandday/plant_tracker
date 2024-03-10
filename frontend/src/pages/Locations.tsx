@@ -7,24 +7,22 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
-  Stack,
   TextField,
   Typography,
   Alert,
   AlertTitle
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { useForm, Controller, SubmitHandler } from 'react-hook-form';
+import { useEffect, useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 
-import { Configuration, Location, LocationApi, LocationCreate, LocationReturn } from '../services/index';
+import { Location, LocationApi, LocationCreate, LocationReturn } from '../services/index';
 
-import { AxiosError } from 'axios';
 import LabelBottomNavigation from '../components/Navigation';
 import axiosInstance from '../provider/CustomAxios';
 import { BASE_PATH } from '../services/base';
 
 const Locations = () => {
-  const api = new LocationApi(null, BASE_PATH, axiosInstance);
+  const api = new LocationApi(undefined, BASE_PATH, axiosInstance);
   const [locationUpdate, setlocationUpdate] = useState<number>(0);
 
   // make a hook
@@ -55,15 +53,21 @@ const Locations = () => {
 
   //const [editLocationValue, setEditLocationValue] = useState<string>('test');
   const {
-    register: editRegister,
+    //register: editRegister,
     handleSubmit: editHandleSubmit,
     reset: editReset,
-    control: editControl,
-    setValue: editSetValue
+    control: editControl
+    //setValue: editSetValue
   } = useForm<Location>();
 
   // create location form
-  const { register, handleSubmit, reset, control, setValue } = useForm<LocationCreate>({ defaultValues: { name: '' } });
+  const {
+    //register,
+    handleSubmit,
+    reset,
+    control
+    //setValue
+  } = useForm<LocationCreate>({ defaultValues: { name: '' } });
   const onSubmit = async (data: LocationCreate) => {
     try {
       const response = await api.createLocationLocationPost({ name: data.name });
@@ -71,7 +75,7 @@ const Locations = () => {
         setlocationUpdate(locationUpdate + 1);
         setShowNew((oldValue) => !oldValue);
       }
-    } catch (err: AxiosError) {
+    } catch (err: any) {
       setAlertText(err.response.data.detail);
       setShowAlert((oldValue) => !oldValue);
     }
@@ -131,6 +135,11 @@ const Locations = () => {
       console.error(err);
     }
   };
+
+  if (loading) {
+    return <>Still loading...</>;
+  }
+
   return (
     <>
       <Grid container justifyContent="space-between" style={{ marginBottom: 1 }}>
@@ -205,14 +214,14 @@ const Locations = () => {
           </Button>
 
           {showEdit ? (
-            <form onSubmit={editHandleSubmit(editOnSubmit)} onReset={editReset}>
+            <form onSubmit={editHandleSubmit(editOnSubmit)} onReset={() => editReset}>
               <Grid container>
                 <Grid item xs={7} justifyContent="flex-start">
                   <Controller
                     name="name"
                     control={editControl}
                     rules={{ required: true }}
-                    render={({ field: { onChange, onBlur, value, ref } }) => (
+                    render={({ field: { onChange, onBlur, value } }) => (
                       <TextField
                         onChange={onChange}
                         onBlur={onBlur}
@@ -227,7 +236,7 @@ const Locations = () => {
                     name="id"
                     control={editControl}
                     rules={{ required: true }}
-                    render={({ field: { onChange, onBlur, value, ref } }) => (
+                    render={({ field: { onChange, onBlur, value } }) => (
                       <TextField
                         onChange={onChange}
                         onBlur={onBlur}
@@ -245,7 +254,7 @@ const Locations = () => {
                     <Button type="submit" variant="contained" sx={{ mt: 0 }}>
                       Submit
                     </Button>
-                    <Button variant="contained" onClick={reset} sx={{ mt: 0 }}>
+                    <Button variant="contained" onClick={() => reset} sx={{ mt: 0 }}>
                       Reset
                     </Button>
                   </ButtonGroup>
@@ -264,7 +273,7 @@ const Locations = () => {
                     name="name"
                     control={control}
                     rules={{ required: true }}
-                    render={({ field: { onChange, onBlur, value, ref } }) => (
+                    render={({ field: { onChange, onBlur, value } }) => (
                       <TextField
                         onChange={onChange}
                         onBlur={onBlur}
@@ -281,7 +290,7 @@ const Locations = () => {
                     <Button type="submit" variant="contained" sx={{ mt: 0 }}>
                       Submit
                     </Button>
-                    <Button variant="contained" onClick={reset} sx={{ mt: 0 }}>
+                    <Button variant="contained" onClick={() => reset} sx={{ mt: 0 }}>
                       Reset
                     </Button>
                   </ButtonGroup>

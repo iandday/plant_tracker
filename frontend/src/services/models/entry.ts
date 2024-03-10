@@ -46,7 +46,7 @@ export interface Entry {
      * @type {string}
      * @memberof Entry
      */
-    'notes': string | null;
+    'notes'?: string | null;
     /**
      * 
      * @type {number}

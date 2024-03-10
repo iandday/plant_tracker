@@ -1,5 +1,4 @@
-import React from 'react';
-import { AreaReturn, PlantReturn } from '../services';
+import { Area, AreaReturn, PlantReturn } from '../services';
 import { Grid, Card, ImageListItem, ImageListItemBar, IconButton, Tooltip } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import InfoIcon from '@mui/icons-material/Info';
@@ -12,8 +11,8 @@ interface Props {
 const PlantListing = ({ plants, areas }: Props) => {
   const navigate = useNavigate();
 
-  function findArrayElementByID<T>(array: T[], id: string): T {
-    const result = array.find((element: T) => element.id === id);
+  function findArrayElementByID(array: Area[], id: string): Area | { name: string } {
+    const result = array.find((element: Area) => element.id === id);
     if (result) {
       return result;
     } else {

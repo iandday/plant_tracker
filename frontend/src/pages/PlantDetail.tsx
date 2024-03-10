@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Button,
   ButtonGroup,
   Card,
@@ -16,21 +15,18 @@ import {
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import ImageIcon from '@mui/icons-material/Image';
-
+import { useNavigate, useParams } from 'react-router-dom';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Popper from '@mui/material/Popper';
 import React, { useEffect, useState } from 'react';
-import { Entry, EntryApi, EntryReturn, Area, AreaApi, Plant, PlantApi, PlantReturn } from '../services';
+import { Area, AreaApi, Plant, PlantApi, Source } from '../services';
 import { BASE_PATH } from '../services/base';
 import axiosInstance from '../provider/CustomAxios';
 
 const PlantDetail = () => {
   const { id } = useParams();
-  const api = new PlantApi(null, BASE_PATH, axiosInstance);
-  const areaApi = new AreaApi(null, BASE_PATH, axiosInstance);
+  const api = new PlantApi(undefined, BASE_PATH, axiosInstance);
+  const areaApi = new AreaApi(undefined, BASE_PATH, axiosInstance);
   const [loading, setLoading] = useState(true);
   const [plantUpdate, setPlantUpdate] = useState<number>(0);
   const [areaData, setAreaData] = useState<Area>();
@@ -39,11 +35,13 @@ const PlantDetail = () => {
   // get plant details and then area details
   useEffect(() => {
     const fetchData = async () => {
+      console.log('start');
       setLoading(true);
       try {
-        const response = await api.getPlantByIdPlantPlantIdGet(id);
+        const response = await api.getPlantByIdPlantPlantIdGet(id!);
         if (response.status === 200) {
           setPlantData(response.data);
+          console.log('here');
         }
         const locResponse = await areaApi.getAreaAreaAreaIdGet(response.data.area_id);
         if (locResponse.status === 200) {
@@ -141,7 +139,7 @@ const PlantDetail = () => {
             </Button>
             <Button
               onClick={() => {
-                api.updatePlantPlantPlantIdPatch(plantData?.id, { ...plantData, graveyard: true });
+                api.updatePlantPlantPlantIdPatch(plantData?.id!, { ...plantData, graveyard: true });
                 navigate(`/myPlants}`);
               }}
             >
@@ -149,53 +147,55 @@ const PlantDetail = () => {
             </Button>
             <Button
               onClick={() => {
-                api.deletePlantByIdPlantPlantIdDelete(plantData?.id);
+                api.deletePlantByIdPlantPlantIdDelete(plantData?.id!);
                 navigate(`/myPlants}`);
               }}
             >
               Delete
             </Button>
           </ButtonGroup>
-          <Popper
-            sx={{
-              zIndex: 1
-            }}
-            open={open}
-            anchorEl={anchorRef.current}
-            role={undefined}
-            transition
-            disablePortal
-          >
-            {({ TransitionProps, placement }) => (
-              <Grow
-                {...TransitionProps}
-                style={{
-                  transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom'
-                }}
-              >
-                <Paper>
-                  <ClickAwayListener onClickAway={handleClose}>
-                    <MenuList id="reference" autoFocusItem>
-                      {plantData?.sources.map((source) => (
-                        <MenuItem
-                          key={source.url}
-                          href={source.url}
-                          target="_blank"
-                          component="a"
-                          selected={false}
-                          onClick={() => {
-                            handleClose;
-                          }}
-                        >
-                          {source.name}
-                        </MenuItem>
-                      ))}
-                    </MenuList>
-                  </ClickAwayListener>
-                </Paper>
-              </Grow>
-            )}
-          </Popper>
+          {plantData?.sources ? (
+            <Popper
+              sx={{
+                zIndex: 1
+              }}
+              open={open}
+              anchorEl={anchorRef.current}
+              role={undefined}
+              transition
+              disablePortal
+            >
+              {({ TransitionProps, placement }) => (
+                <Grow
+                  {...TransitionProps}
+                  style={{
+                    transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom'
+                  }}
+                >
+                  <Paper>
+                    <ClickAwayListener onClickAway={handleClose}>
+                      <MenuList id="reference" autoFocusItem>
+                        {plantData!.sources!.map((source: Source) => (
+                          <MenuItem
+                            key={source.url}
+                            href={source.url}
+                            target="_blank"
+                            component="a"
+                            selected={false}
+                            onClick={() => {
+                              handleClose;
+                            }}
+                          >
+                            {source.name}
+                          </MenuItem>
+                        ))}
+                      </MenuList>
+                    </ClickAwayListener>
+                  </Paper>
+                </Grow>
+              )}
+            </Popper>
+          ) : null}
         </Grid>
         <Grid item marginRight={2}>
           <Card sx={{ maxWidth: 150 }}>
@@ -204,13 +204,13 @@ const PlantDetail = () => {
         </Grid>
       </Grid>
 
-      {plantData?.entries.length > 0 ? (
+      {plantData && plantData.entries && plantData.entries.length > 0 ? (
         <>
           <Typography variant="h6" marginLeft={2}>
             Activity Entries
           </Typography>
           <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-            {plantData?.entries.map((e) => (
+            {plantData.entries.map((e) => (
               <ListItem key={e.id}>
                 <ListItemButton component="a" href={'/entry/' + e.id}>
                   <ListItemText primary={e.activities.map((a) => a.name).join(', ')} secondary={e.timestamp} />

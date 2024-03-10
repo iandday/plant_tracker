@@ -1,22 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Activity, ActivityApi, Entry, EntryApi } from '../services';
+import { Entry, EntryApi } from '../services';
 import axiosInstance from '../provider/CustomAxios';
 import { BASE_PATH } from '../services/base';
-import { Button, ButtonGroup, Grid, Skeleton, Typography } from '@mui/material';
-import Rating, { IconContainerProps } from '@mui/material/Rating';
+import { Button, ButtonGroup, Grid, Typography } from '@mui/material';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
 import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAltOutlined';
 import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
 
+type editParams = {
+  id: string;
+};
+
 const EntryDetail = () => {
-  const { id } = useParams();
-  const api = new EntryApi(null, BASE_PATH, axiosInstance);
+  const { id = 'none' } = useParams<editParams>();
+  const api = new EntryApi(undefined, BASE_PATH, axiosInstance);
   const [loading, setLoading] = useState(true);
   const [entryData, setEntryData] = useState<Entry>();
-  const [entryUpdate, setEntryUpdate] = useState<number>(0);
 
   // get activity details
   useEffect(() => {
@@ -33,7 +35,7 @@ const EntryDetail = () => {
       setLoading(false);
     };
     fetchData();
-  }, [entryUpdate]);
+  }, []);
 
   const customIcons: {
     [index: string]: {
@@ -65,7 +67,11 @@ const EntryDetail = () => {
 
   const navigate = useNavigate();
 
-  return entryData ? (
+  if (loading) {
+    return <>Still loading...</>;
+  }
+
+  return (
     <>
       <Typography variant="h4" align="center">
         {entryData?.activities.map((a) => a.name).join(', ')}
@@ -75,8 +81,8 @@ const EntryDetail = () => {
           <Typography variant="button">Notes: {entryData?.notes}</Typography>
           <Typography variant="body1" marginLeft={2}></Typography>
           <Typography variant="button">
-            Health: {customIcons[Number(entryData?.plant_health)].icon}{' '}
-            {customIcons[Number(entryData?.plant_health)].label}
+            Health: {customIcons[String(entryData!.plant_health)].icon}{' '}
+            {customIcons[String(entryData!.plant_health)].label}
           </Typography>
           <Typography variant="body1" marginLeft={2}></Typography>
           <Typography variant="button">Timestamp: {entryData?.timestamp}</Typography>
@@ -86,7 +92,7 @@ const EntryDetail = () => {
         <Button
           sx={{ color: 'primary' }}
           onClick={() => {
-            navigate(`/myPlants/${entryData.plant_id}`);
+            navigate(`/myPlants/${entryData!.plant_id}`);
           }}
         >
           Back to Plant Detail
@@ -94,19 +100,13 @@ const EntryDetail = () => {
         <Button
           sx={{ color: 'primary' }}
           onClick={() => {
-            api.deleteEntryEntryEntryIdDelete(entryData.id);
-            navigate(`/myPlants/${entryData.plant_id}`);
+            api.deleteEntryEntryEntryIdDelete(entryData!.id);
+            navigate(`/myPlants/${entryData!.plant_id}`);
           }}
         >
           Delete Entry
         </Button>
       </ButtonGroup>
-    </>
-  ) : (
-    <>
-      <Skeleton variant="circular" width={40} height={40} />
-      <Skeleton variant="rectangular" width={210} height={60} />
-      <Skeleton variant="rounded" width={210} height={60} />
     </>
   );
 };

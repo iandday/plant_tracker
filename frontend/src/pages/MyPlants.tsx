@@ -8,15 +8,14 @@ import PlantListing from '../components/PlantListing';
 import axiosInstance from '../provider/CustomAxios';
 import { BASE_PATH } from '../services/base';
 const MyPlants = () => {
-  const api = new PlantApi();
-  const areaApi = new AreaApi(null, BASE_PATH, axiosInstance);
+  const api = new PlantApi(undefined, BASE_PATH, axiosInstance);
+  const areaApi = new AreaApi(undefined, BASE_PATH, axiosInstance);
   const [areaData, setAreaData] = useState<AreaReturn>();
   const [plantData, setPlantData] = useState<PlantReturn>();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        //const response = await APIClient.get(`/area`);
         const response = await api.getPlantPlantGet();
         if (response.status === 200) {
           setPlantData(response.data);

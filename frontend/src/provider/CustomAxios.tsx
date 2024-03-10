@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
 import { BASE_PATH } from '../services/base';
 
-const axiosInstance: AxiosInstance = axios.create();
+const axiosInstance: AxiosInstance = axios.create({ baseURL: 'http://localhost:8080' });
 
 axiosInstance.interceptors.request.use(
   (config) => {
@@ -13,14 +13,19 @@ axiosInstance.interceptors.request.use(
   },
   (error) => Promise.reject(error)
 );
+
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-
+    console.log(error.response.status);
     // If the error status is 401 and there is no originalRequest._retry flag,
+    // if (error.response.status === 401) {
+    //   console.log('In');
+
+    // }
     // it means the token has expired and we need to refresh it
-    if (error.response.status === 403 && !originalRequest._retry) {
+    if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
@@ -35,7 +40,9 @@ axiosInstance.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${access_token}`;
         return axios(originalRequest);
       } catch (error) {
-        window.area.href = BASE_PATH + `/login`;
+        console.log('refresh failed');
+        window.location.href = '/login';
+        //navigate('/login'); How do i do this?
       }
     }
 

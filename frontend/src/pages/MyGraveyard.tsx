@@ -6,8 +6,8 @@ import axiosInstance from '../provider/CustomAxios';
 import { BASE_PATH } from '../services/base';
 
 const MyGraveyard = () => {
-  const api = new PlantApi(null, BASE_PATH, axiosInstance);
-  const areaApi = new AreaApi(null, BASE_PATH, axiosInstance);
+  const api = new PlantApi(undefined, BASE_PATH, axiosInstance);
+  const areaApi = new AreaApi(undefined, BASE_PATH, axiosInstance);
   const [plantData, setPlantData] = useState<PlantReturn>();
   const [areaData, setAreaData] = useState<AreaReturn>();
 

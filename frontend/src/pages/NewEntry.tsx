@@ -92,14 +92,14 @@ const NewEntry = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const activityAPI = new ActivityApi(null, BASE_PATH, axiosInstance);
+  const activityAPI = new ActivityApi(undefined, BASE_PATH, axiosInstance);
   const [loading, setLoading] = useState(true);
   const [activityUpdate, setActivityUpdate] = useState<number>(0);
   const [activityData, setActivityData] = useState<ActivityReturn>([]);
   const [plantData, setPlantData] = useState<Plant>();
   const [allPlantData, setAllPlantData] = useState<PlantReturn>();
-  const entryAPI = new EntryApi(null, BASE_PATH, axiosInstance);
-  const plantAPI = new PlantApi(null, BASE_PATH, axiosInstance);
+  const entryAPI = new EntryApi(undefined, BASE_PATH, axiosInstance);
+  const plantAPI = new PlantApi(undefined, BASE_PATH, axiosInstance);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -150,7 +150,7 @@ const NewEntry = () => {
     control,
     formState: { errors }
   } = useForm<EntryCreateForm>({
-    defaultValues: { plant_id: id, timestamp: dayjs(new Date()), plant_health: 5, activities: [] }
+    defaultValues: { plant_id: id, timestamp: dayjs(new Date()), plant_health: 5, activities: [], notes: '' }
   });
   const onSubmit = async (data: EntryCreateForm) => {
     try {

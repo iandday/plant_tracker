@@ -16,6 +16,9 @@
 // May contain unused imports in some cases
 // @ts-ignore
 import { Entry } from './entry';
+// May contain unused imports in some cases
+// @ts-ignore
+import { Source } from './source';
 
 /**
  * 
@@ -58,19 +61,19 @@ export interface Plant {
      * @type {string}
      * @memberof Plant
      */
-    'purchase_date': string | null;
+    'purchase_date'?: string | null;
     /**
      * 
-     * @type {}
+     * @type {Array<Source>}
      * @memberof Plant
      */
-    'sources'?:  | null;
+    'sources'?: Array<Source>;
     /**
      * 
      * @type {number}
      * @memberof Plant
      */
-    'trefle_id': number | null;
+    'trefle_id'?: number | null;
     /**
      * 
      * @type {string}
@@ -94,12 +97,12 @@ export interface Plant {
      * @type {boolean}
      * @memberof Plant
      */
-    'graveyard': boolean | null;
+    'graveyard'?: boolean | null;
     /**
      * 
      * @type {string}
      * @memberof Plant
      */
-    'death_date': string | null;
+    'death_date'?: string | null;
 }
 

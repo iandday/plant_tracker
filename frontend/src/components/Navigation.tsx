@@ -10,7 +10,6 @@ import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
-import PrintIcon from '@mui/icons-material/Print';
 
 const actions = [
   { icon: <PlantIcon />, name: 'Plant', path: '/newPlant' },
@@ -24,6 +23,7 @@ export default function LabelBottomNavigation() {
   const [value, setValue] = React.useState('recents');
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    console.log(event);
     setValue(newValue);
   };
   const navigate = useNavigate();

@@ -2,23 +2,25 @@ import { useEffect, useState } from 'react';
 
 import { useNavigate, useParams } from 'react-router-dom';
 import { Autocomplete, Button, ButtonGroup, Grid, Stack, TextField } from '@mui/material';
-import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { AreaApi, AreaReturn, Plant, PlantApi, PlantPatch } from '../services';
 import { BASE_PATH } from '../services/base';
 import axiosInstance from '../provider/CustomAxios';
 
+type editParams = {
+  id: string;
+};
+
 const EditPlant = () => {
-  const { id } = useParams();
+  const { id = 'none' } = useParams<editParams>();
   const navigate = useNavigate();
 
-  const api = new PlantApi(null, BASE_PATH, axiosInstance);
+  const api = new PlantApi(undefined, BASE_PATH, axiosInstance);
   const [loading, setLoading] = useState(true);
   const [plantData, setPlantData] = useState<Plant>();
-  const [plantUpdate, setPlantUpdate] = useState<number>(0);
 
-  const areaAPI = new AreaApi(null, BASE_PATH, axiosInstance);
-  const [areaUpdate, setareaUpdate] = useState<number>(0);
-  const [areaData, setAreaData] = useState<AreaReturn>([]);
+  const areaAPI = new AreaApi(undefined, BASE_PATH, axiosInstance);
+  const [areaData, setAreaData] = useState<AreaReturn>();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,7 +57,7 @@ const EditPlant = () => {
       if (response.status === 200) {
         navigate(`/myPlants/${id}`);
       }
-    } catch (err: AxiosError) {
+    } catch (err: unknown) {
       console.log(err);
     }
   };
@@ -98,17 +100,18 @@ const EditPlant = () => {
                 />
                 <Controller
                   control={control}
-                  name="area"
-                  render={({ field: { onChange, value } }) => (
+                  name="area_id"
+                  render={({ field: { onChange } }) => (
                     <Autocomplete
                       id="area_id"
                       isOptionEqualToValue={(option, value) => option.id === value.id}
-                      options={areaData.results}
+                      options={areaData!.results}
                       getOptionLabel={(option) => option.name}
                       onChange={(event, data) => {
                         onChange(data?.id);
+                        console.log(event);
                       }}
-                      defaultValue={areaData.results.find((loc) => loc.id === plantData.area_id)}
+                      defaultValue={areaData!.results.find((loc) => loc.id === plantData.area_id)}
                       renderInput={(params) => <TextField {...params} variant="outlined" label="Area" />}
                     />
                   )}

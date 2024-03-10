@@ -7,8 +7,8 @@ import { AxiosResponse } from 'axios';
 import { ratingIcons } from '../components/ratings';
 
 const MyEntries = () => {
-  const api = new EntryApi(null, BASE_PATH, axiosInstance);
-  const plantApi = new PlantApi(null, BASE_PATH, axiosInstance);
+  const api = new EntryApi(undefined, BASE_PATH, axiosInstance);
+  const plantApi = new PlantApi(undefined, BASE_PATH, axiosInstance);
   const [loading, setLoading] = useState(true);
   const [entryData, setEntryData] = useState<EntryReturn>();
   const [entryUpdate, setEntryUpdate] = useState<number>(0);

@@ -6,7 +6,7 @@ import { Button, ButtonGroup, Grid, TextField, Typography } from '@mui/material'
 import { Controller, useForm } from 'react-hook-form';
 
 const MyProfile = () => {
-  const api = new UserApi(null, BASE_PATH, axiosInstance);
+  const api = new UserApi(undefined, BASE_PATH, axiosInstance);
 
   const [profileUpdate, setProfileUpdate] = useState<number>(0);
   const [showEdit, setShowEdit] = useState<boolean>(false);

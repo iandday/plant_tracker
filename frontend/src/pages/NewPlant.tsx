@@ -39,12 +39,12 @@ interface int_NewPlantForm {
 const NewPlant = () => {
   const navigate = useNavigate();
 
-  const api = new TrefleApi(null, BASE_PATH, axiosInstance);
+  const api = new TrefleApi(undefined, BASE_PATH, axiosInstance);
   const [loading, setLoading] = useState(true);
   const [searchResults, setSearchResults] = useState<PlantSearchResultsTrefle[]>([]);
   const [selectedPlant, setSelectedPlant] = useState<Number>();
 
-  const areaAPI = new AreaApi(null, BASE_PATH, axiosInstance);
+  const areaAPI = new AreaApi(undefined, BASE_PATH, axiosInstance);
   const [areaUpdate, setareaUpdate] = useState<number>(0);
   const [areaData, setAreaData] = useState<AreaReturn>([]);
 
