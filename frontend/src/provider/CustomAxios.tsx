@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
 import { BASE_PATH } from '../services/base';
 
-const axiosInstance: AxiosInstance = axios.create({ baseURL: 'http://localhost:8080' });
+const axiosInstance: AxiosInstance = axios.create({ baseURL: 'https://plantapi.ianday.me:443' });
 
 axiosInstance.interceptors.request.use(
   (config) => {
