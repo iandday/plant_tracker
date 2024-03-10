@@ -27,7 +27,7 @@ import Locations from './pages/Locations';
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const [mode, setMode] = React.useState();
+  const [mode, setMode] = React.useState('dark');
 
   React.useEffect(() => {
     setMode(prefersDarkMode ? 'dark' : 'light');

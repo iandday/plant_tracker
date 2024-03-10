@@ -27,10 +27,10 @@ const Areas = () => {
   const locationApi = new LocationApi(undefined, BASE_PATH, axiosInstance);
   const [areaUpdate, setareaUpdate] = useState<number>(0);
 
-  // make a hook
   const [loading, setLoading] = useState(true);
   const [areaData, setAreaData] = useState<AreaReturn>();
   const [locationData, setLocationData] = useState<LocationReturn>();
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -53,7 +53,7 @@ const Areas = () => {
       setLoading(false);
     };
     fetchData();
-  }, [areaUpdate]);
+  }, []);
 
   const [showEdit, setShowEdit] = useState<boolean>(false);
   const [showNew, setShowNew] = useState<boolean>(false);
@@ -146,7 +146,12 @@ const Areas = () => {
       console.error(err);
     }
   };
-  return loading ? (
+
+  if (loading) {
+    return <>Still loading...</>;
+  }
+
+  return (
     <>
       <Grid container justifyContent="space-between" style={{ marginBottom: 1 }}>
         <Grid item xs={12}>
@@ -350,7 +355,7 @@ const Areas = () => {
       </Grid>
       <LabelBottomNavigation />
     </>
-  ) : null;
+  );
 };
 
 export default Areas;
