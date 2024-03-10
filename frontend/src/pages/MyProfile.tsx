@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { User, UserApi, UserReturn, UserUpdate } from '../services';
+import { useEffect, useState } from 'react';
+import { User, UserApi, UserUpdate } from '../services';
 import { BASE_PATH } from '../services/base';
 import axiosInstance from '../provider/CustomAxios';
 import { Button, ButtonGroup, Grid, TextField, Typography } from '@mui/material';
@@ -30,7 +30,13 @@ const MyProfile = () => {
     fetchData();
   }, [profileUpdate]);
 
-  const { register, handleSubmit, reset, control, setValue } = useForm<UserUpdate>({
+  const {
+    //register,
+    handleSubmit,
+    reset,
+    control
+    //setValue
+  } = useForm<UserUpdate>({
     defaultValues: { ...userData }
   });
 
@@ -49,6 +55,11 @@ const MyProfile = () => {
       console.error(err);
     }
   };
+
+  if (loading) {
+    return <>Still loading...</>;
+  }
+
   return (
     <div>
       <Grid item xs={12}>
@@ -76,17 +87,14 @@ const MyProfile = () => {
 
         <Grid item xs={12} sx={{ mt: 2 }}>
           {showEdit ? (
-            <form onSubmit={handleSubmit(editOnSubmit)}>
+            <form onSubmit={handleSubmit(() => editOnSubmit)}>
               <Grid container>
                 <Grid item xs={7} justifyContent="flex-start">
                   <Controller
                     name="first_name"
                     control={control}
                     rules={{ required: true }}
-                    render={({
-                      field: { onChange, onBlur, value, ref },
-                      fieldState: { invalid, isTouched, isDirty, error }
-                    }) => (
+                    render={({ field: { onChange, onBlur, value } }) => (
                       <TextField
                         onChange={onChange}
                         onBlur={onBlur}
@@ -101,10 +109,7 @@ const MyProfile = () => {
                     name="last_name"
                     control={control}
                     rules={{ required: true }}
-                    render={({
-                      field: { onChange, onBlur, value, ref },
-                      fieldState: { invalid, isTouched, isDirty, error }
-                    }) => (
+                    render={({ field: { onChange, onBlur, value } }) => (
                       <TextField
                         onChange={onChange}
                         onBlur={onBlur}
@@ -119,10 +124,7 @@ const MyProfile = () => {
                     name="email"
                     control={control}
                     rules={{ required: true }}
-                    render={({
-                      field: { onChange, onBlur, value, ref },
-                      fieldState: { invalid, isTouched, isDirty, error }
-                    }) => (
+                    render={({ field: { onChange, onBlur, value } }) => (
                       <TextField
                         onChange={onChange}
                         onBlur={onBlur}
@@ -137,7 +139,7 @@ const MyProfile = () => {
                     <Button type="submit" variant="contained" sx={{ mt: 0 }}>
                       Submit
                     </Button>
-                    <Button variant="contained" onClick={reset} sx={{ mt: 0 }}>
+                    <Button variant="contained" onClick={() => reset} sx={{ mt: 0 }}>
                       Reset
                     </Button>
                   </ButtonGroup>

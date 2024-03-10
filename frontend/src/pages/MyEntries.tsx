@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
 import { EntryApi, EntryReturn, Plant, PlantApi } from '../services';
 import axiosInstance from '../provider/CustomAxios';
@@ -11,7 +11,6 @@ const MyEntries = () => {
   const plantApi = new PlantApi(undefined, BASE_PATH, axiosInstance);
   const [loading, setLoading] = useState(true);
   const [entryData, setEntryData] = useState<EntryReturn>();
-  const [entryUpdate, setEntryUpdate] = useState<number>(0);
   const [plantData, setPlantData] = useState<Plant[]>([]);
   const [plantDataLoaded, setPlantDataLoaded] = useState(false);
 
@@ -27,7 +26,7 @@ const MyEntries = () => {
           const temp: Plant[] = [];
           var results: AxiosResponse<Plant>[] = await Promise.all(
             response.data.results.map(
-              async (item): Promise => await plantApi.getPlantByIdPlantPlantIdGet(item.plant_id)
+              async (item): Promise<AxiosResponse<Plant>> => await plantApi.getPlantByIdPlantPlantIdGet(item.plant_id)
             )
           );
 
@@ -52,9 +51,9 @@ const MyEntries = () => {
       setPlantDataLoaded(true);
     };
     fetchData();
-  }, [entryUpdate]);
+  }, []);
 
-  function findArrayElementByID(array: Plant[], id: string): Plant {
+  function findArrayElementByID(array: Plant[], id: string): Plant | any {
     const result = array.find((element: Plant) => element.id === id);
     if (result) {
       return result;
@@ -63,7 +62,7 @@ const MyEntries = () => {
     }
   }
 
-  if (!plantDataLoaded) {
+  if (!plantDataLoaded && loading) {
     return <>still loading plant: {plantDataLoaded}</>;
   }
   return (

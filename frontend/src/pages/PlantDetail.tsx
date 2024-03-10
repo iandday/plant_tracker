@@ -28,7 +28,6 @@ const PlantDetail = () => {
   const api = new PlantApi(undefined, BASE_PATH, axiosInstance);
   const areaApi = new AreaApi(undefined, BASE_PATH, axiosInstance);
   const [loading, setLoading] = useState(true);
-  const [plantUpdate, setPlantUpdate] = useState<number>(0);
   const [areaData, setAreaData] = useState<Area>();
   const [plantData, setPlantData] = useState<Plant>();
 
@@ -53,7 +52,7 @@ const PlantDetail = () => {
       setLoading(false);
     };
     fetchData();
-  }, [plantUpdate]);
+  }, []);
 
   const navigate = useNavigate();
 
@@ -76,6 +75,10 @@ const PlantDetail = () => {
     console.info(`You clicked`);
   };
   // end reference menu item
+
+  if (loading) {
+    return <>Still loading...</>;
+  }
 
   return (
     <>

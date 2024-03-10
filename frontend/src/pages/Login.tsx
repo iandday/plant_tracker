@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { UserApi } from '../services/index';
 import { useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -11,11 +10,6 @@ export interface Login {
 const Login = () => {
   const api = new UserApi();
   const navigate = useNavigate();
-
-  const [credentials, setCredentials] = useState({
-    email: '',
-    password: ''
-  });
 
   const onSubmit: SubmitHandler<Login> = async (data: Login) => {
     try {
@@ -51,7 +45,7 @@ const Login = () => {
                 label="Email"
                 type="filled"
                 {...register('email')}
-                error={errors.name ? true : false}
+                error={errors.email ? true : false}
                 sx={{ pt: 5 }}
               />
               <TextField
@@ -61,7 +55,7 @@ const Login = () => {
                 label="Password"
                 type="password"
                 {...register('password')}
-                error={errors.name ? true : false}
+                error={errors.password ? true : false}
                 sx={{ pt: 5 }}
               />
 

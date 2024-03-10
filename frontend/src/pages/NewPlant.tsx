@@ -7,17 +7,13 @@ import {
   CardContent,
   CardMedia,
   Grid,
-  MenuItem,
-  Select,
   TextField,
   Typography
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
-  ActivityCreate,
   AreaApi,
   AreaReturn,
-  PlantApi,
   PlantCreateTrefle,
   PlantSearchResultsTrefle,
   PlantSearchTrefle,
@@ -28,7 +24,7 @@ import { BASE_PATH } from '../services/base';
 import axiosInstance from '../provider/CustomAxios';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 interface int_NewPlantForm {
   id: Number;
@@ -45,14 +41,12 @@ const NewPlant = () => {
   const [selectedPlant, setSelectedPlant] = useState<Number>();
 
   const areaAPI = new AreaApi(undefined, BASE_PATH, axiosInstance);
-  const [areaUpdate, setareaUpdate] = useState<number>(0);
-  const [areaData, setAreaData] = useState<AreaReturn>([]);
+  const [areaData, setAreaData] = useState<AreaReturn>();
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        //const response = await APIClient.get(`/area`);
         const response = await areaAPI.getAreasAreaGet();
         if (response.status === 200) {
           setAreaData(response.data);
@@ -63,22 +57,28 @@ const NewPlant = () => {
       setLoading(false);
     };
     fetchData();
-  }, [areaUpdate]);
+  }, []);
 
-  const { register, handleSubmit, reset, control, setValue } = useForm<PlantSearchTrefle>({
+  const {
+    //register,
+    handleSubmit,
+    //reset,
+    control
+    //setValue
+  } = useForm<PlantSearchTrefle>({
     defaultValues: { query: '' }
   });
 
   const {
-    register: newRegister,
+    //register: newRegister,
     handleSubmit: newHandleSubmit,
-    reset: newReset,
-    control: newControl,
-    setValue: newSetValue
+    //reset: newReset,
+    control: newControl
+    //setValue: newSetValue
   } = useForm<int_NewPlantForm>({
     defaultValues: {
       id: Number(selectedPlant),
-      purchase_date: dayjs(Date.now()),
+      purchase_date: dayjs(Date.now()).toDate(),
       area: undefined,
       name: undefined
     }
@@ -114,6 +114,10 @@ const NewPlant = () => {
     }
   };
 
+  if (loading) {
+    return <>Still loading...</>;
+  }
+
   return (
     <>
       <Grid container justifyContent="space-between" style={{ marginBottom: 1 }}>
@@ -132,10 +136,7 @@ const NewPlant = () => {
                   name="query"
                   control={control}
                   rules={{ required: true }}
-                  render={({
-                    field: { onChange, onBlur, value, ref },
-                    fieldState: { invalid, isTouched, isDirty, error }
-                  }) => (
+                  render={({ field: { onChange, onBlur, value } }) => (
                     <TextField
                       onChange={onChange}
                       onBlur={onBlur}
@@ -171,7 +172,7 @@ const NewPlant = () => {
                         setSelectedPlant(value.id);
                       }}
                     >
-                      <CardMedia sx={{ height: 140, width: 300 }} image={value.photo_url} title="green iguana" />
+                      <CardMedia sx={{ height: 140, width: 300 }} image={value.photo_url!} title="plant image" />
                       <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
                           {value.common_name}
@@ -208,10 +209,7 @@ const NewPlant = () => {
                   name="name"
                   control={newControl}
                   rules={{ required: true }}
-                  render={({
-                    field: { onChange, onBlur, value, ref },
-                    fieldState: { invalid, isTouched, isDirty, error }
-                  }) => (
+                  render={({ field: { onChange, onBlur, value } }) => (
                     <TextField
                       onChange={onChange}
                       onBlur={onBlur}
@@ -225,14 +223,15 @@ const NewPlant = () => {
                 <Controller
                   control={newControl}
                   name="area"
-                  render={({ field: { onChange, value } }) => (
+                  render={({ field: { onChange } }) => (
                     <Autocomplete
                       id="area"
                       isOptionEqualToValue={(option, value) => option.id === value.id}
-                      options={areaData.results}
+                      options={areaData!.results}
                       getOptionLabel={(option) => option.name}
                       onChange={(event, data) => {
                         onChange(data?.id);
+                        console.log(event);
                       }}
                       renderInput={(params) => <TextField {...params} variant="outlined" label="Area" />}
                     />

@@ -1,6 +1,4 @@
-import { Card, Grid, IconButton, ImageListItem, ImageListItemBar, Tooltip, Typography } from '@mui/material';
-import InfoIcon from '@mui/icons-material/Info';
-import { useNavigate } from 'react-router-dom';
+import { Grid, Typography } from '@mui/material';
 import { AreaApi, AreaReturn, PlantApi, PlantReturn } from '../services';
 import { useEffect, useState } from 'react';
 import LabelBottomNavigation from '../components/Navigation';

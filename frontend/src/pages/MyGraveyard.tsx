@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AreaApi, AreaReturn, PlantApi, PlantReturn } from '../services';
 import { Grid, Typography } from '@mui/material';
 import PlantListing from '../components/PlantListing';

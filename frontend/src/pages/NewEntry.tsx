@@ -1,33 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import {
-  ActivityApi,
-  ActivityReturn,
-  EntryApi,
-  EntryCreate,
-  AreaReturn,
-  Plant,
-  PlantApi,
-  PlantPatch,
-  PlantReturn
-} from '../services';
+import { ActivityApi, ActivityReturn, EntryApi, EntryCreate, Plant, PlantApi, PlantReturn } from '../services';
 import { BASE_PATH } from '../services/base';
 import axiosInstance from '../provider/CustomAxios';
 import { Controller, useForm } from 'react-hook-form';
-import { AxiosError } from 'axios';
 import {
   Box,
   Button,
   ButtonGroup,
   Chip,
-  FormControlLabel,
   FormLabel,
   Grid,
   MenuItem,
   NativeSelect,
   OutlinedInput,
-  Radio,
-  RadioGroup,
   Select,
   Stack,
   TextField,
@@ -35,12 +21,6 @@ import {
 } from '@mui/material';
 import { DateTimePicker } from '@mui/x-date-pickers';
 import dayjs, { Dayjs } from 'dayjs';
-import MoodBadIcon from '@mui/icons-material/MoodBad';
-import SentimentNeutralIcon from '@mui/icons-material/SentimentNeutral';
-import SickIcon from '@mui/icons-material/Sick';
-import MoodIcon from '@mui/icons-material/Mood';
-import AddReactionIcon from '@mui/icons-material/AddReaction';
-
 import { styled } from '@mui/material/styles';
 import Rating, { IconContainerProps } from '@mui/material/Rating';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
@@ -89,13 +69,12 @@ function IconContainer(props: IconContainerProps) {
 }
 
 const NewEntry = () => {
-  const { id } = useParams();
+  const { id = '' } = useParams();
   const navigate = useNavigate();
 
   const activityAPI = new ActivityApi(undefined, BASE_PATH, axiosInstance);
   const [loading, setLoading] = useState(true);
-  const [activityUpdate, setActivityUpdate] = useState<number>(0);
-  const [activityData, setActivityData] = useState<ActivityReturn>([]);
+  const [activityData, setActivityData] = useState<ActivityReturn>();
   const [plantData, setPlantData] = useState<Plant>();
   const [allPlantData, setAllPlantData] = useState<PlantReturn>();
   const entryAPI = new EntryApi(undefined, BASE_PATH, axiosInstance);
@@ -144,11 +123,11 @@ const NewEntry = () => {
   }
 
   const {
-    register,
+    //register,
     handleSubmit,
     reset,
-    control,
-    formState: { errors }
+    control
+    //formState: { errors }
   } = useForm<EntryCreateForm>({
     defaultValues: { plant_id: id, timestamp: dayjs(new Date()), plant_health: 5, activities: [], notes: '' }
   });
@@ -165,12 +144,12 @@ const NewEntry = () => {
       if (response.status === 200) {
         navigate(`/myPlants/${id}`);
       }
-    } catch (err: AxiosError) {
+    } catch (err: any) {
       console.log(err);
     }
   };
 
-  const [value, setValue] = React.useState<number | null>(2);
+  //const [value, setValue] = React.useState<number | null>(2);
   const [hover, setHover] = React.useState(1);
 
   return (
@@ -192,17 +171,8 @@ const NewEntry = () => {
                   name="plant_id"
                   control={control}
                   rules={{ required: false }}
-                  render={({
-                    field: { onChange, onBlur, value, ref },
-                    fieldState: { invalid, isTouched, isDirty, error }
-                  }) => (
-                    <NativeSelect
-                      label="Plant"
-                      multiple
-                      value={value || []}
-                      onChange={onChange}
-                      input={<OutlinedInput label="Plant" />}
-                    >
+                  render={({ field: { onChange, value } }) => (
+                    <NativeSelect value={value || []} onChange={onChange} input={<OutlinedInput label="Plant" />}>
                       {allPlantData.results.map((plant) => (
                         <option key={plant.name} value={plant.id}>
                           {plant.name}
@@ -233,10 +203,7 @@ const NewEntry = () => {
                   name="activities"
                   control={control}
                   rules={{ required: false }}
-                  render={({
-                    field: { onChange, onBlur, value, ref },
-                    fieldState: { invalid, isTouched, isDirty, error }
-                  }) => (
+                  render={({ field: { onChange, value } }) => (
                     <Select
                       label="Activities"
                       multiple
@@ -246,7 +213,7 @@ const NewEntry = () => {
                       renderValue={(selected) => (
                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                           {selected.map((value) => (
-                            <Chip key={value} label={activityData.results.find((o) => o.id === value).name} />
+                            <Chip key={value} label={activityData.results.find((o) => o.id === value)!.name} />
                           ))}
                         </Box>
                       )}
@@ -263,10 +230,7 @@ const NewEntry = () => {
                   name="plant_health"
                   control={control}
                   rules={{ required: false }}
-                  render={({
-                    field: { onChange, onBlur, value, ref },
-                    fieldState: { invalid, isTouched, isDirty, error }
-                  }) => (
+                  render={({ field: { onChange, value } }) => (
                     <>
                       <FormLabel>Plant Health</FormLabel>
                       <StyledRating
@@ -279,6 +243,7 @@ const NewEntry = () => {
                         onChange={onChange}
                         onChangeActive={(event, newHover) => {
                           setHover(newHover);
+                          console.log(event);
                         }}
                       />
                       <Box sx={{ ml: 2 }}>{customIcons[hover !== 1 && hover !== -1 ? hover : value].label}</Box>
@@ -290,10 +255,7 @@ const NewEntry = () => {
                   name="notes"
                   control={control}
                   rules={{ required: false }}
-                  render={({
-                    field: { onChange, onBlur, value, ref },
-                    fieldState: { invalid, isTouched, isDirty, error }
-                  }) => (
+                  render={({ field: { onChange, onBlur, value } }) => (
                     <TextField
                       onChange={onChange}
                       onBlur={onBlur}
