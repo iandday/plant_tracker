@@ -52,7 +52,7 @@ function App() {
         <ColorModeContext.Provider value={colorMode}>
           <ThemeProvider theme={theme}>
             <CssBaseline />
-            <HashRouter>
+            <HashRouter basename="/plant_tracker/#">
               <Routes>
                 <Route path="/" element={<MyPlants />} />
                 <Route path="/myGraveyard" element={<MyGraveyard />} />
