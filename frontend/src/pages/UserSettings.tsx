@@ -40,14 +40,24 @@ const UserSettings = () => {
         </Button>
 
         {!token && (
-          <Button
-            variant="text"
-            onClick={() => {
-              navigate(`/login`);
-            }}
-          >
-            Login
-          </Button>
+          <>
+            <Button
+              variant="text"
+              onClick={() => {
+                navigate(`/login`);
+              }}
+            >
+              Login
+            </Button>
+            <Button
+              variant="text"
+              onClick={() => {
+                navigate(`/register`);
+              }}
+            >
+              Register
+            </Button>
+          </>
         )}
         {token && (
           <Button
