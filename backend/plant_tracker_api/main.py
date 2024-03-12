@@ -14,8 +14,6 @@ from alembic import command
 
 logger = logging.getLogger("uvicorn")
 
-origins = [os.getenv("FRONTEND_URL")]
-
 
 def seed_database():
     logger.info("Seeding the database")
@@ -61,6 +59,10 @@ async def lifespan(app_: FastAPI):
 
 app = FastAPI(title="Plant Tracker API", lifespan=lifespan)
 app.add_middleware(DBSessionMiddleware, db_url=os.environ["DATABASE_URL"])
+
+
+origins = [os.getenv("FRONTEND_URL")]
+logger.info(origins)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,

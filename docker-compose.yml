@@ -17,6 +17,7 @@ services:
       - JWT_REFRESH_SECRET_KEY=${JWT_REFRESH_SECRET_KEY}
       - JWT_SECRET_KEY=${JWT_SECRET_KEY}
       - ENABLE_REGISTRATION=${ENABLE_REGISTRATION}
+      - FRONTEND_URL=${FRONTEND_URL}
   db:
     image: postgres:14.5
     ports:
