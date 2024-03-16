@@ -1,4 +1,4 @@
-import { UserApi } from '../services/index';
+import { UserApi, UserCreate } from '../services/index';
 import { useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button, ButtonGroup, Grid, Stack, TextField } from '@mui/material';
@@ -6,6 +6,8 @@ import { Button, ButtonGroup, Grid, Stack, TextField } from '@mui/material';
 export interface Register {
   email: string;
   password: string;
+  first_name: string;
+  last_name: string;
 }
 const Register = () => {
   const api = new UserApi();
@@ -13,15 +15,20 @@ const Register = () => {
 
   const onSubmit: SubmitHandler<Register> = async (data: Register) => {
     try {
-      const response = await api.loginUserLoginPost(data.email, data.password);
-      const { access_token, refresh_token } = response.data;
+      const register_data: UserCreate = {
+        email: data.email,
+        password: data.password,
+        first_name: data.first_name,
+        last_name: data.last_name,
+        disabled: false
+      };
+      const response = await api.createUserUserPost(register_data);
 
-      // Store the tokens in localStorage or secure cookie for later use
-      localStorage.setItem('token', access_token);
-      localStorage.setItem('refreshToken', refresh_token);
-      navigate(`/`);
+      if (response.status === 200) {
+        navigate('/');
+      }
     } catch (error) {
-      // Handle login error
+      reset;
     }
   };
 
@@ -56,6 +63,26 @@ const Register = () => {
                 type="password"
                 {...register('password')}
                 error={errors.password ? true : false}
+                sx={{ pt: 5 }}
+              />
+              <TextField
+                fullWidth
+                required
+                id="first_name"
+                label="First Name"
+                type="filled"
+                {...register('first_name')}
+                error={errors.first_name ? true : false}
+                sx={{ pt: 5 }}
+              />
+              <TextField
+                fullWidth
+                required
+                id="last_name"
+                label="Last Name"
+                type="filled"
+                {...register('last_name')}
+                error={errors.last_name ? true : false}
                 sx={{ pt: 5 }}
               />
 

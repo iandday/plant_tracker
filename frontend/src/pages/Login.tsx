@@ -34,11 +34,7 @@ const Login = () => {
 
   return (
     <>
-      <form
-        onSubmit={handleSubmit(() => {
-          onSubmit;
-        })}
-      >
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={0} direction="column" alignItems="center" sx={{ minHeight: '100vh' }}>
           <Grid item>
             <Stack>
