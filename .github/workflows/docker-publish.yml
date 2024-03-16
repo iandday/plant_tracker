@@ -22,10 +22,10 @@ jobs:
     strategy:
       matrix:
         include:
-          - dockerfile: Dockerfile
+          - dockerfile: ./frontend/Dockerfile
             context: ./frontend/
             image: ghcr.io/iandday/plant_tracker_frontend
-          - dockerfile: Dockerfile
+          - dockerfile: ./backend/Dockerfile
             context: ./backend/
             image: ghcr.io/iandday/plant_tracker_frontend
     permissions:
