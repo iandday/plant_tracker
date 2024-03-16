@@ -22,9 +22,11 @@ jobs:
     strategy:
       matrix:
         include:
-          - dockerfile: ./frontend/Dockerfile
+          - dockerfile: Dockerfile
+            context: ./frontend/
             image: ghcr.io/iandday/plant_tracker_frontend
-          - dockerfile: ./backend/Dockerfile
+          - dockerfile: Dockerfile
+            context: ./backend/
             image: ghcr.io/iandday/plant_tracker_frontend
     permissions:
       contents: read
@@ -73,7 +75,7 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ${{ matrix.context }}
           file: ${{ matrix.dockerfile}}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
