@@ -14,14 +14,18 @@ on:
     branches: ["main"]
 
 env:
-  # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
-  # github.repository as <account>/<repo>
-  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - dockerfile: ./frontend/Dockerfile
+            image: ghcr.io/iandday/plant_tracker_frontend
+          - dockerfile: ./backend/Dockerfile
+            image: ghcr.io/iandday/plant_tracker_frontend
     permissions:
       contents: read
       packages: write
@@ -61,7 +65,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ matrix.image }}
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
@@ -69,8 +73,8 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@v5
         with:
-          context: ./
-          file: ./backend/Dockerfile
+          context: .
+          file: ${{ matrix.dockerfile}}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
