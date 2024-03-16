@@ -24,6 +24,7 @@ import NewEntry from './pages/NewEntry';
 import EntryDetail from './pages/EntryDetail';
 import MyGraveyard from './pages/MyGraveyard';
 import Locations from './pages/Locations';
+import Register from './pages/Register';
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -65,7 +66,7 @@ function App() {
                 <Route path="/areas" element={<Areas />} />
                 <Route path="/locations" element={<Locations />} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Login />} />
+                <Route path="/register" element={<Register />} />
                 <Route path="/myProfile" element={<MyProfile />} />
                 <Route path="/newPlant" element={<NewPlant />} />
                 <Route path="/newEntry/:id?" element={<NewEntry />} />
