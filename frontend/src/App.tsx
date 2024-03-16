@@ -1,7 +1,7 @@
 import { Routes } from 'react-router';
 import Navigation from './components/Navigation';
 import MyPlants from './pages/MyPlants';
-import { HashRouter, Navigate, Route } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route } from 'react-router-dom';
 import MyEntries from './pages/MyEntries';
 import UserSettings from './pages/UserSettings';
 import PlantDetail from './pages/PlantDetail';
@@ -52,7 +52,7 @@ function App() {
         <ColorModeContext.Provider value={colorMode}>
           <ThemeProvider theme={theme}>
             <CssBaseline />
-            <HashRouter>
+            <BrowserRouter>
               <Routes>
                 <Route path="/" element={<MyPlants />} />
                 <Route path="/myGraveyard" element={<MyGraveyard />} />
@@ -72,7 +72,7 @@ function App() {
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
               <Navigation />
-            </HashRouter>
+            </BrowserRouter>
           </ThemeProvider>
         </ColorModeContext.Provider>
       </LocalizationProvider>
