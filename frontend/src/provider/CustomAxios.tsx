@@ -42,7 +42,7 @@ axiosInstance.interceptors.response.use(
       } catch (error) {
         console.log('refresh failed');
 
-        //if (window.location.href = '/login';
+        window.location.href = '/login';
       }
     }
 

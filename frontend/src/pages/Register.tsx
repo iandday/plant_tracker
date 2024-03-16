@@ -25,7 +25,7 @@ const Register = () => {
       const response = await api.createUserUserPost(register_data);
 
       if (response.status === 200) {
-        navigate('/');
+        navigate('/login');
       }
     } catch (error) {
       reset;
@@ -45,7 +45,7 @@ const Register = () => {
         <Grid container spacing={0} direction="column" alignItems="center" sx={{ minHeight: '100vh' }}>
           <Grid item>
             <Stack>
-              <h1> Login</h1>
+              <h1>Register</h1>
               <TextField
                 required
                 id="email"
