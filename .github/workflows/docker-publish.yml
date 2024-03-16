@@ -23,10 +23,10 @@ jobs:
       matrix:
         include:
           - dockerfile: ./frontend/Dockerfile
-            context: ./frontend/
+            context: .
             image: ghcr.io/iandday/plant_tracker_frontend
           - dockerfile: ./backend/Dockerfile
-            context: ./backend/
+            context: .
             image: ghcr.io/iandday/plant_tracker_frontend
     permissions:
       contents: read
