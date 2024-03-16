@@ -23,7 +23,7 @@ jobs:
       matrix:
         include:
           - dockerfile: ./frontend/Dockerfile
-            context: .
+            context: ./frontend
             image: ghcr.io/iandday/plant_tracker_frontend
           - dockerfile: ./backend/Dockerfile
             context: .
