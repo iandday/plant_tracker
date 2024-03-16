@@ -41,8 +41,8 @@ axiosInstance.interceptors.response.use(
         return axios(originalRequest);
       } catch (error) {
         console.log('refresh failed');
-        window.location.href = '/login';
-        //navigate('/login'); How do i do this?
+
+        //if (window.location.href = '/login';
       }
     }
 
