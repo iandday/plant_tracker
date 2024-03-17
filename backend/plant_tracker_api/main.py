@@ -1,6 +1,5 @@
 from contextlib import asynccontextmanager
 import json
-import logging
 import sys
 import uvicorn
 import os
@@ -12,11 +11,12 @@ from routers import source, plant, area, user, activity, entry, location
 from sqlalchemy import event
 from alembic.config import Config
 from alembic import command
-from fastapi.logger import logger
+from logging.config import dictConfig
+import logging
+from config import LogConfig
 
-gunicorn_logger = logging.getLogger("gunicorn.error")
-logger.handlers = gunicorn_logger.handlers
-logger.setLevel(gunicorn_logger.level)
+dictConfig(LogConfig().dict())
+logger = logging.getLogger("mycoolapp")
 
 
 def seed_database():
