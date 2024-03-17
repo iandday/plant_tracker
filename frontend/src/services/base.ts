@@ -19,7 +19,7 @@ import type { Configuration } from './configuration';
 import type { AxiosPromise, AxiosInstance, AxiosRequestConfig } from 'axios';
 import globalAxios from 'axios';
 
-export const BASE_PATH = "https://plantapi.ianday.me:443".replace(/\/+$/, "");
+export const BASE_PATH = import.meta.env.VITE_BACKEND_URL.replace(/\/+$/, "");
 
 /**
  *
