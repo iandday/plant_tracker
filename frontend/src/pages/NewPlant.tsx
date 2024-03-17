@@ -23,12 +23,12 @@ import { Controller, useForm } from 'react-hook-form';
 import { BASE_PATH } from '../services/base';
 import axiosInstance from '../provider/CustomAxios';
 import { DatePicker } from '@mui/x-date-pickers';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { useNavigate } from 'react-router-dom';
 
 interface int_NewPlantForm {
   id: Number;
-  purchase_date: Date;
+  purchase_date: Dayjs;
   area: string;
   name: string;
 }
@@ -78,7 +78,7 @@ const NewPlant = () => {
   } = useForm<int_NewPlantForm>({
     defaultValues: {
       id: Number(selectedPlant),
-      purchase_date: dayjs(Date.now()).toDate(),
+      purchase_date: dayjs(),
       area: undefined,
       name: undefined
     }
@@ -101,7 +101,7 @@ const NewPlant = () => {
         id: Number(selectedPlant),
         name: data.name,
         area: data.area,
-        purchase_date: data.purchase_date.toISOString().split('T')[0]
+        purchase_date: data.purchase_date.format('YYYY-MM-DD')
       };
       const response = await api.createPlantTreflePlantTrefleCreatePost({
         ...createData
