@@ -16,12 +16,12 @@ ENV \
     POETRY_NO_INTERACTION=1 \
     POETRY_VIRTUALENVS_IN_PROJECT=true
 
-COPY --chown=apiuser:apiuser ./backend/pyproject.toml ./backend/poetry.lock ./backend/plant_tracker_api/alembic.ini ./
+COPY --chown=apiuser:apiuser pyproject.toml poetry.lock plant_tracker_api/alembic.ini ./
 RUN --mount=type=cache,target=/root/.cache poetry install
 
 FROM base as dev
 
-COPY --chown=apiuser:apiuser ./backend/$PROJECT /home/apiuser/$PROJECT
+COPY --chown=apiuser:apiuser .$PROJECT /home/apiuser/$PROJECT
 
 WORKDIR /home/apiuser/$PROJECT
 
