@@ -9,6 +9,7 @@ import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied
 import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAltOutlined';
 import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
+import { Helmet } from 'react-helmet';
 
 type editParams = {
   id: string;
@@ -73,6 +74,9 @@ const EntryDetail = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{import.meta.env.VITE_APP_NAME + ' | Plant Detail'}</title>
+      </Helmet>
       <Typography variant="h4" align="center">
         {entryData?.activities.map((a) => a.name).join(', ')}
       </Typography>

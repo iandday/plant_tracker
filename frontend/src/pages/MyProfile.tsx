@@ -4,6 +4,7 @@ import { BASE_PATH } from '../services/base';
 import axiosInstance from '../provider/CustomAxios';
 import { Button, ButtonGroup, Grid, TextField, Typography } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
+import { Helmet } from 'react-helmet';
 
 const MyProfile = () => {
   const api = new UserApi(undefined, BASE_PATH, axiosInstance);
@@ -62,6 +63,9 @@ const MyProfile = () => {
 
   return (
     <div>
+      <Helmet>
+        <title>{import.meta.env.VITE_APP_NAME + ' | My Profile'}</title>
+      </Helmet>
       <Grid item xs={12}>
         <Typography variant="h4" align="center">
           My Profile

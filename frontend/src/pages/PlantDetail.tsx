@@ -22,6 +22,7 @@ import React, { useEffect, useState } from 'react';
 import { Area, AreaApi, Plant, PlantApi, Source } from '../services';
 import { BASE_PATH } from '../services/base';
 import axiosInstance from '../provider/CustomAxios';
+import { Helmet } from 'react-helmet';
 
 const PlantDetail = () => {
   const { id } = useParams();
@@ -82,6 +83,9 @@ const PlantDetail = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{import.meta.env.VITE_APP_NAME + ' | ' + plantData?.name}</title>
+      </Helmet>
       <Typography variant="h4" align="center">
         {plantData?.name}
       </Typography>

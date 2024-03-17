@@ -21,6 +21,7 @@ import { Area, AreaApi, AreaCreate, AreaReturn, LocationApi, Location, LocationR
 import LabelBottomNavigation from '../components/Navigation';
 import axiosInstance from '../provider/CustomAxios';
 import { BASE_PATH } from '../services/base';
+import { Helmet } from 'react-helmet';
 
 const Areas = () => {
   const api = new AreaApi(undefined, BASE_PATH, axiosInstance);
@@ -153,6 +154,9 @@ const Areas = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{import.meta.env.VITE_APP_NAME + ' | Areas'}</title>
+      </Helmet>
       <Grid container justifyContent="space-between" style={{ marginBottom: 1 }}>
         <Grid item xs={12}>
           <Typography variant="h5">Areas</Typography>

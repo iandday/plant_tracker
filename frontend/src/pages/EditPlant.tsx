@@ -6,6 +6,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { AreaApi, AreaReturn, Plant, PlantApi, PlantPatch } from '../services';
 import { BASE_PATH } from '../services/base';
 import axiosInstance from '../provider/CustomAxios';
+import { Helmet } from 'react-helmet';
 
 type editParams = {
   id: string;
@@ -64,6 +65,9 @@ const EditPlant = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{import.meta.env.VITE_APP_NAME + ' | Edit Plant'}</title>
+      </Helmet>
       {plantData && !loading ? (
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={0} direction="column" alignItems="center" sx={{ minHeight: '100vh' }}>

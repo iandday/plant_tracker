@@ -28,6 +28,7 @@ import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied
 import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAltOutlined';
 import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
+import { Helmet } from 'react-helmet';
 
 const StyledRating = styled(Rating)(({ theme }) => ({
   '& .MuiRating-iconEmpty .MuiSvgIcon-root': {
@@ -154,6 +155,9 @@ const NewEntry = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{import.meta.env.VITE_APP_NAME + ' | New Entry'}</title>
+      </Helmet>
       <Grid container justifyContent="space-between" style={{ marginBottom: 1 }}>
         <Grid item xs={12}>
           <Typography variant="h4" align="center">

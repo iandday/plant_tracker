@@ -25,6 +25,7 @@ import axiosInstance from '../provider/CustomAxios';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs, { Dayjs } from 'dayjs';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 interface int_NewPlantForm {
   id: Number;
@@ -120,6 +121,9 @@ const NewPlant = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{import.meta.env.VITE_APP_NAME + ' | New Plant'}</title>
+      </Helmet>
       <Grid container justifyContent="space-between" style={{ marginBottom: 1 }}>
         <Grid item xs={12}>
           <Typography variant="h4" align="center">

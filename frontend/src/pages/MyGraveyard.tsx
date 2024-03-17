@@ -4,6 +4,7 @@ import { Grid, Typography } from '@mui/material';
 import PlantListing from '../components/PlantListing';
 import axiosInstance from '../provider/CustomAxios';
 import { BASE_PATH } from '../services/base';
+import { Helmet } from 'react-helmet';
 
 const MyGraveyard = () => {
   const api = new PlantApi(undefined, BASE_PATH, axiosInstance);
@@ -43,6 +44,9 @@ const MyGraveyard = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{import.meta.env.VITE_APP_NAME + ' | Graveyard'}</title>
+      </Helmet>
       <Grid container justifyContent="space-between" alignItems="stretch" style={{ marginBottom: 8 }}>
         <Grid item xs={12}>
           <Typography variant="h4" align="center">

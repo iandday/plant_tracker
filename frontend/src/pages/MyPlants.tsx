@@ -5,6 +5,7 @@ import LabelBottomNavigation from '../components/Navigation';
 import PlantListing from '../components/PlantListing';
 import axiosInstance from '../provider/CustomAxios';
 import { BASE_PATH } from '../services/base';
+import { Helmet } from 'react-helmet';
 const MyPlants = () => {
   const api = new PlantApi(undefined, BASE_PATH, axiosInstance);
   const areaApi = new AreaApi(undefined, BASE_PATH, axiosInstance);
@@ -38,6 +39,9 @@ const MyPlants = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{import.meta.env.VITE_APP_NAME + ' | My Plants'}</title>
+      </Helmet>
       <Grid container justifyContent="space-between" alignItems="stretch" style={{ marginBottom: 8 }}>
         <Grid item xs={12}>
           <Typography variant="h4" align="center">

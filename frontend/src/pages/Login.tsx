@@ -2,6 +2,7 @@ import { UserApi } from '../services/index';
 import { useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button, ButtonGroup, Grid, Stack, TextField } from '@mui/material';
+import Helmet from 'react-helmet';
 
 export interface Login {
   email: string;
@@ -34,6 +35,9 @@ const Login = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{import.meta.env.VITE_APP_NAME + ' | Login'}</title>
+      </Helmet>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={0} direction="column" alignItems="center" sx={{ minHeight: '100vh' }}>
           <Grid item>

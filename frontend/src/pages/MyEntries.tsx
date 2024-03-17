@@ -5,6 +5,7 @@ import axiosInstance from '../provider/CustomAxios';
 import { BASE_PATH } from '../services/base';
 import { AxiosResponse } from 'axios';
 import { ratingIcons } from '../components/ratings';
+import { Helmet } from 'react-helmet';
 
 const MyEntries = () => {
   const api = new EntryApi(undefined, BASE_PATH, axiosInstance);
@@ -67,6 +68,9 @@ const MyEntries = () => {
   }
   return (
     <>
+      <Helmet>
+        <title>{import.meta.env.VITE_APP_NAME + ' | Activity Entries'}</title>
+      </Helmet>
       <Grid container justifyContent="space-between" alignItems="stretch" style={{ marginBottom: 8 }}>
         <Grid item xs={12}>
           <Typography variant="h4" align="center" style={{ marginBottom: 12 }}>

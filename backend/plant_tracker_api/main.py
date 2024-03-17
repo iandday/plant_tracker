@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 import json
 import logging
+import sys
 import uvicorn
 import os
 from fastapi import FastAPI
@@ -12,7 +13,14 @@ from sqlalchemy import event
 from alembic.config import Config
 from alembic import command
 
-logger = logging.getLogger("uvicorn")
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+stream_handler = logging.StreamHandler(sys.stdout)
+log_formatter = logging.Formatter(
+    "%(asctime)s [%(processName)s: %(process)d] [%(threadName)s: %(thread)d] [%(levelname)s] %(name)s: %(message)s"
+)
+stream_handler.setFormatter(log_formatter)
+logger.addHandler(stream_handler)
 
 
 def seed_database():

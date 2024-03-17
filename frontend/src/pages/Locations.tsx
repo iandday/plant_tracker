@@ -20,6 +20,7 @@ import { Location, LocationApi, LocationCreate, LocationReturn } from '../servic
 import LabelBottomNavigation from '../components/Navigation';
 import axiosInstance from '../provider/CustomAxios';
 import { BASE_PATH } from '../services/base';
+import { Helmet } from 'react-helmet';
 
 const Locations = () => {
   const api = new LocationApi(undefined, BASE_PATH, axiosInstance);
@@ -142,6 +143,9 @@ const Locations = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{import.meta.env.VITE_APP_NAME + ' | Locations'}</title>
+      </Helmet>
       <Grid container justifyContent="space-between" style={{ marginBottom: 1 }}>
         <Grid item xs={12}>
           <Typography variant="h5">Locations</Typography>
