@@ -26,8 +26,8 @@ jobs:
             context: ./frontend
             image: ghcr.io/iandday/plant_tracker_frontend
           - dockerfile: ./backend/Dockerfile
-            context: .
-            image: ghcr.io/iandday/plant_tracker_frontend
+            context: ./backend
+            image: ghcr.io/iandday/plant_tracker_backend
     permissions:
       contents: read
       packages: write
