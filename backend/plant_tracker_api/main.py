@@ -4,7 +4,7 @@ import logging
 import sys
 import uvicorn
 import os
-from fastapi import FastAPI, logger
+from fastapi import FastAPI
 from fastapi_sqlalchemy import DBSessionMiddleware, db
 from fastapi.middleware.cors import CORSMiddleware
 import models
@@ -12,7 +12,7 @@ from routers import source, plant, area, user, activity, entry, location
 from sqlalchemy import event
 from alembic.config import Config
 from alembic import command
-
+from fastapi.logger import logger
 
 gunicorn_logger = logging.getLogger("gunicorn.error")
 logger.handlers = gunicorn_logger.handlers

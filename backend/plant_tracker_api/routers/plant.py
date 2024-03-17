@@ -11,9 +11,6 @@ from dependencies import get_current_user, get_or_create
 import os
 import logging
 
-gunicorn_logger = logging.getLogger("gunicorn.error")
-logger.handlers = gunicorn_logger.handlers
-logger.setLevel(gunicorn_logger.level)
 
 api_key = os.environ["TREFLE_KEY"]
 
