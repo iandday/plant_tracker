@@ -13,7 +13,7 @@ from alembic.config import Config
 from alembic import command
 from logging.config import dictConfig
 import logging
-from config import LogConfig
+
 
 dictConfig(
     config={
