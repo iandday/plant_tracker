@@ -3,19 +3,19 @@ import ThemeToggler from '../components/ThemeToggler';
 import { useNavigate } from 'react-router-dom';
 import LabelBottomNavigation from '../components/Navigation';
 import { Helmet } from 'react-helmet';
-import axiosInstance from '../provider/CustomAxios';
-import { BASE_PATH } from '../services/base';
-import { AreaApi, AreaReturn, LocationApi, LocationReturn } from '../services';
-import { useState } from 'react';
+// import axiosInstance from '../provider/CustomAxios';
+// import { BASE_PATH } from '../services/base';
+// import { AreaApi, AreaReturn, LocationApi, LocationReturn } from '../services';
+// import { useState } from 'react';
 
 const UserSettings = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
 
-  const locationApi = new LocationApi(undefined, BASE_PATH, axiosInstance);
-  const [locationData, setLocationData] = useState<LocationReturn>();
-  const areaApi = new AreaApi(undefined, BASE_PATH, axiosInstance);
-  const [areaData, setAreaData] = useState<AreaReturn>();
+  // const locationApi = new LocationApi(undefined, BASE_PATH, axiosInstance);
+  // const [locationData, setLocationData] = useState<LocationReturn>();
+  // const areaApi = new AreaApi(undefined, BASE_PATH, axiosInstance);
+  // const [areaData, setAreaData] = useState<AreaReturn>();
 
   return (
     <>

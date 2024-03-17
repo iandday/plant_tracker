@@ -1,5 +1,5 @@
 import datetime
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, logger
 from fastapi_sqlalchemy import db
 from typing import List
 
@@ -11,7 +11,9 @@ from dependencies import get_current_user, get_or_create
 import os
 import logging
 
-logger = logging.getLogger(__name__)
+gunicorn_logger = logging.getLogger("gunicorn.error")
+logger.handlers = gunicorn_logger.handlers
+logger.setLevel(gunicorn_logger.level)
 
 api_key = os.environ["TREFLE_KEY"]
 

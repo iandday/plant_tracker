@@ -4,7 +4,7 @@ import logging
 import sys
 import uvicorn
 import os
-from fastapi import FastAPI
+from fastapi import FastAPI, logger
 from fastapi_sqlalchemy import DBSessionMiddleware, db
 from fastapi.middleware.cors import CORSMiddleware
 import models
@@ -13,14 +13,10 @@ from sqlalchemy import event
 from alembic.config import Config
 from alembic import command
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-stream_handler = logging.StreamHandler(sys.stdout)
-log_formatter = logging.Formatter(
-    "%(asctime)s [%(processName)s: %(process)d] [%(threadName)s: %(thread)d] [%(levelname)s] %(name)s: %(message)s"
-)
-stream_handler.setFormatter(log_formatter)
-logger.addHandler(stream_handler)
+
+gunicorn_logger = logging.getLogger("gunicorn.error")
+logger.handlers = gunicorn_logger.handlers
+logger.setLevel(gunicorn_logger.level)
 
 
 def seed_database():
