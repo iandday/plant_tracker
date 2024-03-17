@@ -21,7 +21,7 @@ RUN --mount=type=cache,target=/root/.cache poetry install
 
 FROM base as dev
 
-COPY --chown=apiuser:apiuser .$PROJECT /home/apiuser/$PROJECT
+COPY --chown=apiuser:apiuser ./$PROJECT /home/apiuser/$PROJECT
 
 WORKDIR /home/apiuser/$PROJECT
 
