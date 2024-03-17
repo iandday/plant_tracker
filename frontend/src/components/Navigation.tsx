@@ -46,7 +46,7 @@ export default function LabelBottomNavigation() {
     >
       <Grid container justifyContent="center">
         <Grid item justifyContent="flex-end">
-          <BottomNavigation sx={{ width: 500 }} value={value} onChange={handleChange} showLabels>
+          <BottomNavigation value={value} onChange={handleChange} showLabels>
             <BottomNavigationAction
               //sx={{ pl: 25 }}
               label="Plants"
