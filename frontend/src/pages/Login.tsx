@@ -14,8 +14,8 @@ const Login = () => {
 
   const onSubmit: SubmitHandler<Login> = async (data: Login) => {
     try {
-      const response = await api.loginUserLoginPost(data.email, data.password);
-      const { access_token, refresh_token } = response.data;
+      const response = await api.trackerApiViewUserNewToken({ email: data.email, password: data.password });
+      const { access: access_token, refresh: refresh_token } = response.data;
 
       // Store the tokens in localStorage or secure cookie for later use
       localStorage.setItem('token', access_token);

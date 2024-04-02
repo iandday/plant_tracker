@@ -1,5 +1,5 @@
 import { Grid, Typography } from '@mui/material';
-import { AreaApi, AreaReturn, PlantApi, PlantReturn } from '../services';
+import { AreaApi, AreaOut, PlantApi, PlantOut } from '../services';
 import { useEffect, useState } from 'react';
 import LabelBottomNavigation from '../components/Navigation';
 import PlantListing from '../components/PlantListing';
@@ -9,13 +9,13 @@ import { Helmet } from 'react-helmet';
 const MyPlants = () => {
   const api = new PlantApi(undefined, BASE_PATH, axiosInstance);
   const areaApi = new AreaApi(undefined, BASE_PATH, axiosInstance);
-  const [areaData, setAreaData] = useState<AreaReturn>();
-  const [plantData, setPlantData] = useState<PlantReturn>();
+  const [areaData, setAreaData] = useState<AreaOut[]>();
+  const [plantData, setPlantData] = useState<PlantOut[]>();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.getPlantPlantGet();
+        const response = await api.trackerApiViewPlantListPlants();
         if (response.status === 200) {
           setPlantData(response.data);
         }
@@ -28,7 +28,7 @@ const MyPlants = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const areaResponse = await areaApi.getAreasAreaGet();
+        const areaResponse = await areaApi.trackerApiViewAreaListAreas();
         if (areaResponse.status === 200) {
           setAreaData(areaResponse.data);
         }

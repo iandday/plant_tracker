@@ -1,6 +1,6 @@
 .env
 frontend2
-
+backend/old
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

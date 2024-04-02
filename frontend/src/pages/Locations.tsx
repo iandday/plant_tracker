@@ -15,7 +15,7 @@ import {
 import { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 
-import { Location, LocationApi, LocationCreate, LocationReturn } from '../services/index';
+import { LocationApi, LocationIn, LocationOut } from '../services/index';
 
 import LabelBottomNavigation from '../components/Navigation';
 import axiosInstance from '../provider/CustomAxios';
@@ -28,13 +28,14 @@ const Locations = () => {
 
   // make a hook
   const [loading, setLoading] = useState(true);
-  const [locationData, setLocationData] = useState<LocationReturn>();
+  const [locationData, setLocationData] = useState<LocationOut[]>();
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
         //const response = await APIClient.get(`/location`);
-        const response = await api.getLocationsLocationGet();
+        const response = await api.trackerApiViewLocationListLocations();
+
         if (response.status === 200) {
           setLocationData(response.data);
         }
@@ -59,7 +60,7 @@ const Locations = () => {
     reset: editReset,
     control: editControl
     //setValue: editSetValue
-  } = useForm<Location>();
+  } = useForm<LocationOut>();
 
   // create location form
   const {
@@ -68,10 +69,10 @@ const Locations = () => {
     reset,
     control
     //setValue
-  } = useForm<LocationCreate>({ defaultValues: { name: '' } });
-  const onSubmit = async (data: LocationCreate) => {
+  } = useForm<LocationIn>({ defaultValues: { name: '' } });
+  const onSubmit = async (data: LocationIn) => {
     try {
-      const response = await api.createLocationLocationPost({ name: data.name });
+      const response = await api.trackerApiViewLocationCreateLocation({ name: data.name });
       if (response.status === 200) {
         setlocationUpdate(locationUpdate + 1);
         setShowNew((oldValue) => !oldValue);
@@ -101,7 +102,7 @@ const Locations = () => {
   useEffect(() => {
     if (selectedLocations.length == 1) {
       if (locationData) {
-        var location = locationData.results.filter((loc: Location) => loc.id === selectedLocations[0]);
+        var location = locationData.filter((loc: LocationOut) => loc.id === selectedLocations[0]);
         editReset({ ...location[0] });
       }
     }
@@ -111,7 +112,7 @@ const Locations = () => {
   const handleDelete = async () => {
     selectedLocations.map(async (loc) => {
       try {
-        const response = await api.deleteLocationLocationLocationIdDelete(loc);
+        const response = await api.trackerApiViewLocationDeleteLocation(loc);
         if (response.status === 200) {
           setlocationUpdate(locationUpdate + 1);
         }
@@ -123,9 +124,12 @@ const Locations = () => {
   };
 
   // edit function
-  const editOnSubmit = async (data: Location) => {
+  const editOnSubmit = async (data: LocationOut) => {
     try {
-      const response = await api.updateLocationLocationLocationIdPatch(data.id, { name: data.name });
+      const response = await api.locationPatchLocation(data.id, {
+        name: data.name,
+        user_id: data!.user!.id!
+      });
 
       if (response.status === 200) {
         setlocationUpdate(locationUpdate + 1);
@@ -157,7 +161,7 @@ const Locations = () => {
               mt: 2
             }}
           >
-            {locationData?.results.map((value) => {
+            {locationData?.map((value) => {
               const labelId = `checkbox-list-secondary-label-${value.id}`;
               return (
                 <ListItem

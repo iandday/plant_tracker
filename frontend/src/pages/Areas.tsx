@@ -16,7 +16,18 @@ import {
 import { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 
-import { Area, AreaApi, AreaCreate, AreaReturn, LocationApi, Location, LocationReturn } from '../services/index';
+import {
+  Area,
+  AreaApi,
+  AreaCreate,
+  AreaReturn,
+  LocationApi,
+  Location,
+  LocationReturn,
+  AreaOut,
+  LocationOut,
+  AreaPatch
+} from '../services/index';
 
 import LabelBottomNavigation from '../components/Navigation';
 import axiosInstance from '../provider/CustomAxios';
@@ -29,18 +40,18 @@ const Areas = () => {
   const [areaUpdate, setareaUpdate] = useState<number>(0);
 
   const [loading, setLoading] = useState(true);
-  const [areaData, setAreaData] = useState<AreaReturn>();
-  const [locationData, setLocationData] = useState<LocationReturn>();
+  const [areaData, setAreaData] = useState<AreaOut[]>();
+  const [locationData, setLocationData] = useState<LocationOut[]>();
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await api.getAreasAreaGet();
+        const response = await api.trackerApiViewAreaListAreas();
         if (response.status === 200) {
           setAreaData(response.data);
           try {
-            const locResponse = await locationApi.getLocationsLocationGet();
+            const locResponse = await locationApi.trackerApiViewLocationListLocations();
             if (locResponse.status === 200) {
               setLocationData(locResponse.data);
             }
@@ -54,13 +65,18 @@ const Areas = () => {
       setLoading(false);
     };
     fetchData();
-  }, []);
+  }, [areaUpdate]);
 
   const [showEdit, setShowEdit] = useState<boolean>(false);
   const [showNew, setShowNew] = useState<boolean>(false);
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [alertText, setAlertText] = useState<string>();
 
+  interface areaEditForm {
+    name: string;
+    location_id: string;
+    id: string;
+  }
   // edit area form
   const {
     //register: editRegister,
@@ -68,7 +84,7 @@ const Areas = () => {
     reset: editReset,
     control: editControl
     //setValue: editSetValue
-  } = useForm<Area>();
+  } = useForm<areaEditForm>();
 
   // create area form
   const {
@@ -82,7 +98,7 @@ const Areas = () => {
   });
   const onSubmit = async (data: AreaCreate) => {
     try {
-      const response = await api.createAreaAreaPost({ name: data.name, location_id: data.location_id });
+      const response = await api.trackerApiViewAreaCreateArea({ name: data.name, location_id: data.location_id });
       if (response.status === 200) {
         setareaUpdate(areaUpdate + 1);
         setShowNew((oldValue) => !oldValue);
@@ -112,8 +128,9 @@ const Areas = () => {
   useEffect(() => {
     if (selectedAreas.length == 1) {
       if (areaData) {
-        var area = areaData.results.filter((loc: Area) => loc.id === selectedAreas[0]);
-        editReset({ ...area[0] });
+        var area = areaData.filter((loc: AreaOut) => loc.id === selectedAreas[0]);
+        console.log(area[0].location.id);
+        editReset({ name: area[0].name, location_id: area[0].location.id, id: area[0].id });
       }
     }
   }, [selectedAreas]);
@@ -122,7 +139,7 @@ const Areas = () => {
   const handleDelete = async () => {
     selectedAreas.map(async (loc) => {
       try {
-        const response = await api.deleteAreaAreaAreaIdDelete(loc);
+        const response = await api.trackerApiViewAreaDeleteArea(loc);
         if (response.status === 200) {
           setareaUpdate(areaUpdate + 1);
         }
@@ -134,9 +151,12 @@ const Areas = () => {
   };
 
   // edit function
-  const editOnSubmit = async (data: Area) => {
+  const editOnSubmit = async (data: areaEditForm) => {
     try {
-      const response = await api.updateAreaAreaAreaIdPatch(data.id, { name: data.name, location_id: data.location_id });
+      const response = await api.areaPatchArea(data.id, {
+        name: data.name,
+        location_id: data.location_id
+      });
 
       if (response.status === 200) {
         setareaUpdate(areaUpdate + 1);
@@ -168,7 +188,7 @@ const Areas = () => {
               mt: 2
             }}
           >
-            {areaData?.results.map((value) => {
+            {areaData?.map((value) => {
               const labelId = `checkbox-list-secondary-label-${value.id}`;
               return (
                 <ListItem
@@ -219,7 +239,7 @@ const Areas = () => {
           </Button>
 
           {showEdit ? (
-            <form onSubmit={editHandleSubmit(editOnSubmit)} onReset={() => editReset}>
+            <form onSubmit={editHandleSubmit(() => editOnSubmit)} onReset={() => editReset}>
               <Grid container>
                 <Grid item xs={7} justifyContent="flex-start">
                   <Controller
@@ -244,11 +264,10 @@ const Areas = () => {
                       <Autocomplete
                         id="location_id"
                         isOptionEqualToValue={(option, value) => option.id === value.id}
-                        options={locationData?.results!}
+                        options={locationData!}
                         getOptionLabel={(option) => option.name}
                         onChange={(event, data) => {
                           onChange(data?.id);
-                          console.log(event);
                         }}
                         renderInput={(params) => <TextField {...params} variant="outlined" label="Location" />}
                       />
@@ -279,7 +298,7 @@ const Areas = () => {
                     <Button
                       variant="contained"
                       onClick={() => {
-                        reset;
+                        editReset;
                       }}
                       sx={{ mt: 0 }}
                     >
@@ -319,7 +338,7 @@ const Areas = () => {
                       <Autocomplete
                         id="location_id"
                         isOptionEqualToValue={(option, value) => option.id === value.id}
-                        options={locationData!.results}
+                        options={locationData!}
                         getOptionLabel={(option) => option.name}
                         onChange={(event, data: Location | null) => {
                           onChange(data?.id);

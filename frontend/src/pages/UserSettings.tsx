@@ -22,7 +22,6 @@ const UserSettings = () => {
       <Helmet>
         <title>{import.meta.env.VITE_APP_NAME + ' | User Settings'}</title>
       </Helmet>
-      plantData?.name
       <Grid container justifyContent="center" padding={1}>
         <Typography variant="h4">Settings</Typography>
       </Grid>

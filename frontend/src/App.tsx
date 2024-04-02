@@ -56,20 +56,20 @@ function App() {
             <BrowserRouter>
               <Routes>
                 <Route path="/" element={<MyPlants />} />
-                <Route path="/myGraveyard" element={<MyGraveyard />} />
+                {/* <Route path="/myGraveyard" element={<MyGraveyard />} /> */}
                 <Route path="/myPlants" element={<MyPlants />} />
                 <Route path="/myPlants/:id" element={<PlantDetail />} />
                 <Route path="/editPlant/:id" element={<EditPlant />} />
-                <Route path="/entry" element={<MyEntries />} />
-                <Route path="/entry/:id" element={<EntryDetail />} />
+                {/* <Route path="/entry" element={<MyEntries />} />
+                <Route path="/entry/:id" element={<EntryDetail />} /> */}
                 <Route path="/settings" element={<UserSettings />} />
                 <Route path="/areas" element={<Areas />} />
                 <Route path="/locations" element={<Locations />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/myProfile" element={<MyProfile />} />
-                <Route path="/newPlant" element={<NewPlant />} />
-                <Route path="/newEntry/:id?" element={<NewEntry />} />
+                {/* <Route path="/newPlant" element={<NewPlant />} />
+                <Route path="/newEntry/:id?" element={<NewEntry />} /> */}
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
               <Navigation />
