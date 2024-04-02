@@ -6,7 +6,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { AreaApi, AreaReturn, Plant, PlantApi, PlantPatch } from '../services';
 import { BASE_PATH } from '../services/base';
 import axiosInstance from '../provider/CustomAxios';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 type editParams = {
   id: string;

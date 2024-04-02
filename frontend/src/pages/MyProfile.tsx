@@ -4,7 +4,7 @@ import { BASE_PATH } from '../services/base';
 import axiosInstance from '../provider/CustomAxios';
 import { Button, ButtonGroup, Grid, TextField, Typography } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 const MyProfile = () => {
   const api = new UserApi(undefined, BASE_PATH, axiosInstance);

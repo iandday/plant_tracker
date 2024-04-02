@@ -5,7 +5,7 @@ import axiosInstance from '../provider/CustomAxios';
 import { BASE_PATH } from '../services/base';
 import { AxiosResponse } from 'axios';
 import { ratingIcons } from '../components/ratings';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 const MyEntries = () => {
   const api = new EntryApi(undefined, BASE_PATH, axiosInstance);

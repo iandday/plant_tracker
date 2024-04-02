@@ -16,23 +16,12 @@ import {
 import { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 
-import {
-  Area,
-  AreaApi,
-  AreaCreate,
-  AreaReturn,
-  LocationApi,
-  Location,
-  LocationReturn,
-  AreaOut,
-  LocationOut,
-  AreaPatch
-} from '../services/index';
+import { AreaApi, LocationApi, AreaOut, LocationOut, AreaIn } from '../services/index';
 
 import LabelBottomNavigation from '../components/Navigation';
 import axiosInstance from '../provider/CustomAxios';
 import { BASE_PATH } from '../services/base';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 const Areas = () => {
   const api = new AreaApi(undefined, BASE_PATH, axiosInstance);
@@ -93,10 +82,10 @@ const Areas = () => {
     reset,
     control
     //setValue
-  } = useForm<AreaCreate>({
+  } = useForm<AreaIn>({
     defaultValues: { name: '', location_id: '' }
   });
-  const onSubmit = async (data: AreaCreate) => {
+  const onSubmit = async (data: AreaIn) => {
     try {
       const response = await api.trackerApiViewAreaCreateArea({ name: data.name, location_id: data.location_id });
       if (response.status === 200) {
@@ -268,6 +257,7 @@ const Areas = () => {
                         getOptionLabel={(option) => option.name}
                         onChange={(event, data) => {
                           onChange(data?.id);
+                          console.log(event);
                         }}
                         renderInput={(params) => <TextField {...params} variant="outlined" label="Location" />}
                       />
@@ -340,7 +330,7 @@ const Areas = () => {
                         isOptionEqualToValue={(option, value) => option.id === value.id}
                         options={locationData!}
                         getOptionLabel={(option) => option.name}
-                        onChange={(event, data: Location | null) => {
+                        onChange={(event, data: LocationOut | null) => {
                           onChange(data?.id);
                           console.log(event);
                         }}

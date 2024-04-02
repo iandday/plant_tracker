@@ -1,11 +1,11 @@
-import { Area, AreaReturn, PlantReturn } from '../services';
+import { Area, AreaOut, AreaReturn, PlantOut, PlantReturn } from '../services';
 import { Grid, Card, ImageListItem, ImageListItemBar, IconButton, Tooltip } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import InfoIcon from '@mui/icons-material/Info';
 
 interface Props {
-  plants: PlantReturn;
-  areas: AreaReturn;
+  plants: PlantOut[];
+  areas: AreaOut[];
 }
 
 const PlantListing = ({ plants, areas }: Props) => {
@@ -22,7 +22,7 @@ const PlantListing = ({ plants, areas }: Props) => {
   return (
     <>
       <Grid container spacing={2} direction="row" alignItems="center" justifyContent="center">
-        {plants?.results.map((plant) => (
+        {plants?.map((plant) => (
           <Grid
             item
             xs={12}

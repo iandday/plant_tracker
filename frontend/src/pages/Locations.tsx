@@ -20,7 +20,7 @@ import { LocationApi, LocationIn, LocationOut } from '../services/index';
 import LabelBottomNavigation from '../components/Navigation';
 import axiosInstance from '../provider/CustomAxios';
 import { BASE_PATH } from '../services/base';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 const Locations = () => {
   const api = new LocationApi(undefined, BASE_PATH, axiosInstance);

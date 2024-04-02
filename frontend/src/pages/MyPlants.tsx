@@ -5,7 +5,7 @@ import LabelBottomNavigation from '../components/Navigation';
 import PlantListing from '../components/PlantListing';
 import axiosInstance from '../provider/CustomAxios';
 import { BASE_PATH } from '../services/base';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 const MyPlants = () => {
   const api = new PlantApi(undefined, BASE_PATH, axiosInstance);
   const areaApi = new AreaApi(undefined, BASE_PATH, axiosInstance);

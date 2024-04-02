@@ -2,7 +2,7 @@ import { UserApi, UserCreate } from '../services/index';
 import { useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button, ButtonGroup, Grid, Stack, TextField } from '@mui/material';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 export interface Register {
   email: string;

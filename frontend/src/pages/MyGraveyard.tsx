@@ -4,7 +4,7 @@ import { Grid, Typography } from '@mui/material';
 import PlantListing from '../components/PlantListing';
 import axiosInstance from '../provider/CustomAxios';
 import { BASE_PATH } from '../services/base';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 const MyGraveyard = () => {
   const api = new PlantApi(undefined, BASE_PATH, axiosInstance);

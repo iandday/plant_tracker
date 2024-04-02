@@ -2,14 +2,16 @@ import { UserApi } from '../services/index';
 import { useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button, ButtonGroup, Grid, Stack, TextField } from '@mui/material';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
+import { BASE_PATH } from '../services/base';
+import axiosInstance from '../provider/CustomAxios';
 
 export interface Login {
   email: string;
   password: string;
 }
 const Login = () => {
-  const api = new UserApi();
+  const api = new UserApi(undefined, BASE_PATH, axiosInstance);
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<Login> = async (data: Login) => {

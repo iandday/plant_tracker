@@ -22,7 +22,7 @@ import React, { useEffect, useState } from 'react';
 import { Area, AreaApi, Plant, PlantApi, Source } from '../services';
 import { BASE_PATH } from '../services/base';
 import axiosInstance from '../provider/CustomAxios';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 const PlantDetail = () => {
   const { id } = useParams();

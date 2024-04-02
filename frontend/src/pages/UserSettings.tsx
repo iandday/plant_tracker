@@ -2,7 +2,7 @@ import { Button, Grid, Stack, Typography } from '@mui/material';
 import ThemeToggler from '../components/ThemeToggler';
 import { useNavigate } from 'react-router-dom';
 import LabelBottomNavigation from '../components/Navigation';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 // import axiosInstance from '../provider/CustomAxios';
 // import { BASE_PATH } from '../services/base';
 // import { AreaApi, AreaReturn, LocationApi, LocationReturn } from '../services';
