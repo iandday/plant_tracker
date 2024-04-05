@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { AreaApi, AreaReturn, PlantApi, PlantReturn } from '../services';
+import { AreaApi, AreaOut, PlantApi, PlantOut } from '../services';
 import { Grid, Typography } from '@mui/material';
 import PlantListing from '../components/PlantListing';
 import axiosInstance from '../provider/CustomAxios';
@@ -9,35 +9,22 @@ import { Helmet } from 'react-helmet-async';
 const MyGraveyard = () => {
   const api = new PlantApi(undefined, BASE_PATH, axiosInstance);
   const areaApi = new AreaApi(undefined, BASE_PATH, axiosInstance);
-  const [plantData, setPlantData] = useState<PlantReturn>();
-  const [areaData, setAreaData] = useState<AreaReturn>();
+  const [plantData, setPlantData] = useState<PlantOut[]>();
+  const [areaData, setAreaData] = useState<AreaOut[]>();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.getPlantPlantGet(false, true);
+        const response = await api.trackerApiViewPlantListPlants(false, true);
         if (response.status === 200) {
           setPlantData(response.data);
+          console.log(response.data);
         }
-        const areaResponse = await areaApi.getAreasAreaGet();
+        const areaResponse = await areaApi.trackerApiViewAreaListAreas();
         if (areaResponse.status === 200) {
           setAreaData(areaResponse.data);
         }
       } catch (err) {}
-      console.log(areaData);
-    };
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const areaResponse = await areaApi.getAreasAreaGet();
-        if (areaResponse.status === 200) {
-          setAreaData(areaResponse.data);
-        }
-      } catch (err) {}
-      console.log(areaData);
     };
     fetchData();
   }, []);

@@ -37,50 +37,6 @@ export const PlantApiAxiosParamCreator = function (configuration?: Configuration
     return {
         /**
          * Plant
-         * @summary Patch Plant
-         * @param {string} plantId 
-         * @param {PlantPatch} plantPatch 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        plantPatchPlant: async (plantId: string, plantPatch: PlantPatch, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'plantId' is not null or undefined
-            assertParamExists('plantPatchPlant', 'plantId', plantId)
-            // verify required parameter 'plantPatch' is not null or undefined
-            assertParamExists('plantPatchPlant', 'plantPatch', plantPatch)
-            const localVarPath = `/api/plant/{plant_id}`
-                .replace(`{${"plant_id"}}`, encodeURIComponent(String(plantId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication JWTAuth required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(plantPatch, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Plant
          * @summary Create Plant
          * @param {PlantIn} plantIn 
          * @param {*} [options] Override http request option.
@@ -113,6 +69,44 @@ export const PlantApiAxiosParamCreator = function (configuration?: Configuration
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(plantIn, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Plant
+         * @summary Delete Plant
+         * @param {string} plantId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        trackerApiViewPlantDeletePlant: async (plantId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'plantId' is not null or undefined
+            assertParamExists('trackerApiViewPlantDeletePlant', 'plantId', plantId)
+            const localVarPath = `/api/plant/{plant_id}`
+                .replace(`{${"plant_id"}}`, encodeURIComponent(String(plantId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication JWTAuth required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -160,10 +154,12 @@ export const PlantApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * Plant
          * @summary List Plants
+         * @param {boolean} [excludeGraveyard] 
+         * @param {boolean} [graveyardOnly] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        trackerApiViewPlantListPlants: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        trackerApiViewPlantListPlants: async (excludeGraveyard?: boolean, graveyardOnly?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/plant/plant`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -180,6 +176,14 @@ export const PlantApiAxiosParamCreator = function (configuration?: Configuration
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
+            if (excludeGraveyard !== undefined) {
+                localVarQueryParameter['exclude_graveyard'] = excludeGraveyard;
+            }
+
+            if (graveyardOnly !== undefined) {
+                localVarQueryParameter['graveyard_only'] = graveyardOnly;
+            }
+
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -195,12 +199,15 @@ export const PlantApiAxiosParamCreator = function (configuration?: Configuration
          * Plant
          * @summary Patch Plant
          * @param {string} plantId 
+         * @param {PlantPatch} plantPatch 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        trackerApiViewPlantPatchPlant: async (plantId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        trackerApiViewPlantPatchPlant: async (plantId: string, plantPatch: PlantPatch, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'plantId' is not null or undefined
             assertParamExists('trackerApiViewPlantPatchPlant', 'plantId', plantId)
+            // verify required parameter 'plantPatch' is not null or undefined
+            assertParamExists('trackerApiViewPlantPatchPlant', 'plantPatch', plantPatch)
             const localVarPath = `/api/plant/{plant_id}`
                 .replace(`{${"plant_id"}}`, encodeURIComponent(String(plantId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -210,7 +217,7 @@ export const PlantApiAxiosParamCreator = function (configuration?: Configuration
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -220,9 +227,12 @@ export const PlantApiAxiosParamCreator = function (configuration?: Configuration
 
 
     
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(plantPatch, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -241,20 +251,6 @@ export const PlantApiFp = function(configuration?: Configuration) {
     return {
         /**
          * Plant
-         * @summary Patch Plant
-         * @param {string} plantId 
-         * @param {PlantPatch} plantPatch 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async plantPatchPlant(plantId: string, plantPatch: PlantPatch, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PlantOut>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.plantPatchPlant(plantId, plantPatch, options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['PlantApi.plantPatchPlant']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
-        },
-        /**
-         * Plant
          * @summary Create Plant
          * @param {PlantIn} plantIn 
          * @param {*} [options] Override http request option.
@@ -264,6 +260,19 @@ export const PlantApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.trackerApiViewPlantCreatePlant(plantIn, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['PlantApi.trackerApiViewPlantCreatePlant']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * Plant
+         * @summary Delete Plant
+         * @param {string} plantId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async trackerApiViewPlantDeletePlant(plantId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeleteStatus>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.trackerApiViewPlantDeletePlant(plantId, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['PlantApi.trackerApiViewPlantDeletePlant']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
         /**
@@ -282,11 +291,13 @@ export const PlantApiFp = function(configuration?: Configuration) {
         /**
          * Plant
          * @summary List Plants
+         * @param {boolean} [excludeGraveyard] 
+         * @param {boolean} [graveyardOnly] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async trackerApiViewPlantListPlants(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<PlantOut>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.trackerApiViewPlantListPlants(options);
+        async trackerApiViewPlantListPlants(excludeGraveyard?: boolean, graveyardOnly?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<PlantOut>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.trackerApiViewPlantListPlants(excludeGraveyard, graveyardOnly, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['PlantApi.trackerApiViewPlantListPlants']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
@@ -295,11 +306,12 @@ export const PlantApiFp = function(configuration?: Configuration) {
          * Plant
          * @summary Patch Plant
          * @param {string} plantId 
+         * @param {PlantPatch} plantPatch 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async trackerApiViewPlantPatchPlant(plantId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeleteStatus>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.trackerApiViewPlantPatchPlant(plantId, options);
+        async trackerApiViewPlantPatchPlant(plantId: string, plantPatch: PlantPatch, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PlantOut>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.trackerApiViewPlantPatchPlant(plantId, plantPatch, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['PlantApi.trackerApiViewPlantPatchPlant']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
@@ -316,17 +328,6 @@ export const PlantApiFactory = function (configuration?: Configuration, basePath
     return {
         /**
          * Plant
-         * @summary Patch Plant
-         * @param {string} plantId 
-         * @param {PlantPatch} plantPatch 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        plantPatchPlant(plantId: string, plantPatch: PlantPatch, options?: any): AxiosPromise<PlantOut> {
-            return localVarFp.plantPatchPlant(plantId, plantPatch, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Plant
          * @summary Create Plant
          * @param {PlantIn} plantIn 
          * @param {*} [options] Override http request option.
@@ -334,6 +335,16 @@ export const PlantApiFactory = function (configuration?: Configuration, basePath
          */
         trackerApiViewPlantCreatePlant(plantIn: PlantIn, options?: any): AxiosPromise<PlantOut> {
             return localVarFp.trackerApiViewPlantCreatePlant(plantIn, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Plant
+         * @summary Delete Plant
+         * @param {string} plantId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        trackerApiViewPlantDeletePlant(plantId: string, options?: any): AxiosPromise<DeleteStatus> {
+            return localVarFp.trackerApiViewPlantDeletePlant(plantId, options).then((request) => request(axios, basePath));
         },
         /**
          * Plant
@@ -348,21 +359,24 @@ export const PlantApiFactory = function (configuration?: Configuration, basePath
         /**
          * Plant
          * @summary List Plants
+         * @param {boolean} [excludeGraveyard] 
+         * @param {boolean} [graveyardOnly] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        trackerApiViewPlantListPlants(options?: any): AxiosPromise<Array<PlantOut>> {
-            return localVarFp.trackerApiViewPlantListPlants(options).then((request) => request(axios, basePath));
+        trackerApiViewPlantListPlants(excludeGraveyard?: boolean, graveyardOnly?: boolean, options?: any): AxiosPromise<Array<PlantOut>> {
+            return localVarFp.trackerApiViewPlantListPlants(excludeGraveyard, graveyardOnly, options).then((request) => request(axios, basePath));
         },
         /**
          * Plant
          * @summary Patch Plant
          * @param {string} plantId 
+         * @param {PlantPatch} plantPatch 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        trackerApiViewPlantPatchPlant(plantId: string, options?: any): AxiosPromise<DeleteStatus> {
-            return localVarFp.trackerApiViewPlantPatchPlant(plantId, options).then((request) => request(axios, basePath));
+        trackerApiViewPlantPatchPlant(plantId: string, plantPatch: PlantPatch, options?: any): AxiosPromise<PlantOut> {
+            return localVarFp.trackerApiViewPlantPatchPlant(plantId, plantPatch, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -376,19 +390,6 @@ export const PlantApiFactory = function (configuration?: Configuration, basePath
 export class PlantApi extends BaseAPI {
     /**
      * Plant
-     * @summary Patch Plant
-     * @param {string} plantId 
-     * @param {PlantPatch} plantPatch 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof PlantApi
-     */
-    public plantPatchPlant(plantId: string, plantPatch: PlantPatch, options?: AxiosRequestConfig) {
-        return PlantApiFp(this.configuration).plantPatchPlant(plantId, plantPatch, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Plant
      * @summary Create Plant
      * @param {PlantIn} plantIn 
      * @param {*} [options] Override http request option.
@@ -397,6 +398,18 @@ export class PlantApi extends BaseAPI {
      */
     public trackerApiViewPlantCreatePlant(plantIn: PlantIn, options?: AxiosRequestConfig) {
         return PlantApiFp(this.configuration).trackerApiViewPlantCreatePlant(plantIn, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Plant
+     * @summary Delete Plant
+     * @param {string} plantId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PlantApi
+     */
+    public trackerApiViewPlantDeletePlant(plantId: string, options?: AxiosRequestConfig) {
+        return PlantApiFp(this.configuration).trackerApiViewPlantDeletePlant(plantId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -414,24 +427,27 @@ export class PlantApi extends BaseAPI {
     /**
      * Plant
      * @summary List Plants
+     * @param {boolean} [excludeGraveyard] 
+     * @param {boolean} [graveyardOnly] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PlantApi
      */
-    public trackerApiViewPlantListPlants(options?: AxiosRequestConfig) {
-        return PlantApiFp(this.configuration).trackerApiViewPlantListPlants(options).then((request) => request(this.axios, this.basePath));
+    public trackerApiViewPlantListPlants(excludeGraveyard?: boolean, graveyardOnly?: boolean, options?: AxiosRequestConfig) {
+        return PlantApiFp(this.configuration).trackerApiViewPlantListPlants(excludeGraveyard, graveyardOnly, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Plant
      * @summary Patch Plant
      * @param {string} plantId 
+     * @param {PlantPatch} plantPatch 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PlantApi
      */
-    public trackerApiViewPlantPatchPlant(plantId: string, options?: AxiosRequestConfig) {
-        return PlantApiFp(this.configuration).trackerApiViewPlantPatchPlant(plantId, options).then((request) => request(this.axios, this.basePath));
+    public trackerApiViewPlantPatchPlant(plantId: string, plantPatch: PlantPatch, options?: AxiosRequestConfig) {
+        return PlantApiFp(this.configuration).trackerApiViewPlantPatchPlant(plantId, plantPatch, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

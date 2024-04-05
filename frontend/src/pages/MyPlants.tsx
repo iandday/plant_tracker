@@ -15,7 +15,7 @@ const MyPlants = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.trackerApiViewPlantListPlants();
+        const response = await api.trackerApiViewPlantListPlants(true, false);
         if (response.status === 200) {
           setPlantData(response.data);
         }

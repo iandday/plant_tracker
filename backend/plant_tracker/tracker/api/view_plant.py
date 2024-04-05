@@ -10,6 +10,8 @@ from ninja_crud import views, viewsets
 from django.contrib.auth import get_user_model
 from tracker.models import Location, Plant
 from ninja_jwt.authentication import JWTAuth
+from ninja_extra import status
+from ninja_extra.exceptions import APIException
 
 router = Router()
 
@@ -23,9 +25,14 @@ logger = logging.getLogger(__name__)
     tags=["Plant"],
     description="Plant",
 )
-def list_plants(request):
+def list_plants(request, exclude_graveyard: bool = True, graveyard_only: bool = False):
     user = get_user_model().objects.get(id=request.user.id)
-    plants = Plant.objects.filter(user=user)
+    if exclude_graveyard and graveyard_only:
+        raise APIException("Invalid parameters", code=status.HTTP_400_BAD_REQUEST)
+    if exclude_graveyard:
+        plants = Plant.objects.filter(user=user, graveyard=False)
+    elif graveyard_only:
+        plants = Plant.objects.filter(user=user, graveyard=True)
     return plants
 
 

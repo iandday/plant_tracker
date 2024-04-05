@@ -25,18 +25,48 @@ export interface PlantOut {
      * @type {string}
      * @memberof PlantOut
      */
-    'name': string;
+    'name'?: string;
     /**
      * 
      * @type {string}
      * @memberof PlantOut
      */
-    'area_id': string;
+    'common_name'?: string;
     /**
      * 
      * @type {string}
      * @memberof PlantOut
      */
-    'plant_id': string;
+    'scientific_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PlantOut
+     */
+    'purchase_date'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PlantOut
+     */
+    'graveyard'?: boolean | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PlantOut
+     */
+    'death_date'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PlantOut
+     */
+    'area_id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PlantOut
+     */
+    'id': string;
 }
 

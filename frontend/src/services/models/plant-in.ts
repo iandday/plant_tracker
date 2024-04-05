@@ -32,5 +32,35 @@ export interface PlantIn {
      * @memberof PlantIn
      */
     'area_id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PlantIn
+     */
+    'common_name'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PlantIn
+     */
+    'scientific_name'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PlantIn
+     */
+    'purchase_date'?: string | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PlantIn
+     */
+    'graveyard'?: boolean | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PlantIn
+     */
+    'death_date'?: string | null;
 }
 
