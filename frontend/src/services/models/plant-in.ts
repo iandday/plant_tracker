@@ -25,13 +25,31 @@ export interface PlantIn {
      * @type {string}
      * @memberof PlantIn
      */
-    'name': string;
+    'area_id': string;
     /**
      * 
      * @type {string}
      * @memberof PlantIn
      */
-    'area_id': string;
+    'purchase_date'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PlantIn
+     */
+    'graveyard'?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof PlantIn
+     */
+    'death_date'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PlantIn
+     */
+    'name': string;
     /**
      * 
      * @type {string}
@@ -44,23 +62,5 @@ export interface PlantIn {
      * @memberof PlantIn
      */
     'scientific_name'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof PlantIn
-     */
-    'purchase_date'?: string | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PlantIn
-     */
-    'graveyard'?: boolean | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof PlantIn
-     */
-    'death_date'?: string | null;
 }
 

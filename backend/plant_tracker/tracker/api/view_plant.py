@@ -5,13 +5,15 @@ from django.shortcuts import get_object_or_404
 from pydantic import UUID4
 from tracker.api.schemas import PlantIn, PlantOut, PlantPatch, DeleteStatus
 from django.http import HttpRequest
-from ninja import Router
+from ninja import File, Form, Router
 from ninja_crud import views, viewsets
 from django.contrib.auth import get_user_model
 from tracker.models import Location, Plant
 from ninja_jwt.authentication import JWTAuth
 from ninja_extra import status
 from ninja_extra.exceptions import APIException
+from ninja.files import UploadedFile
+from django.forms.models import model_to_dict
 
 router = Router()
 
@@ -43,11 +45,13 @@ def list_plants(request, exclude_graveyard: bool = True, graveyard_only: bool = 
     tags=["Plant"],
     description="Plant",
 )
-def create_plant(request, payload: PlantIn):
-    options = payload.dict()
+def create_plant(request, payload: Form[PlantIn], file: File[UploadedFile] = None):
+    options = payload.dict(exclude_unset=True)
     options["user"] = get_user_model().objects.get(id=request.user.id)
-    options["graveyard"] = False
     plant = Plant.objects.create(**options)
+
+    if file:
+        plant.main_photo.save(file.name, file)
     return plant
 
 
@@ -61,7 +65,6 @@ def create_plant(request, payload: PlantIn):
 def get_plant(request, plant_id: UUID4):
     user = get_user_model().objects.get(id=request.user.id)
     plant = Plant.objects.get(user=user, id=plant_id)
-    logger.info(f"{plant.id}")
     return plant
 
 
@@ -95,6 +98,7 @@ def patch_plant(request, plant_id: UUID4, payload: PlantPatch):
 )
 def delete_plant(request, plant_id: UUID4):
     user = get_user_model().objects.get(id=request.user.id)
-    plant = get_object_or_404(Plant, id=plant_id, user=user)
+    queryset = Plant.objects.filter(id=plant_id)
+    plant = get_object_or_404(queryset, user=user)
     plant.delete()
     return {"success": True}

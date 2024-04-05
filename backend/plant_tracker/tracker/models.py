@@ -34,13 +34,15 @@ class Activity(models.Model):
 
 
 class Plant(models.Model):
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.TextField(name="name", blank=False, null=False)
-    common_name = models.TextField(name="common_name", blank=False, null=False)
-    scientific_name = models.TextField(name="scientific_name", blank=False, null=False)
-    purchase_date = models.DateField(name="purchase_date")
+    common_name = models.TextField(name="common_name", blank=True, null=True)
+    scientific_name = models.TextField(name="scientific_name", blank=True, null=True)
+    purchase_date = models.DateField(name="purchase_date", blank=True, null=True)
     graveyard = models.BooleanField(name="graveyard", default=False)
     death_date = models.DateField(name="death_date", null=True, blank=True)
+    main_photo = models.ImageField(upload_to="images/", null=True)
     area = models.ForeignKey(Area, on_delete=models.CASCADE)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
 

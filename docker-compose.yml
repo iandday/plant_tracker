@@ -11,6 +11,7 @@ services:
       context: ./backend
     volumes:
       - ./backend/plant_tracker:/home/apiuser/plant_tracker
+      - ./media:/media
     env_file: .env
     #environment:
     # - DATABASE_URL=postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}

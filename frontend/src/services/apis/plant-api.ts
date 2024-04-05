@@ -24,8 +24,6 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError, ope
 // @ts-ignore
 import { DeleteStatus } from '../models';
 // @ts-ignore
-import { PlantIn } from '../models';
-// @ts-ignore
 import { PlantOut } from '../models';
 // @ts-ignore
 import { PlantPatch } from '../models';
@@ -38,13 +36,22 @@ export const PlantApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * Plant
          * @summary Create Plant
-         * @param {PlantIn} plantIn 
+         * @param {string} areaId 
+         * @param {string} name 
+         * @param {string} [purchaseDate] 
+         * @param {boolean} [graveyard] 
+         * @param {string} [deathDate] 
+         * @param {string | null} [commonName] 
+         * @param {string | null} [scientificName] 
+         * @param {File} [file] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        trackerApiViewPlantCreatePlant: async (plantIn: PlantIn, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'plantIn' is not null or undefined
-            assertParamExists('trackerApiViewPlantCreatePlant', 'plantIn', plantIn)
+        trackerApiViewPlantCreatePlant: async (areaId: string, name: string, purchaseDate?: string, graveyard?: boolean, deathDate?: string, commonName?: string | null, scientificName?: string | null, file?: File, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'areaId' is not null or undefined
+            assertParamExists('trackerApiViewPlantCreatePlant', 'areaId', areaId)
+            // verify required parameter 'name' is not null or undefined
+            assertParamExists('trackerApiViewPlantCreatePlant', 'name', name)
             const localVarPath = `/api/plant/plant`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -56,19 +63,52 @@ export const PlantApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+            const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)();
 
             // authentication JWTAuth required
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
+            if (areaId !== undefined) { 
+                localVarFormParams.append('area_id', areaId as any);
+            }
     
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
+            if (purchaseDate !== undefined) { 
+                localVarFormParams.append('purchase_date', purchaseDate as any);
+            }
+    
+            if (graveyard !== undefined) { 
+                localVarFormParams.append('graveyard', graveyard as any);
+            }
+    
+            if (deathDate !== undefined) { 
+                localVarFormParams.append('death_date', deathDate as any);
+            }
+    
+            if (name !== undefined) { 
+                localVarFormParams.append('name', name as any);
+            }
+    
+            if (commonName !== undefined) { 
+                localVarFormParams.append('common_name', commonName as any);
+            }
+    
+            if (scientificName !== undefined) { 
+                localVarFormParams.append('scientific_name', scientificName as any);
+            }
+    
+            if (file !== undefined) { 
+                localVarFormParams.append('file', file as any);
+            }
+    
+    
+            localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(plantIn, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = localVarFormParams;
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -252,12 +292,19 @@ export const PlantApiFp = function(configuration?: Configuration) {
         /**
          * Plant
          * @summary Create Plant
-         * @param {PlantIn} plantIn 
+         * @param {string} areaId 
+         * @param {string} name 
+         * @param {string} [purchaseDate] 
+         * @param {boolean} [graveyard] 
+         * @param {string} [deathDate] 
+         * @param {string | null} [commonName] 
+         * @param {string | null} [scientificName] 
+         * @param {File} [file] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async trackerApiViewPlantCreatePlant(plantIn: PlantIn, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PlantOut>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.trackerApiViewPlantCreatePlant(plantIn, options);
+        async trackerApiViewPlantCreatePlant(areaId: string, name: string, purchaseDate?: string, graveyard?: boolean, deathDate?: string, commonName?: string | null, scientificName?: string | null, file?: File, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PlantOut>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.trackerApiViewPlantCreatePlant(areaId, name, purchaseDate, graveyard, deathDate, commonName, scientificName, file, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['PlantApi.trackerApiViewPlantCreatePlant']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
@@ -329,12 +376,19 @@ export const PlantApiFactory = function (configuration?: Configuration, basePath
         /**
          * Plant
          * @summary Create Plant
-         * @param {PlantIn} plantIn 
+         * @param {string} areaId 
+         * @param {string} name 
+         * @param {string} [purchaseDate] 
+         * @param {boolean} [graveyard] 
+         * @param {string} [deathDate] 
+         * @param {string | null} [commonName] 
+         * @param {string | null} [scientificName] 
+         * @param {File} [file] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        trackerApiViewPlantCreatePlant(plantIn: PlantIn, options?: any): AxiosPromise<PlantOut> {
-            return localVarFp.trackerApiViewPlantCreatePlant(plantIn, options).then((request) => request(axios, basePath));
+        trackerApiViewPlantCreatePlant(areaId: string, name: string, purchaseDate?: string, graveyard?: boolean, deathDate?: string, commonName?: string | null, scientificName?: string | null, file?: File, options?: any): AxiosPromise<PlantOut> {
+            return localVarFp.trackerApiViewPlantCreatePlant(areaId, name, purchaseDate, graveyard, deathDate, commonName, scientificName, file, options).then((request) => request(axios, basePath));
         },
         /**
          * Plant
@@ -391,13 +445,20 @@ export class PlantApi extends BaseAPI {
     /**
      * Plant
      * @summary Create Plant
-     * @param {PlantIn} plantIn 
+     * @param {string} areaId 
+     * @param {string} name 
+     * @param {string} [purchaseDate] 
+     * @param {boolean} [graveyard] 
+     * @param {string} [deathDate] 
+     * @param {string | null} [commonName] 
+     * @param {string | null} [scientificName] 
+     * @param {File} [file] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PlantApi
      */
-    public trackerApiViewPlantCreatePlant(plantIn: PlantIn, options?: AxiosRequestConfig) {
-        return PlantApiFp(this.configuration).trackerApiViewPlantCreatePlant(plantIn, options).then((request) => request(this.axios, this.basePath));
+    public trackerApiViewPlantCreatePlant(areaId: string, name: string, purchaseDate?: string, graveyard?: boolean, deathDate?: string, commonName?: string | null, scientificName?: string | null, file?: File, options?: AxiosRequestConfig) {
+        return PlantApiFp(this.configuration).trackerApiViewPlantCreatePlant(areaId, name, purchaseDate, graveyard, deathDate, commonName, scientificName, file, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

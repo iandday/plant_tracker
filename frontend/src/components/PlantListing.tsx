@@ -1,4 +1,4 @@
-import { Area, AreaOut, AreaReturn, PlantOut, PlantReturn } from '../services';
+import { AreaOut, PlantOut } from '../services';
 import { Grid, Card, ImageListItem, ImageListItemBar, IconButton, Tooltip } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import InfoIcon from '@mui/icons-material/Info';
@@ -11,8 +11,8 @@ interface Props {
 const PlantListing = ({ plants, areas }: Props) => {
   const navigate = useNavigate();
 
-  function findArrayElementByID(array: Area[], id: string): Area | { name: string } {
-    const result = array.find((element: Area) => element.id === id);
+  function findArrayElementByID(array: AreaOut[], id: string): AreaOut | { name: string } {
+    const result = array.find((element: AreaOut) => element.id === id);
     if (result) {
       return result;
     } else {
@@ -48,12 +48,12 @@ const PlantListing = ({ plants, areas }: Props) => {
                     background: 'linear-gradient(to bottom, rgba(0,0,0,0.7)0%, rgba(0,0,0,0.3)70%, rgba(0,0,0,0)100%)'
                   }}
                   title={plant.name}
-                  subtitle={findArrayElementByID(areas.results, plant.area_id).name}
+                  subtitle={findArrayElementByID(areas, plant.area!).name}
                   position="top"
                 />
                 <img
-                  srcSet={`${plant.photo_url}`}
-                  src={`${plant.photo_url}`}
+                  srcSet={`${import.meta.env.VITE_BACKEND_URL}/${plant.main_photo}`}
+                  src={`${import.meta.env.VITE_BACKEND_URL}/${plant.main_photo}`}
                   alt={plant.name}
                   loading="lazy"
                   style={{ height: 300, width: 300 }}

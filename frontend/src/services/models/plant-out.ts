@@ -25,31 +25,37 @@ export interface PlantOut {
      * @type {string}
      * @memberof PlantOut
      */
-    'name'?: string;
+    'id'?: string;
     /**
      * 
      * @type {string}
      * @memberof PlantOut
      */
-    'common_name'?: string;
+    'name': string;
     /**
      * 
      * @type {string}
      * @memberof PlantOut
      */
-    'scientific_name'?: string;
+    'common_name'?: string | null;
     /**
      * 
      * @type {string}
      * @memberof PlantOut
      */
-    'purchase_date'?: string;
+    'scientific_name'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PlantOut
+     */
+    'purchase_date'?: string | null;
     /**
      * 
      * @type {boolean}
      * @memberof PlantOut
      */
-    'graveyard'?: boolean | null;
+    'graveyard'?: boolean;
     /**
      * 
      * @type {string}
@@ -61,12 +67,18 @@ export interface PlantOut {
      * @type {string}
      * @memberof PlantOut
      */
-    'area_id'?: string;
+    'main_photo'?: string | null;
     /**
      * 
      * @type {string}
      * @memberof PlantOut
      */
-    'id': string;
+    'area': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PlantOut
+     */
+    'user': string;
 }
 

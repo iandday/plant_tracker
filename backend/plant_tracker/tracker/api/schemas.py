@@ -1,11 +1,25 @@
 from datetime import datetime, date
 from typing import Optional
 from uuid import uuid4
-from ninja import ModelSchema, Schema
+from ninja import ModelSchema, Schema, File
 from pydantic import UUID4, validator
 from ninja_jwt.schema import TokenObtainPairInputSchema, TokenRefreshInputSchema
 from tracker.models import Plant
 from django.contrib.auth import get_user_model
+from ninja import Schema
+from typing import Annotated, TypeVar
+from pydantic import WrapValidator
+from pydantic_core import PydanticUseDefault
+
+
+def _empty_str_to_default(v, handler, info):
+    if isinstance(v, str) and v == "":
+        raise PydanticUseDefault
+    return handler(v)
+
+
+T = TypeVar("T")
+EmptyStrToDefault = Annotated[T, WrapValidator(_empty_str_to_default)]
 
 
 class DeleteStatus(Schema):
@@ -84,28 +98,56 @@ class AreaPatch(Schema):
     location_id: UUID4
 
 
-class PlantIn(Schema):
-    name: str
+class PlantIn(ModelSchema):
+    class Meta:
+        model = Plant
+        fields = [
+            "name",
+            "common_name",
+            "scientific_name",
+            "purchase_date",
+            "graveyard",
+            "death_date",
+        ]
+        fields_optional = [
+            "common_name",
+            "scientific_name",
+            "purchase_date",
+            "graveyard",
+            "death_date",
+        ]
+
+    # name: str
     area_id: UUID4
-    common_name: Optional[str] = None
-    scientific_name: Optional[str] = None
-    purchase_date: Optional[date] = None
-    graveyard: Optional[bool] = None
-    death_date: Optional[date] = None
+    # common_name: Optional[str] = None
+    # scientific_name: Optional[str] = None
+    purchase_date: EmptyStrToDefault[date] = None
+    graveyard: EmptyStrToDefault[bool] = False
+    death_date: EmptyStrToDefault[date] = None
 
 
-class PlantPatch(Schema):
-    name: str = None
-    common_name: str = None
-    scientific_name: str = None
-    purchase_date: date = None
-    graveyard: Optional[bool] = None
-    death_date: Optional[date] = None
+class PlantPatch(ModelSchema):
+    class Meta:
+        model = Plant
+        fields = ["name"]
+        fields_optional = "__all__"
+
+    # name: str = None
+    # common_name: str = None
+    # scientific_name: str = None
+    # purchase_date: date = None
+    # graveyard: Optional[bool] = None
+    # death_date: Optional[date] = None
     area_id: UUID4 = None
 
 
-class PlantOut(PlantPatch):
-    id: UUID4
+class PlantOut(ModelSchema):
+    class Meta:
+        model = Plant
+        fields = "__all__"
+
+    # id: UUID4
+    # main_photo_url: str = None
 
 
 class MeOut(Schema):
