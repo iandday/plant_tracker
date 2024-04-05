@@ -39,6 +39,7 @@ def list_plants(request):
 def create_plant(request, payload: PlantIn):
     options = payload.dict()
     options["user"] = get_user_model().objects.get(id=request.user.id)
+    options["graveyard"] = False
     plant = Plant.objects.create(**options)
     return plant
 
@@ -52,21 +53,22 @@ def create_plant(request, payload: PlantIn):
 )
 def get_plant(request, plant_id: UUID4):
     user = get_user_model().objects.get(id=request.user.id)
-    plant = Plant.objects.filter(user=user, id=plant_id)
+    plant = Plant.objects.get(user=user, id=plant_id)
+    logger.info(f"{plant.id}")
     return plant
 
 
 @router.patch(
     "/{plant_id}",
     response=PlantOut,
-    operation_id="plant_patch_plant",
+    # operation_id="plant_patch_plant",
     auth=JWTAuth(),
     tags=["Plant"],
     description="Plant",
 )
 def patch_plant(request, plant_id: UUID4, payload: PlantPatch):
     user = get_user_model().objects.get(id=request.user.id)
-    plant = get_object_or_404(Location, id=plant_id, user=user)
+    plant = get_object_or_404(Plant, id=plant_id, user=user)
     for attr, value in payload.dict().items():
         if attr == "user_id":
             new_user = get_user_model().objects.get(id=value)
@@ -84,7 +86,7 @@ def patch_plant(request, plant_id: UUID4, payload: PlantPatch):
     tags=["Plant"],
     description="Plant",
 )
-def patch_plant(request, plant_id: UUID4):
+def delete_plant(request, plant_id: UUID4):
     user = get_user_model().objects.get(id=request.user.id)
     plant = get_object_or_404(Plant, id=plant_id, user=user)
     plant.delete()

@@ -52,7 +52,7 @@ def create_area(request, payload: AreaIn):
 )
 def get_area(request, area_id: UUID4):
     user = get_user_model().objects.get(id=request.user.id)
-    area = Area.objects.filter(user=user, id=area_id)
+    area = Area.objects.get(user=user, id=area_id)
     return area
 
 

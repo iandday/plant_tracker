@@ -40,7 +40,7 @@ class Plant(models.Model):
     scientific_name = models.TextField(name="scientific_name", blank=False, null=False)
     purchase_date = models.DateField(name="purchase_date")
     graveyard = models.BooleanField(name="graveyard", default=False)
-    death_date = models.DateField(name="death_date")
+    death_date = models.DateField(name="death_date", null=True, blank=True)
     area = models.ForeignKey(Area, on_delete=models.CASCADE)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
 

@@ -1,4 +1,4 @@
-import { Autocomplete, Button, Grid, TextField, Typography } from '@mui/material';
+import { Button, Grid, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { AreaApi, AreaOut, PlantApi, PlantIn } from '../services';
 import { Controller, useForm } from 'react-hook-form';
@@ -57,9 +57,8 @@ const NewPlant = () => {
   });
 
   const newOnSubmit = async (data: PlantFormIn) => {
-    console.log('in');
     const formData: PlantIn = {
-      purchase_date: data.purchase_date.format('YYYYMMDD'),
+      purchase_date: data.purchase_date.format('YYYY-MM-DD'),
       area_id: data.area_id,
       name: data.name,
       common_name: data.common_name,
@@ -93,7 +92,7 @@ const NewPlant = () => {
       </Grid>
 
       <Grid item xs={12} alignItems="center">
-        <form onSubmit={newHandleSubmit(() => newOnSubmit)}>
+        <form onSubmit={newHandleSubmit(newOnSubmit)}>
           <Grid container>
             <Grid item xs={12} justifyContent="flex-start">
               <Controller
@@ -144,18 +143,10 @@ const NewPlant = () => {
               <Controller
                 control={newControl}
                 name="area_id"
-                render={({ field: { onChange } }) => (
-                  <Autocomplete
-                    id="area"
-                    isOptionEqualToValue={(option, value) => option.id === value.id}
-                    options={areaData!}
-                    getOptionLabel={(option) => option.name}
-                    onChange={(event, data) => {
-                      onChange(data?.id);
-                      console.log(event);
-                    }}
-                    renderInput={(params) => <TextField {...params} variant="outlined" label="Area" />}
-                  />
+                render={({ field: { onChange, value } }) => (
+                  <Select id="area" value={value} onChange={onChange}>
+                    {areaData?.map((area) => <MenuItem value={area.id}>{area.name}</MenuItem>)}
+                  </Select>
                 )}
               />
               <Controller
@@ -169,7 +160,7 @@ const NewPlant = () => {
                       value={field.value}
                       inputRef={field.ref}
                       onChange={(date) => {
-                        field.onChange(dayjs(date).format('YYYYMMDD'));
+                        field.onChange(dayjs(date));
                       }}
                     />
                   );

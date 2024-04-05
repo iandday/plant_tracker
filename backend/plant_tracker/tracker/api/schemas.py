@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 from typing import Optional
 from uuid import uuid4
 from ninja import ModelSchema, Schema
@@ -87,15 +87,25 @@ class AreaPatch(Schema):
 class PlantIn(Schema):
     name: str
     area_id: UUID4
+    common_name: Optional[str] = None
+    scientific_name: Optional[str] = None
+    purchase_date: Optional[date] = None
+    graveyard: Optional[bool] = None
+    death_date: Optional[date] = None
 
 
 class PlantPatch(Schema):
-    name: str
-    area_id: UUID4
+    name: str = None
+    common_name: str = None
+    scientific_name: str = None
+    purchase_date: date = None
+    graveyard: Optional[bool] = None
+    death_date: Optional[date] = None
+    area_id: UUID4 = None
 
 
 class PlantOut(PlantPatch):
-    plant_id: UUID4
+    id: UUID4
 
 
 class MeOut(Schema):
