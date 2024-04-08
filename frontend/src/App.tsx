@@ -57,7 +57,7 @@ function App() {
               <BrowserRouter>
                 <Routes>
                   <Route path="/" element={<MyPlants />} />
-                  {/* <Route path="/myGraveyard" element={<MyGraveyard />} /> */}
+                  <Route path="/myGraveyard" element={<MyGraveyard />} />
                   <Route path="/myPlants" element={<MyPlants />} />
                   <Route path="/myPlants/:id" element={<PlantDetail />} />
                   <Route path="/editPlant/:id" element={<EditPlant />} />

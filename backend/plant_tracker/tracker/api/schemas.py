@@ -129,7 +129,14 @@ class PlantIn(ModelSchema):
 class PlantPatch(ModelSchema):
     class Meta:
         model = Plant
-        fields = ["name"]
+        fields = [
+            "name",
+            "common_name",
+            "scientific_name",
+            "purchase_date",
+            "graveyard",
+            "death_date",
+        ]
         fields_optional = "__all__"
 
     # name: str = None

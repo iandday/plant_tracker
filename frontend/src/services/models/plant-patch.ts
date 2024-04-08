@@ -32,5 +32,35 @@ export interface PlantPatch {
      * @memberof PlantPatch
      */
     'name'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PlantPatch
+     */
+    'common_name'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PlantPatch
+     */
+    'scientific_name'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PlantPatch
+     */
+    'purchase_date'?: string | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PlantPatch
+     */
+    'graveyard'?: boolean | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PlantPatch
+     */
+    'death_date'?: string | null;
 }
 

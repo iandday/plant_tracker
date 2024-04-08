@@ -46,8 +46,8 @@ const EditPlant = () => {
 
   interface PlantPatchIn {
     name: string;
-    common_name: string;
-    scientific_name: string;
+    common_name: string | null;
+    scientific_name: string | null;
     p_date: Dayjs;
     graveyard: boolean | null;
     death_date: string | null;
@@ -63,7 +63,7 @@ const EditPlant = () => {
   } = useForm<PlantPatchIn>({
     defaultValues: {
       p_date: dayjs(plantData?.purchase_date, 'YYYY-MM-DD'),
-      area_id: plantData?.area_id,
+      area_id: plantData?.area,
       name: plantData?.name,
       common_name: plantData?.common_name,
       scientific_name: plantData?.scientific_name

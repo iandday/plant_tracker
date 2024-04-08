@@ -1,4 +1,4 @@
-import { Button, Grid, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { Button, Grid, Input, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { AreaApi, AreaOut, PlantApi, PlantIn } from '../services';
 import { Controller, useForm } from 'react-hook-form';
@@ -39,13 +39,14 @@ const NewPlant = () => {
     name: string;
     common_name: string;
     scientific_name: string;
+    main_photo: File;
   }
   const {
     //register: newRegister,
     handleSubmit: newHandleSubmit,
     //reset: newReset,
-    control: newControl
-    //setValue: newSetValue
+    control: newControl,
+    setValue: newSetValue
   } = useForm<PlantFormIn>({
     defaultValues: {
       purchase_date: dayjs(),
@@ -53,19 +54,22 @@ const NewPlant = () => {
       name: undefined,
       common_name: undefined,
       scientific_name: undefined
+      //main_photo: ''
     }
   });
 
   const newOnSubmit = async (data: PlantFormIn) => {
-    const formData: PlantIn = {
-      purchase_date: data.purchase_date.format('YYYY-MM-DD'),
-      area_id: data.area_id,
-      name: data.name,
-      common_name: data.common_name,
-      scientific_name: data.scientific_name
-    };
     try {
-      const response = await plantAPI.trackerApiViewPlantCreatePlant(formData);
+      const response = await plantAPI.trackerApiViewPlantCreatePlant(
+        data.area_id,
+        data.name,
+        data.purchase_date.format('YYYY-MM-DD'),
+        undefined,
+        undefined,
+        data.common_name,
+        data.scientific_name,
+        data.main_photo
+      );
       if (response.status === 200) {
         navigate(`/myPlants/${response.data.id}`);
       }
@@ -162,6 +166,27 @@ const NewPlant = () => {
                       onChange={(date) => {
                         field.onChange(dayjs(date));
                       }}
+                    />
+                  );
+                }}
+              />
+              <Controller
+                control={newControl}
+                name="main_photo"
+                rules={{ required: false }}
+                render={({ field: { value, onChange, ...field } }) => {
+                  return (
+                    <Input
+                      {...field}
+                      //value={value?.filename}
+                      onChange={(event) => {
+                        let file = (event.target as HTMLInputElement)!.files![0];
+                        console.log(file);
+                        onChange(file);
+                        newSetValue('main_photo', file);
+                      }}
+                      type="file"
+                      id="picture"
                     />
                   );
                 }}

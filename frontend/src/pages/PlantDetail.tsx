@@ -27,7 +27,7 @@ const PlantDetail = () => {
         if (response.status === 200) {
           console.log('In');
           setPlantData(response.data);
-          const locResponse = await areaApi.trackerApiViewAreaGetArea(response.data.area_id!);
+          const locResponse = await areaApi.trackerApiViewAreaGetArea(response.data.area!);
           if (locResponse.status === 200) {
             setAreaData(locResponse.data);
           }
