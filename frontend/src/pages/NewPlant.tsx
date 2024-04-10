@@ -1,6 +1,6 @@
 import { Button, Grid, Input, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { AreaApi, AreaOut, PlantApi, PlantIn } from '../services';
+import { AreaApi, AreaOut, PlantApi } from '../services';
 import { Controller, useForm } from 'react-hook-form';
 import { BASE_PATH } from '../services/base';
 import axiosInstance from '../provider/CustomAxios';

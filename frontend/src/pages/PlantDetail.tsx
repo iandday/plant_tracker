@@ -104,7 +104,17 @@ const PlantDetail = () => {
             </Button>
             <Button
               onClick={() => {
-                api.trackerApiViewPlantPatchPlant(plantData?.id!, { ...plantData, graveyard: true });
+                api.trackerApiViewPlantPostPlant(
+                  id!,
+                  undefined,
+                  undefined,
+                  true,
+                  undefined,
+                  undefined,
+                  undefined,
+                  undefined,
+                  undefined
+                );
                 navigate(`/myPlants}`);
               }}
             >

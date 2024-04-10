@@ -71,7 +71,6 @@ def get_plant(request, plant_id: UUID4):
 @router.post(
     "/{plant_id}",
     response=PlantOut,
-    # operation_id="plant_patch_plant",
     auth=JWTAuth(),
     tags=["Plant"],
     description="Plant",
