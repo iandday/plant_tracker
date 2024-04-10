@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
 import { useNavigate, useParams } from 'react-router-dom';
-import { Button, ButtonGroup, Grid, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
+import { Button, ButtonGroup, Grid, Input, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
-import { AreaApi, AreaOut, PlantApi, PlantOut, PlantPatch } from '../services';
+import { AreaApi, AreaOut, PlantApi, PlantOut } from '../services';
 import { BASE_PATH } from '../services/base';
 import axiosInstance from '../provider/CustomAxios';
 import { Helmet } from 'react-helmet-async';
@@ -35,7 +35,6 @@ const EditPlant = () => {
           const locResponse = await areaAPI.trackerApiViewAreaListAreas();
           if (locResponse.status === 200) {
             setAreaData(locResponse.data);
-            reset({ ...response.data });
           }
         }
       } catch (err) {}
@@ -44,14 +43,33 @@ const EditPlant = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const updateLocation = async () => {
+      setLoading(true);
+      try {
+        reset({
+          p_date: dayjs(plantData?.purchase_date, 'YYYY-MM-DD'),
+          area_id: plantData?.area,
+          name: plantData?.name,
+          common_name: plantData?.common_name,
+          scientific_name: plantData?.scientific_name,
+          graveyard: plantData?.graveyard
+        });
+      } catch (err) {}
+      setLoading(false);
+    };
+    updateLocation();
+  }, [areaData]);
+
   interface PlantPatchIn {
     name: string;
     common_name: string | null;
     scientific_name: string | null;
     p_date: Dayjs;
-    graveyard: boolean | null;
-    death_date: string | null;
+    graveyard: boolean | undefined;
+    death_date: string | undefined;
     area_id: string;
+    main_photo: File;
   }
 
   const {
@@ -59,6 +77,7 @@ const EditPlant = () => {
     handleSubmit,
     reset,
     control,
+    setValue,
     formState: { errors }
   } = useForm<PlantPatchIn>({
     defaultValues: {
@@ -67,22 +86,24 @@ const EditPlant = () => {
       name: plantData?.name,
       common_name: plantData?.common_name,
       scientific_name: plantData?.scientific_name
+      //main_photo: undefined
     }
   });
-  //CANT POPULATE AREA
 
   const onSubmit = async (data: PlantPatchIn) => {
     try {
-      const patchData: PlantPatch = {
-        name: data.name,
-        common_name: data.common_name,
-        scientific_name: data.scientific_name,
-        purchase_date: data.p_date.format('YYYY-MM-DD'),
-        graveyard: data.graveyard,
-        death_date: data.death_date,
-        area_id: data.area_id
-      };
-      const response = await api.trackerApiViewPlantPatchPlant(id, { ...patchData });
+      const response = await api.trackerApiViewPlantPostPlant(
+        id,
+        data.area_id,
+        data.p_date.format('YYYY-MM-DD'),
+        data.graveyard,
+        data.death_date,
+        data.name,
+        data.common_name,
+        data.scientific_name,
+        data.main_photo
+      );
+      console.log(response.data);
       if (response.status === 200) {
         navigate(`/myPlants/${id}`);
       }
@@ -97,7 +118,7 @@ const EditPlant = () => {
         <title>{import.meta.env.VITE_APP_NAME + ' | Edit Plant'}</title>
       </Helmet>
       //{' '}
-      {true && !loading ? (
+      {plantData && !loading ? (
         <>
           <Typography variant="h4" align="center">
             edot
@@ -167,8 +188,12 @@ const EditPlant = () => {
                     control={control}
                     name="area_id"
                     render={({ field: { onChange, value } }) => (
-                      <Select id="area" value={value} onChange={onChange}>
-                        {areaData?.map((area) => <MenuItem value={area.id}>{area.name}</MenuItem>)}
+                      <Select id="area" value={value} onChange={onChange} defaultValue={plantData!.area}>
+                        {areaData?.map((area) => (
+                          <MenuItem key={area.id} value={area.id}>
+                            {area.name}
+                          </MenuItem>
+                        ))}
                       </Select>
                     )}
                   />
@@ -190,7 +215,25 @@ const EditPlant = () => {
                       );
                     }}
                   />
-
+                  <Controller
+                    control={control}
+                    name="main_photo"
+                    rules={{ required: false }}
+                    render={({ field: { value, onChange, ...field } }) => {
+                      return (
+                        <Input
+                          {...field}
+                          onChange={(event) => {
+                            let file = (event.target as HTMLInputElement)!.files![0];
+                            onChange(file);
+                            setValue('main_photo', file);
+                          }}
+                          type="file"
+                          id="picture"
+                        />
+                      );
+                    }}
+                  />
                   <ButtonGroup variant="contained" sx={{ pt: 4, paddingLeft: 4, paddingRight: 4 }}>
                     <Button type="submit" sx={{ color: 'text.primary' }}>
                       Submit

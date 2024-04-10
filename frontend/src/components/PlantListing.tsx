@@ -2,6 +2,7 @@ import { AreaOut, PlantOut } from '../services';
 import { Grid, Card, ImageListItem, ImageListItemBar, IconButton, Tooltip } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import InfoIcon from '@mui/icons-material/Info';
+import flower from '../../public/flower.jpg';
 
 interface Props {
   plants: PlantOut[];
@@ -51,13 +52,23 @@ const PlantListing = ({ plants, areas }: Props) => {
                   subtitle={findArrayElementByID(areas, plant.area!).name}
                   position="top"
                 />
-                <img
-                  srcSet={`${import.meta.env.VITE_BACKEND_URL}/${plant.main_photo}`}
-                  src={`${import.meta.env.VITE_BACKEND_URL}/${plant.main_photo}`}
-                  alt={plant.name}
-                  loading="lazy"
-                  style={{ height: 300, width: 300 }}
-                />
+                {plant?.main_photo ? (
+                  <img
+                    srcSet={`${import.meta.env.VITE_BACKEND_URL}/${plant.main_photo}`}
+                    src={`${import.meta.env.VITE_BACKEND_URL}/${plant.main_photo}`}
+                    alt={plant.name}
+                    loading="lazy"
+                    style={{ height: 300, width: 300 }}
+                  />
+                ) : (
+                  <img
+                    srcSet={flower}
+                    src={flower}
+                    alt={plant.name}
+                    loading="lazy"
+                    style={{ height: 300, width: 300 }}
+                  />
+                )}
                 <ImageListItemBar
                   style={{ width: 300 }}
                   title={plant.common_name}

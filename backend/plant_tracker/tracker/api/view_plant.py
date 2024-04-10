@@ -3,7 +3,7 @@ from typing import List
 
 from django.shortcuts import get_object_or_404
 from pydantic import UUID4
-from tracker.api.schemas import PlantIn, PlantOut, PlantPatch, DeleteStatus
+from tracker.api.schemas import PlantIn, PlantOut, PlantPost, DeleteStatus
 from django.http import HttpRequest
 from ninja import File, Form, Router
 from ninja_crud import views, viewsets
@@ -68,7 +68,7 @@ def get_plant(request, plant_id: UUID4):
     return plant
 
 
-@router.patch(
+@router.post(
     "/{plant_id}",
     response=PlantOut,
     # operation_id="plant_patch_plant",
@@ -76,15 +76,20 @@ def get_plant(request, plant_id: UUID4):
     tags=["Plant"],
     description="Plant",
 )
-def patch_plant(request, plant_id: UUID4, payload: PlantPatch):
+def post_plant(
+    request, plant_id: UUID4, payload: Form[PlantPost], file: File[UploadedFile] = None
+):
     user = get_user_model().objects.get(id=request.user.id)
     plant = get_object_or_404(Plant, id=plant_id, user=user)
-    for attr, value in payload.dict().items():
+    for attr, value in payload.dict(exclude_unset=True).items():
         if attr == "user_id":
             new_user = get_user_model().objects.get(id=value)
-            plant.user = new_user
+            if user != new_user:
+                plant.user = new_user
         else:
             setattr(plant, attr, value)
+    if file:
+        plant.main_photo.save(file.name, file)
     plant.save()
     return plant
 

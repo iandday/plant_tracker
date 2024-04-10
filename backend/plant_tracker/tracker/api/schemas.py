@@ -6,7 +6,6 @@ from pydantic import UUID4, validator
 from ninja_jwt.schema import TokenObtainPairInputSchema, TokenRefreshInputSchema
 from tracker.models import Plant
 from django.contrib.auth import get_user_model
-from ninja import Schema
 from typing import Annotated, TypeVar
 from pydantic import WrapValidator
 from pydantic_core import PydanticUseDefault
@@ -126,7 +125,7 @@ class PlantIn(ModelSchema):
     death_date: EmptyStrToDefault[date] = None
 
 
-class PlantPatch(ModelSchema):
+class PlantPost(ModelSchema):
     class Meta:
         model = Plant
         fields = [
@@ -137,15 +136,22 @@ class PlantPatch(ModelSchema):
             "graveyard",
             "death_date",
         ]
-        fields_optional = "__all__"
+        fields_optional = "__all__"  # [
+        #     "common_name",
+        #     "scientific_name",
+        #     "purchase_date",
+        #     "graveyard",
+        #     "death_date",
+        #     "name",
+        # ]
 
-    # name: str = None
-    # common_name: str = None
-    # scientific_name: str = None
-    # purchase_date: date = None
-    # graveyard: Optional[bool] = None
-    # death_date: Optional[date] = None
+    # name: str
     area_id: UUID4 = None
+    # common_name: Optional[str] = None
+    # scientific_name: Optional[str] = None
+    purchase_date: EmptyStrToDefault[date] = None
+    graveyard: EmptyStrToDefault[bool] = False
+    death_date: EmptyStrToDefault[date] = None
 
 
 class PlantOut(ModelSchema):

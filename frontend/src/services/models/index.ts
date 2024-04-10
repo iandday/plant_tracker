@@ -7,7 +7,7 @@ export * from './location-out';
 export * from './location-patch';
 export * from './plant-in';
 export * from './plant-out';
-export * from './plant-patch';
+export * from './plant-post';
 export * from './register-in';
 export * from './token-obtain-pair';
 export * from './token-obtain-pair-out';

@@ -8,6 +8,7 @@ import { AreaApi, AreaOut, PlantApi, PlantOut } from '../services';
 import { BASE_PATH } from '../services/base';
 import axiosInstance from '../provider/CustomAxios';
 import { Helmet } from 'react-helmet-async';
+import flower from '../../public/flower.jpg';
 
 const PlantDetail = () => {
   const { id } = useParams();
@@ -121,11 +122,15 @@ const PlantDetail = () => {
         </Grid>
         <Grid item marginRight={2}>
           <Card sx={{ maxWidth: 150 }}>
-            <CardMedia
-              component={'img'}
-              src={`${import.meta.env.VITE_BACKEND_URL}/${plantData?.main_photo}`}
-              sx={{ height: 240 }}
-            />
+            {plantData?.main_photo ? (
+              <CardMedia
+                component={'img'}
+                src={`${import.meta.env.VITE_BACKEND_URL}/${plantData?.main_photo}`}
+                sx={{ height: 240 }}
+              />
+            ) : (
+              <CardMedia component={'img'} src={flower} sx={{ height: 240 }} />
+            )}
           </Card>
         </Grid>
       </Grid>

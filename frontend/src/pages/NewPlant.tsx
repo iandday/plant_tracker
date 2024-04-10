@@ -54,7 +54,6 @@ const NewPlant = () => {
       name: undefined,
       common_name: undefined,
       scientific_name: undefined
-      //main_photo: ''
     }
   });
 
@@ -178,7 +177,6 @@ const NewPlant = () => {
                   return (
                     <Input
                       {...field}
-                      //value={value?.filename}
                       onChange={(event) => {
                         let file = (event.target as HTMLInputElement)!.files![0];
                         console.log(file);
