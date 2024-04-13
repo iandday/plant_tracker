@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ActivityApi, ActivityReturn, EntryApi, EntryCreate, Plant, PlantApi, PlantReturn } from '../services';
+import { ActivityApi, EntryApi, PlantApi, PlantOut } from '../services';
 import { BASE_PATH } from '../services/base';
 import axiosInstance from '../provider/CustomAxios';
 import { Controller, useForm } from 'react-hook-form';
@@ -11,6 +11,7 @@ import {
   Chip,
   FormLabel,
   Grid,
+  Input,
   MenuItem,
   NativeSelect,
   OutlinedInput,
@@ -29,6 +30,7 @@ import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAltOutlined';
 import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
 import { Helmet } from 'react-helmet-async';
+import { ActivityOut } from '../services/models/activity-out';
 
 const StyledRating = styled(Rating)(({ theme }) => ({
   '& .MuiRating-iconEmpty .MuiSvgIcon-root': {
@@ -75,9 +77,9 @@ const NewEntry = () => {
 
   const activityAPI = new ActivityApi(undefined, BASE_PATH, axiosInstance);
   const [loading, setLoading] = useState(true);
-  const [activityData, setActivityData] = useState<ActivityReturn>();
-  const [plantData, setPlantData] = useState<Plant>();
-  const [allPlantData, setAllPlantData] = useState<PlantReturn>();
+  const [activityData, setActivityData] = useState<ActivityOut[]>();
+  const [plantData, setPlantData] = useState<PlantOut>();
+  const [allPlantData, setAllPlantData] = useState<PlantOut[]>();
   const entryAPI = new EntryApi(undefined, BASE_PATH, axiosInstance);
   const plantAPI = new PlantApi(undefined, BASE_PATH, axiosInstance);
 
@@ -85,11 +87,11 @@ const NewEntry = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await activityAPI.getActivitysActivityGet();
+        const response = await activityAPI.trackerApiViewActivityListActivities();
 
         if (response.status === 200) {
           setActivityData(response.data);
-          const presponse = await plantAPI.getPlantByIdPlantPlantIdGet(id);
+          const presponse = await plantAPI.trackerApiViewPlantGetPlant(id);
           if (presponse.status === 200) {
             setPlantData(presponse.data);
           }
@@ -104,8 +106,7 @@ const NewEntry = () => {
     const fetchPlantData = async () => {
       setLoading(true);
       try {
-        const response = await plantAPI.getPlantPlantGet();
-
+        const response = await plantAPI.trackerApiViewPlantListPlants();
         if (response.status === 200) {
           setAllPlantData(response.data);
         }
@@ -121,27 +122,30 @@ const NewEntry = () => {
     notes: string;
     activities: [string];
     plant_health: number;
+    photo: File;
   }
 
   const {
     //register,
     handleSubmit,
     reset,
-    control
+    control,
+    setValue
     //formState: { errors }
   } = useForm<EntryCreateForm>({
     defaultValues: { plant_id: id, timestamp: dayjs(new Date()), plant_health: 5, activities: [], notes: '' }
   });
   const onSubmit = async (data: EntryCreateForm) => {
     try {
-      const formData: EntryCreate = {
-        plant_id: id,
-        notes: data.notes,
-        activities: data.activities,
-        timestamp: data.timestamp.toISOString(),
-        plant_health: data.plant_health
-      };
-      const response = await entryAPI.createEntryEntryPost({ ...formData });
+      const response = await entryAPI.trackerApiViewEntryCreateEntry(
+        data.timestamp.toISOString(),
+        data.activities,
+        id,
+        data.notes,
+        data.plant_health,
+        data.photo
+      );
+
       if (response.status === 200) {
         navigate(`/myPlants/${id}`);
       }
@@ -177,7 +181,7 @@ const NewEntry = () => {
                   rules={{ required: false }}
                   render={({ field: { onChange, value } }) => (
                     <NativeSelect value={value || []} onChange={onChange} input={<OutlinedInput label="Plant" />}>
-                      {allPlantData.results.map((plant) => (
+                      {allPlantData.map((plant) => (
                         <option key={plant.name} value={plant.id}>
                           {plant.name}
                         </option>
@@ -217,12 +221,12 @@ const NewEntry = () => {
                       renderValue={(selected) => (
                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                           {selected.map((value) => (
-                            <Chip key={value} label={activityData.results.find((o) => o.id === value)!.name} />
+                            <Chip key={value} label={activityData.find((o) => o.id === value)!.name} />
                           ))}
                         </Box>
                       )}
                     >
-                      {activityData.results.map((activity) => (
+                      {activityData.map((activity) => (
                         <MenuItem key={activity.name} value={activity.id}>
                           {activity.name}
                         </MenuItem>
@@ -270,6 +274,25 @@ const NewEntry = () => {
                       fullWidth
                     />
                   )}
+                />
+                <Controller
+                  control={control}
+                  name="photo"
+                  rules={{ required: false }}
+                  render={({ field: { value, onChange, ...field } }) => {
+                    return (
+                      <Input
+                        {...field}
+                        onChange={(event) => {
+                          let file = (event.target as HTMLInputElement)!.files![0];
+                          onChange(file);
+                          setValue('photo', file);
+                        }}
+                        type="file"
+                        id="picture"
+                      />
+                    );
+                  }}
                 />
                 <ButtonGroup variant="contained" sx={{ pt: 4, paddingLeft: 4, paddingRight: 4 }}>
                   <Button type="submit" sx={{ color: 'text.primary' }}>

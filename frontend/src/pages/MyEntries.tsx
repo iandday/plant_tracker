@@ -1,19 +1,34 @@
 import { useEffect, useState } from 'react';
-import { Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
-import { EntryApi, EntryReturn, Plant, PlantApi } from '../services';
+import {
+  Avatar,
+  Grid,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Typography
+} from '@mui/material';
+import { ActivityApi, EntryApi, PlantApi, PlantOut } from '../services';
 import axiosInstance from '../provider/CustomAxios';
 import { BASE_PATH } from '../services/base';
 import { AxiosResponse } from 'axios';
 import { ratingIcons } from '../components/ratings';
 import { Helmet } from 'react-helmet-async';
+import { EntryOut } from '../services/models/entry-out';
+import { ActivityOut } from '../services/models/activity-out';
 
 const MyEntries = () => {
   const api = new EntryApi(undefined, BASE_PATH, axiosInstance);
   const plantApi = new PlantApi(undefined, BASE_PATH, axiosInstance);
+  const activityApi = new ActivityApi(undefined, BASE_PATH, axiosInstance);
+
   const [loading, setLoading] = useState(true);
-  const [entryData, setEntryData] = useState<EntryReturn>();
-  const [plantData, setPlantData] = useState<Plant[]>([]);
+  const [entryData, setEntryData] = useState<EntryOut[]>();
+  const [plantData, setPlantData] = useState<PlantOut[]>([]);
   const [plantDataLoaded, setPlantDataLoaded] = useState(false);
+  const [activityData, setActivityData] = useState<ActivityOut[]>();
 
   // get entry details
   useEffect(() => {
@@ -21,13 +36,13 @@ const MyEntries = () => {
       setLoading(true);
 
       try {
-        const response = await api.getEntriesEntryGet();
+        const response = await api.trackerApiViewEntryListEntries();
         if (response.status === 200) {
           setEntryData(response.data);
-          const temp: Plant[] = [];
-          var results: AxiosResponse<Plant>[] = await Promise.all(
-            response.data.results.map(
-              async (item): Promise<AxiosResponse<Plant>> => await plantApi.getPlantByIdPlantPlantIdGet(item.plant_id)
+          const temp: PlantOut[] = [];
+          var results: AxiosResponse<PlantOut>[] = await Promise.all(
+            response.data.map(
+              async (item): Promise<AxiosResponse<PlantOut>> => await plantApi.trackerApiViewPlantGetPlant(item.plant)
             )
           );
 
@@ -45,6 +60,10 @@ const MyEntries = () => {
 
           setPlantData(temp);
         }
+        const activityResponse = await activityApi.trackerApiViewActivityListActivities();
+        if (activityResponse.status === 200) {
+          setActivityData(activityResponse.data);
+        }
       } catch (err) {
         console.error(err);
       }
@@ -54,8 +73,8 @@ const MyEntries = () => {
     fetchData();
   }, []);
 
-  function findArrayElementByID(array: Plant[], id: string): Plant | any {
-    const result = array.find((element: Plant) => element.id === id);
+  function findArrayElementByID(array: PlantOut[], id: string): PlantOut | any {
+    const result = array.find((element: PlantOut) => element.id === id);
     if (result) {
       return result;
     } else {
@@ -80,19 +99,33 @@ const MyEntries = () => {
       </Grid>
       <Grid container spacing={2} direction="row" alignItems="center" justifyContent="center">
         <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-          {entryData?.results.map((e) => {
+          {entryData?.map((e) => {
             return (
               <ListItem key={e.id}>
                 <ListItemIcon>{ratingIcons[e.plant_health].icon}</ListItemIcon>
                 <ListItemButton component="a" href={'/entry/' + e.id}>
                   <ListItemText
                     primary={
-                      findArrayElementByID(plantData, e.plant_id).name +
+                      findArrayElementByID(plantData, e.plant).name +
                       ': ' +
-                      findArrayElementByID(plantData, e.plant_id).common_name
+                      findArrayElementByID(plantData, e.plant).common_name
                     }
-                    secondary={e.activities.map((a) => a.name).join(', ') + ' at ' + e.timestamp}
+                    secondary={
+                      e.activities
+                        .map((a) => {
+                          let match = activityData!.find((act) => act.id === a);
+                          return match!.name;
+                        })
+                        .join(', ') +
+                      ' at ' +
+                      e.Timestamp
+                    }
                   />
+                  {e.photo ? (
+                    <ListItemAvatar>
+                      <Avatar src={`${import.meta.env.VITE_BACKEND_URL}${e.photo}`} />
+                    </ListItemAvatar>
+                  ) : null}
                 </ListItemButton>
               </ListItem>
             );

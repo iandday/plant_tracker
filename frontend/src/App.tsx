@@ -61,8 +61,8 @@ function App() {
                   <Route path="/myPlants" element={<MyPlants />} />
                   <Route path="/myPlants/:id" element={<PlantDetail />} />
                   <Route path="/editPlant/:id" element={<EditPlant />} />
-                  {/* <Route path="/entry" element={<MyEntries />} />
-                <Route path="/entry/:id" element={<EntryDetail />} /> */}
+                  <Route path="/entry" element={<MyEntries />} />
+                  <Route path="/entry/:id" element={<EntryDetail />} />
                   <Route path="/settings" element={<UserSettings />} />
                   <Route path="/areas" element={<Areas />} />
                   <Route path="/locations" element={<Locations />} />
@@ -70,7 +70,7 @@ function App() {
                   <Route path="/register" element={<Register />} />
                   <Route path="/myProfile" element={<MyProfile />} />
                   <Route path="/newPlant" element={<NewPlant />} />
-                  {/*<Route path="/newEntry/:id?" element={<NewEntry />} /> */}
+                  <Route path="/newEntry/:id?" element={<NewEntry />} />
                   <Route path="*" element={<Navigate to="/" />} />
                 </Routes>
                 <Navigation />

@@ -1,7 +1,9 @@
 .gitignore
 .npmignore
 api.ts
+apis/activity-api.ts
 apis/area-api.ts
+apis/entry-api.ts
 apis/location-api.ts
 apis/plant-api.ts
 apis/user-api.ts
@@ -10,10 +12,13 @@ common.ts
 configuration.ts
 git_push.sh
 index.ts
+models/activity-out.ts
 models/area-in.ts
 models/area-out.ts
 models/area-patch.ts
 models/delete-status.ts
+models/entry-in.ts
+models/entry-out.ts
 models/index.ts
 models/location-in.ts
 models/location-out.ts

@@ -4,7 +4,7 @@ from uuid import uuid4
 from ninja import ModelSchema, Schema, File
 from pydantic import UUID4, validator
 from ninja_jwt.schema import TokenObtainPairInputSchema, TokenRefreshInputSchema
-from tracker.models import Plant
+from tracker.models import Activity, Plant, Entry
 from django.contrib.auth import get_user_model
 from typing import Annotated, TypeVar
 from pydantic import WrapValidator
@@ -64,6 +64,37 @@ class RegisterOut(UserSchema):
 
 
 ### End user
+
+
+class EntryIn(ModelSchema):
+    class Meta:
+        model = Entry
+        fields = [
+            "Timestamp",
+            "activities",
+            "plant",
+            "notes",
+            "plant_health",
+        ]
+        fields_optional = [
+            "notes",
+            "plant_health",
+        ]
+
+    # name: str
+    # area_id: UUID4
+    # common_name: Optional[str] = None
+    # scientific_name: Optional[str] = None
+    # purchase_date: EmptyStrToDefault[date] = None
+    # graveyard: EmptyStrToDefault[bool] = False
+    # death_date: EmptyStrToDefault[date] = None
+
+
+class EntryOut(ModelSchema):
+    class Meta:
+        model = Entry
+        fields = "__all__"
+        fields_optional = ["photo"]
 
 
 class LocationIn(Schema):
@@ -167,15 +198,14 @@ class MeOut(Schema):
     name: str
 
 
-# class UserRetrieveSchema(ModelSchema):
-#     groups: List[GroupSchema]
-
-#     class Config:
-#         model = UserModel
-#         include = ("email", "first_name", "last_name", "username", "id", "is_active")
-
-
 class UserTokenOutSchema(Schema):
     token: str
     user: UserSchema
     token_exp_date: Optional[datetime]
+
+
+class ActivityOut(ModelSchema):
+    class Meta:
+        model = Activity
+        fields = "__all__"
+        # fields_optional = ["photo"]

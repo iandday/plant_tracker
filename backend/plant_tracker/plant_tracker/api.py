@@ -12,7 +12,8 @@ from tracker.api.view_location import router as location_router
 from tracker.api.view_area import router as area_router
 from tracker.api.view_user import router as user_router
 from tracker.api.view_plant import router as plant_router
-
+from tracker.api.view_entry import router as entry_router
+from tracker.api.view_activity import router as activity_router
 
 api = NinjaExtraAPI(
     title="Book Store API",
@@ -24,7 +25,8 @@ api.add_router("/location/", location_router)
 api.add_router("/area/", area_router)
 api.add_router("/user/", user_router)
 api.add_router("/plant/", plant_router)
-# api.add_router(...)
+api.add_router("/entry/", entry_router)
+api.add_router("/activity/", activity_router)
 
 
 @api.exception_handler(ObjectDoesNotExist)

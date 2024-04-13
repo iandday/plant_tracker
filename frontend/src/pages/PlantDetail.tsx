@@ -1,22 +1,38 @@
-import { Button, ButtonGroup, Card, CardMedia, Grid, ListItemButton, Typography } from '@mui/material';
+import {
+  Avatar,
+  Button,
+  ButtonGroup,
+  Card,
+  CardMedia,
+  Grid,
+  ListItemAvatar,
+  ListItemButton,
+  Typography
+} from '@mui/material';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import { useNavigate, useParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
-import { AreaApi, AreaOut, PlantApi, PlantOut } from '../services';
+import { ActivityApi, AreaApi, AreaOut, EntryApi, PlantApi, PlantOut } from '../services';
 import { BASE_PATH } from '../services/base';
 import axiosInstance from '../provider/CustomAxios';
 import { Helmet } from 'react-helmet-async';
 import flower from '../../public/flower.jpg';
+import { EntryOut } from '../services/models/entry-out';
+import { ActivityOut } from '../services/models/activity-out';
 
 const PlantDetail = () => {
   const { id } = useParams();
   const api = new PlantApi(undefined, BASE_PATH, axiosInstance);
   const areaApi = new AreaApi(undefined, BASE_PATH, axiosInstance);
+  const entryApi = new EntryApi(undefined, BASE_PATH, axiosInstance);
+  const activityApi = new ActivityApi(undefined, BASE_PATH, axiosInstance);
   const [loading, setLoading] = useState(true);
   const [areaData, setAreaData] = useState<AreaOut>();
   const [plantData, setPlantData] = useState<PlantOut>();
+  const [entryData, setEntryData] = useState<EntryOut[]>();
+  const [activityData, setActivityData] = useState<ActivityOut[]>();
 
   // get plant details and then area details
   useEffect(() => {
@@ -26,12 +42,19 @@ const PlantDetail = () => {
       try {
         const response = await api.trackerApiViewPlantGetPlant(id!);
         if (response.status === 200) {
-          console.log('In');
           setPlantData(response.data);
-          const locResponse = await areaApi.trackerApiViewAreaGetArea(response.data.area!);
-          if (locResponse.status === 200) {
-            setAreaData(locResponse.data);
-          }
+        }
+        const locResponse = await areaApi.trackerApiViewAreaGetArea(response.data.area!);
+        if (locResponse.status === 200) {
+          setAreaData(locResponse.data);
+        }
+        const entryResponse = await entryApi.trackerApiViewEntryGetPlantEntries(id!);
+        if (entryResponse.status === 200) {
+          setEntryData(entryResponse.data);
+        }
+        const activityResponse = await activityApi.trackerApiViewActivityListActivities();
+        if (activityResponse.status === 200) {
+          setActivityData(activityResponse.data);
         }
       } catch (err) {
         console.error(err);
@@ -145,16 +168,29 @@ const PlantDetail = () => {
         </Grid>
       </Grid>
 
-      {plantData && plantData.entries && plantData.entries.length > 0 ? (
+      {entryData && activityData && entryData.length > 0 ? (
         <>
           <Typography variant="h6" marginLeft={2}>
             Activity Entries
           </Typography>
           <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-            {plantData.entries.map((e) => (
+            {entryData.map((e) => (
               <ListItem key={e.id}>
                 <ListItemButton component="a" href={'/entry/' + e.id}>
-                  <ListItemText primary={e.activities.map((a) => a.name).join(', ')} secondary={e.timestamp} />
+                  <ListItemText
+                    primary={e.activities
+                      .map((a) => {
+                        let match = activityData.find((act) => act.id === a);
+                        return match!.name;
+                      })
+                      .join(', ')}
+                    secondary={e.Timestamp}
+                  />
+                  {e.photo ? (
+                    <ListItemAvatar>
+                      <Avatar src={`${import.meta.env.VITE_BACKEND_URL}${e.photo}`} />
+                    </ListItemAvatar>
+                  ) : null}
                 </ListItemButton>
               </ListItem>
             ))}

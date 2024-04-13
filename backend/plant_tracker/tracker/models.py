@@ -30,11 +30,9 @@ class Activity(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.TextField(name="name", blank=False, null=False)
     description = models.TextField(name="description", blank=True, null=True)
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
 
 
 class Plant(models.Model):
-
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.TextField(name="name", blank=False, null=False)
     common_name = models.TextField(name="common_name", blank=True, null=True)
@@ -56,4 +54,5 @@ class Entry(models.Model):
     plant_health = models.IntegerField(
         name="plant_health", validators=[validate_health_score]
     )
+    photo = models.ImageField(upload_to="images/", null=True)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)

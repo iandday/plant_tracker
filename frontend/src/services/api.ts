@@ -14,7 +14,9 @@
 
 
 
+export * from './apis/activity-api';
 export * from './apis/area-api';
+export * from './apis/entry-api';
 export * from './apis/location-api';
 export * from './apis/plant-api';
 export * from './apis/user-api';

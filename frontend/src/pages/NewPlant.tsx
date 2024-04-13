@@ -179,7 +179,6 @@ const NewPlant = () => {
                       {...field}
                       onChange={(event) => {
                         let file = (event.target as HTMLInputElement)!.files![0];
-                        console.log(file);
                         onChange(file);
                         newSetValue('main_photo', file);
                       }}
