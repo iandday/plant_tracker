@@ -1,5 +1,6 @@
 {
   "name": "frontend",
+  "homepage": "https://iandday.github.io/plant_tracker/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
