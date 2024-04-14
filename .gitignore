@@ -1,6 +1,6 @@
 .env
-frontend2
-backend/old
+plant_tracker/frontend/node_modules
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -63,6 +63,11 @@ cover/
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
+
+node_modules
+
+.vscode
+
 
 # Flask stuff:
 instance/

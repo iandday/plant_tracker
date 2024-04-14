@@ -8,9 +8,9 @@ services:
       - "8000:8000"
     build:
       dockerfile: Dockerfile
-      context: ./backend
+      context: ./
     volumes:
-      - ./backend/plant_tracker:/home/apiuser/plant_tracker
+      - ./plant_tracker:/home/apiuser/plant_tracker
       - ./media:/media
     env_file: .env
     #environment:

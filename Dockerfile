@@ -1,3 +1,12 @@
+FROM node:20-alpine as react_builder
+WORKDIR /app
+COPY ./plant_tracker/frontend/package.json .
+COPY ./plant_tracker/frontend/yarn.lock .
+RUN yarn install
+COPY ./plant_tracker/frontend . 
+RUN yarn build
+
+
 FROM python:3.10-slim as base
 
 ARG PROJECT=plant_tracker
@@ -23,6 +32,7 @@ RUN pip install --no-cache-dir --upgrade pip && \
 FROM base as dev
 
 COPY --chown=apiuser:apiuser ./$PROJECT /home/apiuser/$PROJECT
+COPY --from=react_builder /app/dist /home/apiuser/$PROJECT/frontend/dist
 
 WORKDIR /home/apiuser/$PROJECT
 EXPOSE 8000
