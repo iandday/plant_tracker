@@ -18,7 +18,7 @@ jobs:
         with:
           node-version: "18.16.1"
       - name: Install dependencies
-        run: npm i
+        run: cd frontend && npm i
       - name: Build
         run: cd frontend && npm run build
       - name: Deploy
