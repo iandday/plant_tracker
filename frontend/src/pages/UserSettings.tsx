@@ -51,6 +51,14 @@ const UserSettings = () => {
         >
           Configure Areas
         </Button>
+        <Button
+          variant="text"
+          onClick={() => {
+            navigate(`/activities`);
+          }}
+        >
+          Configure Activities
+        </Button>
 
         {!token && (
           <>

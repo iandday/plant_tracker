@@ -49,6 +49,18 @@ def me(request):
         raise APIException("Invalid user ID", code=status.HTTP_400_BAD_REQUEST)
 
 
+@router.patch("/me", response=UserSchema, url_name="me", auth=JWTAuth(), tags=["User"])
+def update_me(request, payload: UserSchema):
+    try:
+        user = get_user_model().objects.get(id=request.user.id)
+        for attr, value in payload.dict(exclude_unset=True).items():
+            setattr(user, attr, value)
+        user.save()
+        return user
+    except:
+        raise APIException("Invalid user ID", code=status.HTTP_400_BAD_REQUEST)
+
+
 @router.post("/register", response=UserSchema, url_name="register", tags=["User"])
 def register(request, data: RegisterIn):
     if data.password != data.password_verify:
@@ -60,7 +72,10 @@ def register(request, data: RegisterIn):
         )
     else:
         user = get_user_model().objects.create_user(
-            email=data.email, password=data.password
+            first_name=data.first_name,
+            last_name=data.last_name,
+            email=data.email,
+            password=data.password,
         )
         user.set_password(data.password)
         return user

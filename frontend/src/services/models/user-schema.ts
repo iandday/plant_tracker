@@ -31,6 +31,12 @@ export interface UserSchema {
      * @type {string}
      * @memberof UserSchema
      */
-    'id'?: string;
+    'first_name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserSchema
+     */
+    'last_name': string;
 }
 

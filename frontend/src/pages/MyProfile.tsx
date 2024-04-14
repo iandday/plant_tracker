@@ -1,25 +1,24 @@
 import { useEffect, useState } from 'react';
-import { User, UserApi, UserUpdate } from '../services';
+import { UserApi, UserSchema } from '../services';
 import { BASE_PATH } from '../services/base';
 import axiosInstance from '../provider/CustomAxios';
-import { Button, ButtonGroup, Grid, TextField, Typography } from '@mui/material';
+import { Button, ButtonGroup, Grid, Stack, TextField, Typography } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import { Helmet } from 'react-helmet-async';
 
 const MyProfile = () => {
   const api = new UserApi(undefined, BASE_PATH, axiosInstance);
 
-  const [profileUpdate, setProfileUpdate] = useState<number>(0);
+  const [updateProfile, setUpdateProfile] = useState<number>(0);
   const [showEdit, setShowEdit] = useState<boolean>(false);
 
-  // make a hook
   const [loading, setLoading] = useState(true);
-  const [userData, setUserData] = useState<User>();
+  const [userData, setUserData] = useState<UserSchema>();
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await api.getMeUserMeGet();
+        const response = await api.trackerApiViewUserMe();
         if (response.status === 200) {
           setUserData(response.data);
         }
@@ -29,31 +28,28 @@ const MyProfile = () => {
       setLoading(false);
     };
     fetchData();
-  }, [profileUpdate]);
+  }, [updateProfile]);
 
   const {
     //register,
     handleSubmit,
     reset,
-    control
-    //setValue
-  } = useForm<UserUpdate>({
+    control,
+    //setValue,
+    formState: { errors }
+  } = useForm<UserSchema>({
     defaultValues: { ...userData }
   });
 
-  // edit function
-  const editOnSubmit = async (data: User) => {
-    console.log(data);
+  const onSubmit = async (data: UserSchema) => {
     try {
-      const response = await api.updateMeUserMePost({
-        first_name: data.first_name
-      });
+      const response = await api.trackerApiViewUserUpdateMe({ ...data });
       if (response.status === 200) {
-        setProfileUpdate(profileUpdate + 1);
         setShowEdit((oldValue) => !oldValue);
+        setUpdateProfile((oldValue) => oldValue + 1);
       }
-    } catch (err) {
-      console.error(err);
+    } catch (err: unknown) {
+      console.log(err);
     }
   };
 
@@ -62,7 +58,7 @@ const MyProfile = () => {
   }
 
   return (
-    <div>
+    <>
       <Helmet>
         <title>{import.meta.env.VITE_APP_NAME + ' | My Profile'}</title>
       </Helmet>
@@ -88,24 +84,26 @@ const MyProfile = () => {
             </Button>
           </Grid>
         ) : null}
-
-        <Grid item xs={12} sx={{ mt: 2 }}>
-          {showEdit ? (
-            <form onSubmit={handleSubmit(() => editOnSubmit)}>
-              <Grid container>
-                <Grid item xs={7} justifyContent="flex-start">
+        {showEdit ? (
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Grid container spacing={0} direction="column" alignItems="center" sx={{ minHeight: '100vh' }}>
+              <Grid item>
+                <Stack>
                   <Controller
                     name="first_name"
                     control={control}
                     rules={{ required: true }}
                     render={({ field: { onChange, onBlur, value } }) => (
                       <TextField
+                        required
+                        id="first_name"
+                        label="First Name"
+                        type="filled"
                         onChange={onChange}
                         onBlur={onBlur}
-                        variant="filled"
-                        label="First Name"
-                        value={value}
-                        fullWidth
+                        value={value || ''}
+                        error={errors.first_name ? true : false}
+                        sx={{ pt: 5 }}
                       />
                     )}
                   />
@@ -115,12 +113,16 @@ const MyProfile = () => {
                     rules={{ required: true }}
                     render={({ field: { onChange, onBlur, value } }) => (
                       <TextField
+                        fullWidth
+                        required
+                        id="last_name"
+                        label="Last Name"
+                        type="filled"
                         onChange={onChange}
                         onBlur={onBlur}
-                        variant="filled"
-                        label="Last Name"
-                        value={value}
-                        fullWidth
+                        value={value || ''}
+                        error={errors.last_name ? true : false}
+                        sx={{ pt: 5 }}
                       />
                     )}
                   />
@@ -130,30 +132,48 @@ const MyProfile = () => {
                     rules={{ required: true }}
                     render={({ field: { onChange, onBlur, value } }) => (
                       <TextField
+                        fullWidth
+                        required
+                        id="email"
+                        label="Email"
+                        type="filled"
                         onChange={onChange}
                         onBlur={onBlur}
-                        variant="filled"
-                        label="E-mail"
-                        value={value}
-                        fullWidth
+                        value={value || ''}
+                        error={errors.email ? true : false}
+                        sx={{ pt: 5 }}
                       />
                     )}
                   />
-                  <ButtonGroup orientation="horizontal">
-                    <Button type="submit" variant="contained" sx={{ mt: 0 }}>
+
+                  <ButtonGroup variant="contained" sx={{ pt: 4, paddingLeft: 4, paddingRight: 4 }}>
+                    <Button type="submit" sx={{ color: 'text.primary' }}>
                       Submit
                     </Button>
-                    <Button variant="contained" onClick={() => reset} sx={{ mt: 0 }}>
+                    <Button
+                      sx={{ color: 'warning.main' }}
+                      onClick={() => {
+                        reset({ ...userData });
+                      }}
+                    >
                       Reset
                     </Button>
+                    <Button
+                      sx={{ color: 'error.main' }}
+                      onClick={() => {
+                        setShowEdit((oldValue) => !oldValue);
+                      }}
+                    >
+                      Cancel
+                    </Button>
                   </ButtonGroup>
-                </Grid>
+                </Stack>
               </Grid>
-            </form>
-          ) : null}
-        </Grid>
+            </Grid>
+          </form>
+        ) : null}
       </Grid>
-    </div>
+    </>
   );
 };
 

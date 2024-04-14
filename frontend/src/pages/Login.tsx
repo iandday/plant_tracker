@@ -77,6 +77,14 @@ const Login = () => {
                 >
                   Reset
                 </Button>
+                <Button
+                  sx={{ color: 'text.primary' }}
+                  onClick={() => {
+                    navigate('/register');
+                  }}
+                >
+                  Register
+                </Button>
               </ButtonGroup>
             </Stack>
           </Grid>

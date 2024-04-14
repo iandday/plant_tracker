@@ -2,6 +2,7 @@ import uuid
 
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
+from simple_history.models import HistoricalRecords
 
 
 class CustomUserManager(BaseUserManager):
@@ -39,6 +40,8 @@ class User(AbstractBaseUser):
     # Add custom fields here
     api_token = models.UUIDField(default=uuid.uuid4, editable=False)
     token_created_date = models.DateTimeField(auto_now_add=True)
+
+    history = HistoricalRecords()
 
     objects = CustomUserManager()
 

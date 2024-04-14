@@ -40,12 +40,6 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
-    "unfold",
-    "unfold.contrib.filters",
-    "unfold.contrib.forms",
-    "unfold.contrib.import_export",
-    "unfold.contrib.guardian",
-    "unfold.contrib.simple_history",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -56,7 +50,9 @@ INSTALLED_APPS = [
     "users",
     "ninja_jwt",
     "ninja_extra",
-    "corsheaders",
+    "corsheaders",  # https://pypi.org/project/django-cors-headers/
+    "import_export",  # https://django-import-export.readthedocs.io/en/latest/
+    "simple_history",  # https://django-simple-history.readthedocs.io/en/latest/quick_start.html#install
 ]
 
 MIDDLEWARE = [
@@ -68,6 +64,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "simple_history.middleware.HistoryRequestMiddleware",
 ]
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",

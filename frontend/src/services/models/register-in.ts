@@ -38,5 +38,17 @@ export interface RegisterIn {
      * @memberof RegisterIn
      */
     'password_verify': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterIn
+     */
+    'first_name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterIn
+     */
+    'last_name': string;
 }
 

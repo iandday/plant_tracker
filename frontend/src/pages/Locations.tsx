@@ -15,7 +15,7 @@ import {
 import { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 
-import { LocationApi, LocationIn, LocationOut } from '../services/index';
+import { LocationApi, LocationIn, LocationOut, LocationPatch } from '../services/index';
 
 import LabelBottomNavigation from '../components/Navigation';
 import axiosInstance from '../provider/CustomAxios';
@@ -53,7 +53,6 @@ const Locations = () => {
   const [alertText, setAlertText] = useState<string>();
   // edit location form
 
-  //const [editLocationValue, setEditLocationValue] = useState<string>('test');
   const {
     //register: editRegister,
     handleSubmit: editHandleSubmit,
@@ -126,10 +125,10 @@ const Locations = () => {
   // edit function
   const editOnSubmit = async (data: LocationOut) => {
     try {
-      const response = await api.locationPatchLocation(data.id, {
-        name: data.name,
-        user_id: data!.user!.id!
-      });
+      const patchData: LocationPatch = {
+        name: data!.name!
+      };
+      const response = await api.locationPatchLocation(data.id, patchData);
 
       if (response.status === 200) {
         setlocationUpdate(locationUpdate + 1);

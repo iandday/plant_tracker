@@ -1,29 +1,18 @@
-import { UserApi, UserCreate } from '../services/index';
+import { RegisterIn, UserApi } from '../services/index';
 import { useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button, ButtonGroup, Grid, Stack, TextField } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
+import { BASE_PATH } from '../services/base';
+import axiosInstance from '../provider/CustomAxios';
 
-export interface Register {
-  email: string;
-  password: string;
-  first_name: string;
-  last_name: string;
-}
 const Register = () => {
-  const api = new UserApi();
+  const api = new UserApi(undefined, BASE_PATH, axiosInstance);
   const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<Register> = async (data: Register) => {
+  const onSubmit: SubmitHandler<RegisterIn> = async (data: RegisterIn) => {
     try {
-      const register_data: UserCreate = {
-        email: data.email,
-        password: data.password,
-        first_name: data.first_name,
-        last_name: data.last_name,
-        disabled: false
-      };
-      const response = await api.createUserUserPost(register_data);
+      const response = await api.trackerApiViewUserRegister({ ...data });
 
       if (response.status === 200) {
         navigate('/login');
@@ -39,7 +28,7 @@ const Register = () => {
     handleSubmit,
     reset,
     formState: { errors }
-  } = useForm<Register>();
+  } = useForm<RegisterIn>();
 
   return (
     <>
@@ -67,6 +56,16 @@ const Register = () => {
                 label="Password"
                 type="password"
                 {...register('password')}
+                error={errors.password ? true : false}
+                sx={{ pt: 5 }}
+              />
+              <TextField
+                fullWidth
+                required
+                id="password_verify"
+                label="Verify Password"
+                type="password"
+                {...register('password_verify')}
                 error={errors.password ? true : false}
                 sx={{ pt: 5 }}
               />

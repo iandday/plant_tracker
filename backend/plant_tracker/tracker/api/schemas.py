@@ -29,7 +29,7 @@ class DeleteStatus(Schema):
 class UserSchema(ModelSchema):
     class Meta:
         model = get_user_model()
-        fields = ["email", "id"]
+        fields = ["email", "first_name", "last_name"]
 
 
 class TokenObtainPairOut(Schema):
@@ -57,6 +57,8 @@ class RegisterIn(Schema):
     email: str
     password: str
     password_verify: str
+    first_name: str
+    last_name: str
 
 
 class RegisterOut(UserSchema):
