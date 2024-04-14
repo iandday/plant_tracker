@@ -1,7 +1,7 @@
 import { Routes } from 'react-router';
 import Navigation from './components/Navigation';
 import MyPlants from './pages/MyPlants';
-import { BrowserRouter, HashRouter, Navigate, Route } from 'react-router-dom';
+import { HashRouter, Navigate, Route } from 'react-router-dom';
 import MyEntries from './pages/MyEntries';
 import UserSettings from './pages/UserSettings';
 import PlantDetail from './pages/PlantDetail';
