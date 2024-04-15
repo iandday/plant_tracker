@@ -65,6 +65,10 @@ class RegisterOut(UserSchema):
     pass
 
 
+class RegEnabledSchema(Schema):
+    enabled: bool
+
+
 ### End user
 
 

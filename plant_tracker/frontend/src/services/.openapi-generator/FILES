@@ -26,6 +26,7 @@ models/location-patch.ts
 models/plant-in.ts
 models/plant-out.ts
 models/plant-post.ts
+models/reg-enabled-schema.ts
 models/register-in.ts
 models/token-obtain-pair-out.ts
 models/token-obtain-pair.ts

@@ -103,7 +103,6 @@ const EditPlant = () => {
         data.scientific_name,
         data.main_photo
       );
-      console.log(response.data);
       if (response.status === 200) {
         navigate(`/myPlants/${id}`);
       }

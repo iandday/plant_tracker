@@ -11,6 +11,7 @@ export * from './location-patch';
 export * from './plant-in';
 export * from './plant-out';
 export * from './plant-post';
+export * from './reg-enabled-schema';
 export * from './register-in';
 export * from './token-obtain-pair';
 export * from './token-obtain-pair-out';

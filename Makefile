@@ -1,4 +1,4 @@
-export PROJECT=plant_tracker_api
+
 
 targets: help
 
@@ -9,15 +9,11 @@ build:
 up: 
 	docker-compose up
 
-makemigrations:
-	docker-compose run api alembic revision --autogenerate -m "migration"
-
-migrate:
-	docker-compose run api alembic upgrade head 
-
 buildapi:
-	openapi-generator-cli generate -i http://localhost:8000/api/openapi.json -g typescript-axios -o ./frontend/src/services --additional-properties=withSeparateModelsAndApi=true,apiPackage=apis,modelPackage=models 
+	openapi-generator-cli generate -i http://localhost:8000/api/openapi.json -g typescript-axios -o ./plant_tracker/frontend/src/services --additional-properties=withSeparateModelsAndApi=true,apiPackage=apis,modelPackage=models 
 
+frontend:
+	cd plant_tracker/frontend && npm run dev --host
 done: lint test ## Prepare for a commit	
 
 

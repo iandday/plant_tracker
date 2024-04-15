@@ -18,7 +18,7 @@ import { ActivityApi, AreaApi, AreaOut, EntryApi, PlantApi, PlantOut } from '../
 import { BASE_PATH } from '../services/base';
 import axiosInstance from '../provider/CustomAxios';
 import { Helmet } from 'react-helmet-async';
-import flower from '../../public/flower.jpg';
+import flower from '../flower.jpg';
 import { EntryOut } from '../services/models/entry-out';
 import { ActivityOut } from '../services/models/activity-out';
 

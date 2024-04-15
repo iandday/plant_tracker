@@ -5,10 +5,27 @@ import { Button, ButtonGroup, Grid, Stack, TextField } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
 import { BASE_PATH } from '../services/base';
 import axiosInstance from '../provider/CustomAxios';
+import { useEffect, useState } from 'react';
 
 const Register = () => {
   const api = new UserApi(undefined, BASE_PATH, axiosInstance);
+  const [loading, setLoading] = useState(true);
+  const [regData, setRegData] = useState<RegEnabledSchema>();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await api.trackerApiViewUserRegEnabled();
+        if (response.status === 200) {
+          setRegData(response.data);
+        }
+      } catch (err) {}
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
 
   const onSubmit: SubmitHandler<RegisterIn> = async (data: RegisterIn) => {
     try {
@@ -29,6 +46,14 @@ const Register = () => {
     reset,
     formState: { errors }
   } = useForm<RegisterIn>();
+
+  if (loading) {
+    return <>Still loading...</>;
+  }
+
+  if (!regData.enabled) {
+    return <>Registration disabled</>;
+  }
 
   return (
     <>

@@ -12,14 +12,16 @@ services:
     volumes:
       - ./plant_tracker:/home/apiuser/plant_tracker
       - ./media:/media
-    env_file: .env
-    #environment:
-    # - DATABASE_URL=postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
-    # - TREFLE_KEY=${TREFLE_KEY}
-    # - JWT_REFRESH_SECRET_KEY=${JWT_REFRESH_SECRET_KEY}
-    # - JWT_SECRET_KEY=${JWT_SECRET_KEY}
-    # - ENABLE_REGISTRATION=${ENABLE_REGISTRATION}
-    # - FRONTEND_URL=${FRONTEND_URL}
+      - ./media:/static
+    environment:
+      - DATABASE_URL=psql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      - SECRET_KEY=${SECRET_KEY}
+      - JWT_SIGNING_KEY=${JWT_SIGNING_KEY}
+      - JWT_ACCESS_TOKEN_LIFETIME_MINUTES=${JWT_ACCESS_TOKEN_LIFETIME_MINUTES}
+      - JWT_ACCESS_REFRESH_LIFETIME_DAYS=${JWT_ACCESS_REFRESH_LIFETIME_DAYS}
+      - DEBUG=${DEBUG}
+      - ENABLE_REGISTRATION=${ENABLE_REGISTRATION}
+      - MEDIA_PATH=${MEDIA_PATH}
   db:
     image: postgres:14.5
     ports:

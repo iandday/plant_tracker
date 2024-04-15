@@ -1,10 +1,11 @@
-import { UserApi } from '../services/index';
+import { RegEnabledSchema, UserApi } from '../services/index';
 import { useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button, ButtonGroup, Grid, Stack, TextField } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
 import { BASE_PATH } from '../services/base';
 import axiosInstance from '../provider/CustomAxios';
+import { useEffect, useState } from 'react';
 
 export interface Login {
   email: string;
@@ -12,7 +13,23 @@ export interface Login {
 }
 const Login = () => {
   const api = new UserApi(undefined, BASE_PATH, axiosInstance);
+  const [loading, setLoading] = useState(true);
+  const [regData, setRegData] = useState<RegEnabledSchema>();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await api.trackerApiViewUserRegEnabled();
+        if (response.status === 200) {
+          setRegData(response.data);
+        }
+      } catch (err) {}
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
 
   const onSubmit: SubmitHandler<Login> = async (data: Login) => {
     try {
@@ -34,6 +51,10 @@ const Login = () => {
     reset,
     formState: { errors }
   } = useForm<Login>();
+
+  if (loading) {
+    return <>Still loading...</>;
+  }
 
   return (
     <>
@@ -77,14 +98,16 @@ const Login = () => {
                 >
                   Reset
                 </Button>
-                <Button
-                  sx={{ color: 'text.primary' }}
-                  onClick={() => {
-                    navigate('/register');
-                  }}
-                >
-                  Register
-                </Button>
+                {regData?.enabled ? (
+                  <Button
+                    sx={{ color: 'text.primary' }}
+                    onClick={() => {
+                      navigate('/register');
+                    }}
+                  >
+                    Register
+                  </Button>
+                ) : null}
               </ButtonGroup>
             </Stack>
           </Grid>

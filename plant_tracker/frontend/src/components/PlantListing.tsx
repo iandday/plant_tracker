@@ -2,7 +2,7 @@ import { AreaOut, PlantOut } from '../services';
 import { Grid, Card, ImageListItem, ImageListItemBar, IconButton, Tooltip } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import InfoIcon from '@mui/icons-material/Info';
-import flower from '../../public/flower.jpg';
+import flower from '../flower.jpg';
 
 interface Props {
   plants: PlantOut[];
