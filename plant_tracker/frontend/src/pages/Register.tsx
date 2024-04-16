@@ -1,4 +1,4 @@
-import { RegisterIn, UserApi } from '../services/index';
+import { RegEnabledSchema, RegisterIn, UserApi } from '../services/index';
 import { useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button, ButtonGroup, Grid, Stack, TextField } from '@mui/material';
@@ -51,7 +51,7 @@ const Register = () => {
     return <>Still loading...</>;
   }
 
-  if (!regData.enabled) {
+  if (!regData!.enabled) {
     return <>Registration disabled</>;
   }
 
