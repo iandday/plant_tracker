@@ -4,7 +4,7 @@ COPY ./plant_tracker/frontend/package.json .
 COPY ./plant_tracker/frontend/yarn.lock .
 RUN yarn install
 COPY ./plant_tracker/frontend . 
-RUN yarn build
+RUN npm run build
 
 
 FROM python:3.10-slim as base
@@ -29,13 +29,13 @@ RUN pip install --no-cache-dir --upgrade pip && \
     pip install -r requirements.txt
 
 
-FROM base as dev
+FROM base as final
 
 COPY --chown=apiuser:apiuser ./$PROJECT /home/apiuser/$PROJECT
 COPY --from=react_builder /app/dist /home/apiuser/$PROJECT/frontend/dist
 
 WORKDIR /home/apiuser/$PROJECT
 EXPOSE 8000
-ENTRYPOINT ["python3"] 
-CMD ["manage.py", "runserver", "0.0.0.0:8000"]
+ENTRYPOINT ["bash", "docker-entrypoint.sh"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 
