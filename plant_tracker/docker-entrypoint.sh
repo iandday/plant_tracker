@@ -52,7 +52,7 @@ done
 # done
 # >&2 echo "Redis is available"
 
-python3 manage.py collectstatic --noinput
-python3 manage.py migrate
+python manage.py collectstatic --noinput
+python manage.py migrate
 
 exec "$@"
