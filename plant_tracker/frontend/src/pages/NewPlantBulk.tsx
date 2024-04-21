@@ -1,16 +1,14 @@
-import { Button, Grid, Input, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { AreaApi, AreaOut, BulkApi, BulkPlantCreateResponse, PlantApi } from '../services';
+import { Button, Grid, Input, Typography } from '@mui/material';
+import { useState } from 'react';
+import { BulkApi, BulkPlantCreateResponse } from '../services';
 import { Controller, useForm } from 'react-hook-form';
 import { BASE_PATH } from '../services/base';
 import axiosInstance from '../provider/CustomAxios';
-import { DatePicker } from '@mui/x-date-pickers';
-import dayjs, { Dayjs } from 'dayjs';
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
 const NewPlantBulk = () => {
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   const [showResults, setShowResults] = useState(false);
   const [results, setResults] = useState<BulkPlantCreateResponse>();
@@ -91,7 +89,10 @@ const NewPlantBulk = () => {
           </Grid>
         </>
       ) : (
-        <Typography>Results</Typography>
+        <>
+          <Typography>Results</Typography>
+          <Typography>{JSON.stringify(results)}</Typography>
+        </>
       )}
     </>
   );
