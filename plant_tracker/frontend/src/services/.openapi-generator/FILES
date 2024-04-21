@@ -3,6 +3,7 @@
 api.ts
 apis/activity-api.ts
 apis/area-api.ts
+apis/bulk-api.ts
 apis/entry-api.ts
 apis/location-api.ts
 apis/plant-api.ts
@@ -16,6 +17,7 @@ models/activity-out.ts
 models/area-in.ts
 models/area-out.ts
 models/area-patch.ts
+models/bulk-plant-create-response.ts
 models/delete-status.ts
 models/entry-in.ts
 models/entry-out.ts

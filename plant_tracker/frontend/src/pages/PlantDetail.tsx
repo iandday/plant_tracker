@@ -37,7 +37,6 @@ const PlantDetail = () => {
   // get plant details and then area details
   useEffect(() => {
     const fetchData = async () => {
-      console.log('start');
       setLoading(true);
       try {
         const response = await api.trackerApiViewPlantGetPlant(id!);
@@ -97,6 +96,10 @@ const PlantDetail = () => {
           <Typography variant="button">Area: </Typography>
           <Typography variant="body1" marginLeft={2}>
             {areaData?.name}
+          </Typography>
+          <Typography variant="button">Notes: </Typography>
+          <Typography variant="body1" marginLeft={2}>
+            {plantData?.notes}
           </Typography>
           <Typography variant="button">Purchase Date: </Typography>
           <Typography variant="body1" marginLeft={2}>

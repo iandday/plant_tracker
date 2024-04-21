@@ -26,6 +26,7 @@ import MyGraveyard from './pages/MyGraveyard';
 import Locations from './pages/Locations';
 import Register from './pages/Register';
 import Activities from './pages/Activities';
+import NewPlantBulk from './pages/NewPlantBulk';
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -72,6 +73,7 @@ function App() {
                   <Route path="/register" element={<Register />} />
                   <Route path="/myProfile" element={<MyProfile />} />
                   <Route path="/newPlant" element={<NewPlant />} />
+                  <Route path="/newPlantBulk" element={<NewPlantBulk />} />
                   <Route path="/newEntry/:id?" element={<NewEntry />} />
                   <Route path="*" element={<Navigate to="/" />} />
                 </Routes>

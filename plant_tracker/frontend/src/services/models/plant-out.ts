@@ -73,6 +73,12 @@ export interface PlantOut {
      * @type {string}
      * @memberof PlantOut
      */
+    'notes'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PlantOut
+     */
     'area': string;
     /**
      * 

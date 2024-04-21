@@ -11,7 +11,6 @@ class CustomUserManager(BaseUserManager):
             raise ValueError("User must have a username and password")
 
         user = self.model(email=CustomUserManager.normalize_email(email), **kwargs)
-
         user.set_password(password)
         user.save()
 

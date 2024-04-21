@@ -144,6 +144,7 @@ class PlantIn(ModelSchema):
             "purchase_date",
             "graveyard",
             "death_date",
+            "notes",
         ]
         fields_optional = [
             "common_name",
@@ -151,6 +152,7 @@ class PlantIn(ModelSchema):
             "purchase_date",
             "graveyard",
             "death_date",
+            "notes",
         ]
 
     # name: str
@@ -172,6 +174,7 @@ class PlantPost(ModelSchema):
             "purchase_date",
             "graveyard",
             "death_date",
+            "notes",
         ]
         fields_optional = "__all__"  # [
         #     "common_name",
@@ -215,3 +218,8 @@ class ActivityOut(ModelSchema):
         model = Activity
         fields = "__all__"
         # fields_optional = ["photo"]
+
+
+class BulkPlantCreateResponse(Schema):
+    created: list[PlantOut] = None
+    errors: list[str] = None

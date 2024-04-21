@@ -1,4 +1,4 @@
-import { Button, Grid, Input, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { Button, Grid, Input, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { AreaApi, AreaOut, PlantApi } from '../services';
 import { Controller, useForm } from 'react-hook-form';
@@ -40,6 +40,7 @@ const NewPlant = () => {
     common_name: string;
     scientific_name: string;
     main_photo: File;
+    notes: string;
   }
   const {
     //register: newRegister,
@@ -53,7 +54,8 @@ const NewPlant = () => {
       area_id: undefined,
       name: undefined,
       common_name: undefined,
-      scientific_name: undefined
+      scientific_name: undefined,
+      notes: undefined
     }
   });
 
@@ -67,6 +69,7 @@ const NewPlant = () => {
         undefined,
         data.common_name,
         data.scientific_name,
+        data.notes,
         data.main_photo
       );
       if (response.status === 200) {
@@ -143,13 +146,31 @@ const NewPlant = () => {
                   />
                 )}
               />
+              <InputLabel id="demo-simple-select-helper-label">Area</InputLabel>
               <Controller
                 control={newControl}
                 name="area_id"
                 render={({ field: { onChange, value } }) => (
-                  <Select id="area" value={value} onChange={onChange}>
+                  <Select id="area" value={value} onChange={onChange} label="Area">
                     {areaData?.map((area) => <MenuItem value={area.id}>{area.name}</MenuItem>)}
                   </Select>
+                )}
+              />
+              <Controller
+                control={newControl}
+                name="notes"
+                rules={{ required: true }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextField
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    variant="filled"
+                    label="Notes"
+                    value={value || ''}
+                    fullWidth
+                    multiline
+                    rows={4}
+                  />
                 )}
               />
               <Controller

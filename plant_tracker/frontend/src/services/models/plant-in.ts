@@ -62,5 +62,11 @@ export interface PlantIn {
      * @memberof PlantIn
      */
     'scientific_name'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PlantIn
+     */
+    'notes'?: string | null;
 }
 

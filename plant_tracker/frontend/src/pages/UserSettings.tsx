@@ -59,6 +59,14 @@ const UserSettings = () => {
         >
           Configure Activities
         </Button>
+        <Button
+          variant="text"
+          onClick={() => {
+            navigate(`/newPlantBulk`);
+          }}
+        >
+          Bulk Plant Create
+        </Button>
 
         {!token && (
           <>

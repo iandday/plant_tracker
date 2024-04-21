@@ -14,6 +14,7 @@ from tracker.api.view_user import router as user_router
 from tracker.api.view_plant import router as plant_router
 from tracker.api.view_entry import router as entry_router
 from tracker.api.view_activity import router as activity_router
+from tracker.api.view_bulk import router as bulk_router
 
 api = NinjaExtraAPI(
     title="Book Store API",
@@ -27,6 +28,7 @@ api.add_router("/user/", user_router)
 api.add_router("/plant/", plant_router)
 api.add_router("/entry/", entry_router)
 api.add_router("/activity/", activity_router)
+api.add_router("/bulk/", bulk_router)
 
 
 @api.exception_handler(ObjectDoesNotExist)

@@ -2,6 +2,7 @@ export * from './activity-out';
 export * from './area-in';
 export * from './area-out';
 export * from './area-patch';
+export * from './bulk-plant-create-response';
 export * from './delete-status';
 export * from './entry-in';
 export * from './entry-out';

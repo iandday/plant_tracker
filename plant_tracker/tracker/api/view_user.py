@@ -66,7 +66,7 @@ def update_me(request, payload: UserSchema):
     "/reg_enabled", response=RegEnabledSchema, url_name="reg_enabled", tags=["User"]
 )
 def reg_enabled(request):
-    if env("ENABLE_REGISTRATION"):
+    if env.bool("ENABLE_REGISTRATION"):
         return {"enabled": True}
     else:
         return {"enabled": False}

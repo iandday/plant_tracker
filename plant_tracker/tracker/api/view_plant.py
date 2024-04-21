@@ -1,9 +1,16 @@
+import csv
 import logging
 from typing import List
 
 from django.shortcuts import get_object_or_404
 from pydantic import UUID4
-from tracker.api.schemas import PlantIn, PlantOut, PlantPost, DeleteStatus
+from tracker.api.schemas import (
+    PlantIn,
+    PlantOut,
+    PlantPost,
+    DeleteStatus,
+    RegEnabledSchema,
+)
 from django.http import HttpRequest
 from ninja import File, Form, Router
 from ninja_crud import views, viewsets
