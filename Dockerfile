@@ -7,7 +7,7 @@ COPY ./plant_tracker/frontend .
 RUN npm run build
 
 
-FROM python:3.10-slim as base
+FROM python:3.10 as base
 
 ARG PROJECT=plant_tracker
 ENV PROJECT=$PROJECT
@@ -16,7 +16,7 @@ ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends build-essential libpq-dev \
+    && apt-get install -y --no-install-recommends build-essential libpq-dev python3-dev libpq5 postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
 # Create a non-root user to run the app with.
