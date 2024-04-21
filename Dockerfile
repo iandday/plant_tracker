@@ -27,14 +27,11 @@ RUN pip install --upgrade pip && \
     pip install -r /app/requirements.txt
 
 
-
-
 FROM python:3.10-alpine
 ENV PYTHONUNBUFFERED 1
 RUN apk add libpq
 COPY --from=base /usr/local/lib/python3.10/site-packages/ /usr/local/lib/python3.10/site-packages/
 COPY --from=base /usr/local/bin/ /usr/local/bin/
-
 
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 USER appuser
