@@ -74,7 +74,7 @@ def reg_enabled(request):
 
 @router.post("/register", response=UserSchema, url_name="register", tags=["User"])
 def register(request, data: RegisterIn):
-    if env["ENABLE_REGISTRATION"]:
+    if env.bool("ENABLE_REGISTRATION"):
         if data.password != data.password_verify:
             raise APIException(
                 "Passwords do not match", code=status.HTTP_400_BAD_REQUEST
