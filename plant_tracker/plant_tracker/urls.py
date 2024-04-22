@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
 from .api import api
 from django.conf import settings
 from django.conf.urls.static import static
@@ -8,7 +8,8 @@ from tracker.views import frontend
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", api.urls),
-    path("", frontend, name="frontend"),
+    re_path(r"^$", frontend, name="frontend"),
+    re_path(r"^(?:.*)/?$", frontend, name="frontend"),
 ]
 
 if settings.DEBUG:
