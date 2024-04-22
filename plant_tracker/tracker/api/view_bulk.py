@@ -45,14 +45,13 @@ def bulk_create_plant(request, file: UploadedFile = File(...)):
     for row in csv_reader:
 
         try:
+            date = row["purchase_date"].replace("-", "").replace("/", "")
             area = Area.objects.get(name=row["area"])
             new_plant = Plant.objects.create(
                 name=row["name"],
-                common_name=row["common_name"],
-                scientific_name=row["scientific_name"],
-                purchase_date=datetime.datetime.strptime(
-                    row["purchase_date"], "%Y%m%d"
-                ),
+                common_name=row.get("common_name", ""),
+                scientific_name=row.get("scientific_name", ""),
+                purchase_date=datetime.datetime.strptime(date, "%Y%m%d"),
                 area=area,
                 user=user,
             )
