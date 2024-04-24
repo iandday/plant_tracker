@@ -69,7 +69,7 @@ const EditPlant = () => {
     graveyard: boolean | undefined;
     death_date: string | undefined;
     area_id: string;
-    notes: string;
+    notes: string | undefined | null;
     main_photo: File;
   }
 
