@@ -69,6 +69,7 @@ const EditPlant = () => {
     graveyard: boolean | undefined;
     death_date: string | undefined;
     area_id: string;
+    notes: string;
     main_photo: File;
   }
 
@@ -85,7 +86,8 @@ const EditPlant = () => {
       area_id: plantData?.area,
       name: plantData?.name,
       common_name: plantData?.common_name,
-      scientific_name: plantData?.scientific_name
+      scientific_name: plantData?.scientific_name,
+      notes: plantData?.notes
       //main_photo: undefined
     }
   });
@@ -101,6 +103,7 @@ const EditPlant = () => {
         data.name,
         data.common_name,
         data.scientific_name,
+        data.notes,
         data.main_photo
       );
       if (response.status === 200) {
@@ -155,6 +158,25 @@ const EditPlant = () => {
                         required
                         id="common_name"
                         label="Common Name"
+                        type="filled"
+                        onChange={onChange}
+                        onBlur={onBlur}
+                        value={value || ''}
+                        error={errors.name ? true : false}
+                        sx={{ pt: 5 }}
+                      />
+                    )}
+                  />
+                  <Controller
+                    name="notes"
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { onChange, onBlur, value } }) => (
+                      <TextField
+                        fullWidth
+                        required
+                        id="notes"
+                        label="Notes"
                         type="filled"
                         onChange={onChange}
                         onBlur={onBlur}
