@@ -1,18 +1,33 @@
 version: "3.7"
 
 services:
+  proxy:
+    build:
+      dockerfile: Dockerfile
+      context: ./proxy
+    restart: always
+    volumes:
+      - ./media:/media
+      - ./static:/static
+    ports:
+      - 80:80
+    depends_on:
+      - django
   django:
     depends_on:
       - db
-    ports:
-      - "8000:8000"
     build:
       dockerfile: Dockerfile
       context: ./
+      args:
+        VITE_BACKEND_URL: http://localhost
+        VITE_PAGE_TITLE: Plant Tracker
+        BASE: /static
+    command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./plant_tracker:/home/apiuser/plant_tracker
+      - ./plant_tracker:/app/plant_tracker
       - ./media:/media
-      - ./media:/static
+      - ./static:/static
     environment:
       - DATABASE_URL=psql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
       - SECRET_KEY=${SECRET_KEY}
@@ -24,8 +39,6 @@ services:
       - MEDIA_PATH=${MEDIA_PATH}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD}
       - ADMIN_EMAIL=${ADMIN_EMAIL}
-      - ADMIN_FIRST_NAME=${ADMIN_FIRST_NAME}
-      - ADMIN_LAST_NAME=${ADMIN_LAST_NAME}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
