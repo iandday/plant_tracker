@@ -19,6 +19,14 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - context: ./
+            image: ghcr.io/iandday/plant_tracker
+          - context: ./proxy
+            image: ghcr.io/iandday/plant_tracker_proxy
     permissions:
       contents: read
       packages: write
@@ -60,7 +68,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/iandday/plant_tracker
+          images: ${{ matrix.image }}
           tags: |
             # set latest tag for default branch
             type=raw,value=latest,enable={{is_default_branch}}
@@ -72,12 +80,12 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@v5
         with:
-          context: ./
+          context: ${{ matrix.context }}
           build-args: |
             "VITE_BACKEND_URL=https://plant.ianday.me"
             "VITE_PAGE_TITLE=Plant Tracker"
             "BASE=/static"
-          file: ./Dockerfile
+          file: Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
