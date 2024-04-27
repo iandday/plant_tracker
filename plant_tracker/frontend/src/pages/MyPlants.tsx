@@ -1,7 +1,6 @@
 import { Grid, Typography } from '@mui/material';
 import { AreaApi, AreaOut, PlantApi, PlantOut } from '../services';
 import { useEffect, useState } from 'react';
-import LabelBottomNavigation from '../components/Navigation';
 import PlantListing from '../components/PlantListing';
 import axiosInstance from '../provider/CustomAxios';
 import { BASE_PATH } from '../services/base';
