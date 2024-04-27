@@ -73,6 +73,10 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./
+          build-args: |
+            "VITE_BACKEND_URL=https://plant.ianday.me"
+            "VITE_PAGE_TITLE=Plant Tracker"
+            "BASE=/static"
           file: ./Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
