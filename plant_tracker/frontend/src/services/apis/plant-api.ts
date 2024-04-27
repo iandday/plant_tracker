@@ -249,11 +249,12 @@ export const PlantApiAxiosParamCreator = function (configuration?: Configuration
          * @param {string | null} [name] 
          * @param {string | null} [commonName] 
          * @param {string | null} [scientificName] 
+         * @param {string | null} [notes] 
          * @param {File} [file] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        trackerApiViewPlantPostPlant: async (plantId: string, areaId?: string, purchaseDate?: string, graveyard?: boolean, deathDate?: string, name?: string | null, commonName?: string | null, scientificName?: string | null, file?: File, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        trackerApiViewPlantPostPlant: async (plantId: string, areaId?: string, purchaseDate?: string, graveyard?: boolean, deathDate?: string, name?: string | null, commonName?: string | null, scientificName?: string | null, notes?: string | null, file?: File, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'plantId' is not null or undefined
             assertParamExists('trackerApiViewPlantPostPlant', 'plantId', plantId)
             const localVarPath = `/api/plant/{plant_id}`
@@ -301,6 +302,10 @@ export const PlantApiAxiosParamCreator = function (configuration?: Configuration
     
             if (scientificName !== undefined) { 
                 localVarFormParams.append('scientific_name', scientificName as any);
+            }
+    
+            if (notes !== undefined) { 
+                localVarFormParams.append('notes', notes as any);
             }
     
             if (file !== undefined) { 
@@ -402,12 +407,13 @@ export const PlantApiFp = function(configuration?: Configuration) {
          * @param {string | null} [name] 
          * @param {string | null} [commonName] 
          * @param {string | null} [scientificName] 
+         * @param {string | null} [notes] 
          * @param {File} [file] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async trackerApiViewPlantPostPlant(plantId: string, areaId?: string, purchaseDate?: string, graveyard?: boolean, deathDate?: string, name?: string | null, commonName?: string | null, scientificName?: string | null, file?: File, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PlantOut>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.trackerApiViewPlantPostPlant(plantId, areaId, purchaseDate, graveyard, deathDate, name, commonName, scientificName, file, options);
+        async trackerApiViewPlantPostPlant(plantId: string, areaId?: string, purchaseDate?: string, graveyard?: boolean, deathDate?: string, name?: string | null, commonName?: string | null, scientificName?: string | null, notes?: string | null, file?: File, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PlantOut>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.trackerApiViewPlantPostPlant(plantId, areaId, purchaseDate, graveyard, deathDate, name, commonName, scientificName, notes, file, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['PlantApi.trackerApiViewPlantPostPlant']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
@@ -482,12 +488,13 @@ export const PlantApiFactory = function (configuration?: Configuration, basePath
          * @param {string | null} [name] 
          * @param {string | null} [commonName] 
          * @param {string | null} [scientificName] 
+         * @param {string | null} [notes] 
          * @param {File} [file] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        trackerApiViewPlantPostPlant(plantId: string, areaId?: string, purchaseDate?: string, graveyard?: boolean, deathDate?: string, name?: string | null, commonName?: string | null, scientificName?: string | null, file?: File, options?: any): AxiosPromise<PlantOut> {
-            return localVarFp.trackerApiViewPlantPostPlant(plantId, areaId, purchaseDate, graveyard, deathDate, name, commonName, scientificName, file, options).then((request) => request(axios, basePath));
+        trackerApiViewPlantPostPlant(plantId: string, areaId?: string, purchaseDate?: string, graveyard?: boolean, deathDate?: string, name?: string | null, commonName?: string | null, scientificName?: string | null, notes?: string | null, file?: File, options?: any): AxiosPromise<PlantOut> {
+            return localVarFp.trackerApiViewPlantPostPlant(plantId, areaId, purchaseDate, graveyard, deathDate, name, commonName, scientificName, notes, file, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -567,13 +574,14 @@ export class PlantApi extends BaseAPI {
      * @param {string | null} [name] 
      * @param {string | null} [commonName] 
      * @param {string | null} [scientificName] 
+     * @param {string | null} [notes] 
      * @param {File} [file] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PlantApi
      */
-    public trackerApiViewPlantPostPlant(plantId: string, areaId?: string, purchaseDate?: string, graveyard?: boolean, deathDate?: string, name?: string | null, commonName?: string | null, scientificName?: string | null, file?: File, options?: AxiosRequestConfig) {
-        return PlantApiFp(this.configuration).trackerApiViewPlantPostPlant(plantId, areaId, purchaseDate, graveyard, deathDate, name, commonName, scientificName, file, options).then((request) => request(this.axios, this.basePath));
+    public trackerApiViewPlantPostPlant(plantId: string, areaId?: string, purchaseDate?: string, graveyard?: boolean, deathDate?: string, name?: string | null, commonName?: string | null, scientificName?: string | null, notes?: string | null, file?: File, options?: AxiosRequestConfig) {
+        return PlantApiFp(this.configuration).trackerApiViewPlantPostPlant(plantId, areaId, purchaseDate, graveyard, deathDate, name, commonName, scientificName, notes, file, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

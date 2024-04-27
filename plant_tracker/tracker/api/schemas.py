@@ -6,7 +6,7 @@ from pydantic import UUID4, validator
 from ninja_jwt.schema import TokenObtainPairInputSchema, TokenRefreshInputSchema
 from tracker.models import Activity, Plant, Entry
 from django.contrib.auth import get_user_model
-from typing import Annotated, TypeVar
+from typing import Annotated, TypeVar, Dict
 from pydantic import WrapValidator
 from pydantic_core import PydanticUseDefault
 
@@ -222,4 +222,4 @@ class ActivityOut(ModelSchema):
 
 class BulkPlantCreateResponse(Schema):
     created: list[PlantOut] = None
-    errors: list[str] = None
+    errors: dict[str, str] = None

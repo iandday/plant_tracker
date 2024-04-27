@@ -31,9 +31,9 @@ export interface BulkPlantCreateResponse {
     'created'?: Array<PlantOut>;
     /**
      * 
-     * @type {Array<string>}
+     * @type {{ [key: string]: string; }}
      * @memberof BulkPlantCreateResponse
      */
-    'errors'?: Array<string>;
+    'errors'?: { [key: string]: string; };
 }
 

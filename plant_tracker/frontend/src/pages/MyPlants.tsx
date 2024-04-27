@@ -49,10 +49,7 @@ const MyPlants = () => {
           </Typography>
         </Grid>
       </Grid>
-
       {plantData && areaData ? <PlantListing plants={plantData} areas={areaData} /> : null}
-
-      <LabelBottomNavigation />
     </>
   );
 };

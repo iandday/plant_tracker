@@ -37,7 +37,7 @@ export default function LabelBottomNavigation() {
       sx={{
         marginTop: 'calc(10% + 60px)',
         width: '100%',
-        position: 'fixed',
+        position: 'sticky',
         bottom: 0
       }}
       component="footer"

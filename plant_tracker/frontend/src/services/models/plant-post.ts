@@ -62,5 +62,11 @@ export interface PlantPost {
      * @memberof PlantPost
      */
     'scientific_name'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PlantPost
+     */
+    'notes'?: string | null;
 }
 

@@ -18,10 +18,19 @@ class Location(models.Model):
     name = models.TextField(name="name", unique=True, blank=False, null=False)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
 
+    def validate_unique(self, exclude=None):
+        qs = Location.objects.filter(name=self.name)
+        if qs.filter(user=self.user).exists():
+            raise ValidationError("Location must be unique per user")
+
+    def save(self, *args, **kwargs):
+        self.validate_unique()
+        super(Location, self).save(*args, **kwargs)
+
 
 class Area(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.TextField(name="name", unique=True, blank=False, null=False)
+    name = models.TextField(name="name", unique=False, blank=False, null=False)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
 

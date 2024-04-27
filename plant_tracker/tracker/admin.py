@@ -1,6 +1,9 @@
-# from django.contrib import admin
+from django.contrib import admin
+from import_export.admin import ImportExportModelAdmin
+from simple_history.admin import SimpleHistoryAdmin
+
 # from unfold.admin import ModelAdmin
-# from tracker.models import Activity, Area, Plant, Location, Entry
+from tracker.models import Activity, Area, Plant, Location, Entry
 
 
 # @admin.register(Activity)
@@ -13,9 +16,9 @@
 #     pass
 
 
-# @admin.register(Plant)
-# class CustomPlantClass(ModelAdmin):
-#     pass
+@admin.register(Plant)
+class CustomUserClass(ImportExportModelAdmin, SimpleHistoryAdmin):
+    pass
 
 
 # @admin.register(Location)

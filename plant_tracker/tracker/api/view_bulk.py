@@ -39,14 +39,29 @@ logger = logging.getLogger(__name__)
 )
 def bulk_create_plant(request, file: UploadedFile = File(...)):
     user = get_user_model().objects.get(id=request.user.id)
-    errors = []
+    error_dict = {}
     added = []
     csv_reader = csv.DictReader(StringIO(file.read().decode("utf-8-sig")))
     for row in csv_reader:
-
+        errors = []
         try:
             date = row["purchase_date"].replace("-", "").replace("/", "")
-            area = Area.objects.get(name=row["area"])
+
+            try:
+                location = Location.objects.get(name=row.get("location"), user=user)
+            except Exception as e:
+                location = Location.objects.create(name=row.get("location"), user=user)
+                errors.append(str(e))
+            try:
+                area = Area.objects.get(
+                    name=row.get("area"), location=location, user=user
+                )
+            except Exception as e:
+                area = Area.objects.create(
+                    name=row.get("area"), location=location, user=user
+                )
+                errors.append(str(e))
+
             new_plant = Plant.objects.create(
                 name=row["name"],
                 common_name=row.get("common_name", ""),
@@ -57,8 +72,10 @@ def bulk_create_plant(request, file: UploadedFile = File(...)):
             )
             added.append(new_plant)
         except Exception as e:
-            errors.append(row["name"])
-            logger.info(e)
+            errors.append(str(e))
+        if errors:
+            error_dict[row["name"]] = " | ".join(errors)
+            logger.info(errors)
 
     plants = Plant.objects.filter(user=user, graveyard=True)
-    return {"created": added, "errors": errors}
+    return {"created": added, "errors": error_dict}

@@ -162,7 +162,7 @@ STATIC_ROOT = "/static"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "frontend", "dist")]
 
 MEDIA_ROOT = env("MEDIA_PATH")
-MEDIA_URL = "/media/"
+MEDIA_URL = "media/"
 
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -207,7 +207,7 @@ NINJA_JWT = {
 
 # CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000",
+    "http://localhost:80",
     "http://localhost:5173",
     "http://plant.ianday.me",
 ]

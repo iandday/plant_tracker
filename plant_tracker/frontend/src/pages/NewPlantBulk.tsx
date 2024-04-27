@@ -1,11 +1,15 @@
 import { Button, Grid, Input, Typography } from '@mui/material';
-import { useState } from 'react';
-import { BulkApi, BulkPlantCreateResponse } from '../services';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import { useEffect, useState } from 'react';
+import { AreaApi, AreaOut, BulkApi, BulkPlantCreateResponse } from '../services';
 import { Controller, useForm } from 'react-hook-form';
 import { BASE_PATH } from '../services/base';
 import axiosInstance from '../provider/CustomAxios';
 //import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import PlantListing from '../components/PlantListing';
 
 const NewPlantBulk = () => {
   //const navigate = useNavigate();
@@ -13,6 +17,8 @@ const NewPlantBulk = () => {
   const [showResults, setShowResults] = useState(false);
   const [results, setResults] = useState<BulkPlantCreateResponse>();
   const bulkAPI = new BulkApi(undefined, BASE_PATH, axiosInstance);
+  const areaApi = new AreaApi(undefined, BASE_PATH, axiosInstance);
+  const [areaData, setAreaData] = useState<AreaOut[]>();
 
   interface BulkFormIn {
     file: File;
@@ -29,13 +35,23 @@ const NewPlantBulk = () => {
     try {
       const response = await bulkAPI.trackerApiViewBulkBulkCreatePlant(data.file);
       if (response.status === 200) {
+        const areaResponse = await areaApi.trackerApiViewAreaListAreas();
+        if (areaResponse.status === 200) {
+          setAreaData(areaResponse.data);
+        }
         setResults(response.data);
-        setShowResults(true);
       }
     } catch (err) {
       console.error(err);
     }
   };
+  useEffect(() => {
+    const showResultsEffect = async () => {
+      results ? setShowResults(true) : null;
+    };
+    console.log(results?.errors);
+    showResultsEffect();
+  }, [results]);
 
   return (
     <>
@@ -90,8 +106,29 @@ const NewPlantBulk = () => {
         </>
       ) : (
         <>
-          <Typography>Results</Typography>
-          <Typography>{JSON.stringify(results)}</Typography>
+          {results?.created && areaData ? (
+            <>
+              <Typography variant="h5" align="center">
+                Created Plants
+              </Typography>
+              <PlantListing plants={results.created!} areas={areaData!} />
+            </>
+          ) : null}
+          {results?.errors ? (
+            <>
+              <Typography variant="h5" align="center">
+                Import Errors
+              </Typography>
+
+              <List>
+                {Object.entries(results?.errors).map(([name, value], index) => (
+                  <ListItem key={index}>
+                    <ListItemText primary={`${name}:${value}`} />
+                  </ListItem>
+                ))}
+              </List>
+            </>
+          ) : null}
         </>
       )}
     </>

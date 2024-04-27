@@ -170,7 +170,7 @@ const EditPlant = () => {
                   <Controller
                     name="notes"
                     control={control}
-                    rules={{ required: true }}
+                    rules={{ required: false }}
                     render={({ field: { onChange, onBlur, value } }) => (
                       <TextField
                         fullWidth
