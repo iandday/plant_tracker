@@ -15,10 +15,7 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-
 import { AreaApi, LocationApi, AreaOut, LocationOut, AreaIn } from '../services/index';
-
-import LabelBottomNavigation from '../components/Navigation';
 import axiosInstance from '../provider/CustomAxios';
 import { BASE_PATH } from '../services/base';
 import { Helmet } from 'react-helmet-async';
@@ -366,7 +363,6 @@ const Areas = () => {
           </Alert>
         ) : null}
       </Grid>
-      <LabelBottomNavigation />
     </>
   );
 };

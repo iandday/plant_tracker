@@ -1,9 +1,7 @@
 import { Routes } from 'react-router';
-import Navigation from './components/Navigation';
 import MyPlants from './pages/MyPlants';
 import { BrowserRouter, Navigate, Route } from 'react-router-dom';
 import MyEntries from './pages/MyEntries';
-import UserSettings from './pages/UserSettings';
 import PlantDetail from './pages/PlantDetail';
 import { HelmetProvider } from 'react-helmet-async';
 import { ThemeProvider, createTheme, responsiveFontSizes } from '@mui/material/styles';
@@ -27,6 +25,7 @@ import Locations from './pages/Locations';
 import Register from './pages/Register';
 import Activities from './pages/Activities';
 import NewPlantBulk from './pages/NewPlantBulk';
+import ResponsiveAppBar from './components/AppBar';
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -57,6 +56,7 @@ function App() {
             <CssBaseline />
             <HelmetProvider>
               <BrowserRouter>
+                <ResponsiveAppBar />
                 <Routes>
                   <Route path="/" element={<MyPlants />} />
                   <Route path="/myGraveyard" element={<MyGraveyard />} />
@@ -65,7 +65,6 @@ function App() {
                   <Route path="/editPlant/:id" element={<EditPlant />} />
                   <Route path="/entry" element={<MyEntries />} />
                   <Route path="/entry/:id" element={<EntryDetail />} />
-                  <Route path="/settings" element={<UserSettings />} />
                   <Route path="/areas" element={<Areas />} />
                   <Route path="/locations" element={<Locations />} />
                   <Route path="/activities" element={<Activities />} />
@@ -77,7 +76,6 @@ function App() {
                   <Route path="/newEntry/:id?" element={<NewEntry />} />
                   <Route path="*" element={<Navigate to="/" />} />
                 </Routes>
-                <Navigation />
               </BrowserRouter>
             </HelmetProvider>
           </ThemeProvider>
