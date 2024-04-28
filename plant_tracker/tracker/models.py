@@ -15,13 +15,13 @@ def validate_health_score(value):
 
 class Location(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.TextField(name="name", unique=True, blank=False, null=False)
+    name = models.TextField(name="name", unique=False, blank=False, null=False)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
 
     def validate_unique(self, exclude=None):
         qs = Location.objects.filter(name=self.name)
         if qs.filter(user=self.user).exists():
-            raise ValidationError("Location must be unique per user")
+            raise ValidationError({"location": "Location must be unique per user"})
 
     def save(self, *args, **kwargs):
         self.validate_unique()
@@ -34,16 +34,34 @@ class Area(models.Model):
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
 
+    def validate_unique(self, exclude=None):
+        qs = Area.objects.filter(name=self.name)
+        if qs.filter(user=self.user).exists():
+            raise ValidationError({"area": "Area must be unique per user"})
+
+    def save(self, *args, **kwargs):
+        self.validate_unique()
+        super(Area, self).save(*args, **kwargs)
+
 
 class Activity(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.TextField(name="name", blank=False, null=False)
     description = models.TextField(name="description", blank=True, null=True)
 
+    def validate_unique(self, exclude=None):
+        qs = Activity.objects.filter(name=self.name)
+        if qs.filter(user=self.user).exists():
+            raise ValidationError({"activity": "Activity must be unique per user"})
+
+    def save(self, *args, **kwargs):
+        self.validate_unique()
+        super(Activity, self).save(*args, **kwargs)
+
 
 class Plant(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.TextField(name="name", blank=False, null=False, unique=True)
+    name = models.TextField(name="name", blank=False, null=False, unique=False)
     common_name = models.TextField(name="common_name", blank=True, null=True)
     scientific_name = models.TextField(name="scientific_name", blank=True, null=True)
     purchase_date = models.DateField(name="purchase_date", blank=True, null=True)
@@ -53,6 +71,15 @@ class Plant(models.Model):
     notes = models.TextField(name="notes", null=True, blank=True)
     area = models.ForeignKey(Area, on_delete=models.CASCADE)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+
+    def validate_unique(self, exclude=None):
+        qs = Plant.objects.filter(name=self.name)
+        if qs.filter(user=self.user).exists():
+            raise ValidationError({"plant": "Area must be unique per user"})
+
+    def save(self, *args, **kwargs):
+        self.validate_unique()
+        super(Plant, self).save(*args, **kwargs)
 
 
 class Entry(models.Model):
