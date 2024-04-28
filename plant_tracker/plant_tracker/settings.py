@@ -205,7 +205,7 @@ NINJA_JWT = {
     "TOKEN_VERIFY_INPUT_SCHEMA": "ninja_jwt.schema.TokenVerifyInputSchema",
 }
 
-# CORS_ALLOW_ALL_ORIGINS = True
+CSRF_TRUSTED_ORIGINS = ["https://*.ianday.me"]
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:80",
     "http://localhost:5173",
