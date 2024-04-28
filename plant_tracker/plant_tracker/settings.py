@@ -210,6 +210,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:80",
     "http://localhost:5173",
     "http://plant.ianday.me",
+    "https://plant.ianday.me",
 ]
 CORS_ALLOW_METHODS = [
     "DELETE",
