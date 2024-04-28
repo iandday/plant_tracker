@@ -53,7 +53,8 @@ const EditPlant = () => {
           name: plantData?.name,
           common_name: plantData?.common_name,
           scientific_name: plantData?.scientific_name,
-          graveyard: plantData?.graveyard
+          graveyard: plantData?.graveyard,
+          notes: plantData?.notes
         });
       } catch (err) {}
       setLoading(false);
@@ -119,7 +120,7 @@ const EditPlant = () => {
       <Helmet>
         <title>{import.meta.env.VITE_APP_NAME + ' | Edit Plant'}</title>
       </Helmet>
-      //{' '}
+
       {plantData && !loading ? (
         <>
           <Typography variant="h4" align="center">
@@ -140,11 +141,13 @@ const EditPlant = () => {
                         id="name"
                         label="Name"
                         type="filled"
+                        margin="normal"
+                        variant="outlined"
                         onChange={onChange}
                         onBlur={onBlur}
                         value={value || ''}
                         error={errors.name ? true : false}
-                        sx={{ pt: 5 }}
+                        sx={{ mt: 5 }}
                       />
                     )}
                   />
@@ -159,30 +162,12 @@ const EditPlant = () => {
                         id="common_name"
                         label="Common Name"
                         type="filled"
+                        margin="normal"
                         onChange={onChange}
                         onBlur={onBlur}
                         value={value || ''}
                         error={errors.name ? true : false}
-                        sx={{ pt: 5 }}
-                      />
-                    )}
-                  />
-                  <Controller
-                    name="notes"
-                    control={control}
-                    rules={{ required: false }}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                      <TextField
-                        fullWidth
-                        required
-                        id="notes"
-                        label="Notes"
-                        type="filled"
-                        onChange={onChange}
-                        onBlur={onBlur}
-                        value={value || ''}
-                        error={errors.name ? true : false}
-                        sx={{ pt: 5 }}
+                        sx={{ mt: 5 }}
                       />
                     )}
                   />
@@ -197,19 +182,48 @@ const EditPlant = () => {
                         id="scientific_name"
                         label="Scientific Name"
                         type="filled"
+                        margin="normal"
                         onChange={onChange}
                         onBlur={onBlur}
                         value={value || ''}
                         error={errors.name ? true : false}
-                        sx={{ pt: 5 }}
+                        sx={{ mt: 5 }}
                       />
                     )}
                   />
                   <Controller
+                    name="notes"
+                    control={control}
+                    rules={{ required: false }}
+                    render={({ field: { onChange, onBlur, value } }) => (
+                      <TextField
+                        fullWidth
+                        required
+                        id="notes"
+                        label="Notes"
+                        type="filled"
+                        margin="normal"
+                        onChange={onChange}
+                        onBlur={onBlur}
+                        value={value || ''}
+                        error={errors.name ? true : false}
+                        sx={{ mt: 5 }}
+                      />
+                    )}
+                  />
+
+                  <Controller
                     control={control}
                     name="area_id"
                     render={({ field: { onChange, value } }) => (
-                      <Select id="area" value={value} onChange={onChange} defaultValue={plantData!.area}>
+                      <Select
+                        id="area"
+                        value={value}
+                        label="Area"
+                        onChange={onChange}
+                        defaultValue={plantData!.area}
+                        sx={{ mt: 5 }}
+                      >
                         {areaData?.map((area) => (
                           <MenuItem key={area.id} value={area.id}>
                             {area.name}
@@ -232,6 +246,7 @@ const EditPlant = () => {
                           onChange={(date) => {
                             field.onChange(dayjs(date));
                           }}
+                          sx={{ mt: 5 }}
                         />
                       );
                     }}
@@ -251,6 +266,7 @@ const EditPlant = () => {
                           }}
                           type="file"
                           id="picture"
+                          sx={{ mt: 5 }}
                         />
                       );
                     }}
