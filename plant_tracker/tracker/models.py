@@ -27,6 +27,9 @@ class Location(models.Model):
         self.validate_unique()
         super(Location, self).save(*args, **kwargs)
 
+    def __str__(self):
+        return f"{self.name}"
+
 
 class Area(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -43,6 +46,9 @@ class Area(models.Model):
         self.validate_unique()
         super(Area, self).save(*args, **kwargs)
 
+    def __str__(self):
+        return f"{self.name}"
+
 
 class Activity(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -57,6 +63,9 @@ class Activity(models.Model):
     def save(self, *args, **kwargs):
         self.validate_unique()
         super(Activity, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.name}"
 
 
 class Plant(models.Model):
@@ -75,11 +84,14 @@ class Plant(models.Model):
     def validate_unique(self, exclude=None):
         qs = Plant.objects.filter(name=self.name)
         if qs.filter(user=self.user).exists():
-            raise ValidationError({"plant": "Area must be unique per user"})
+            raise ValidationError({"plant": "Plant must be unique per user"})
 
     def save(self, *args, **kwargs):
         self.validate_unique()
         super(Plant, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.name}"
 
 
 class Entry(models.Model):

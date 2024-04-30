@@ -61,7 +61,7 @@ export default function ResponsiveAppBar() {
     { name: 'Locations', path: 'locations' },
     { name: 'Areas', path: 'areas' },
     { name: 'Activities', path: 'activities' },
-    { name: 'Import/Export', path: 'newPlantBulk' }
+    { name: 'Import/Export', path: 'importExport' }
   ];
 
   localStorage.getItem('token')
