@@ -2,7 +2,7 @@ import { Button, Grid, Input, Typography } from '@mui/material';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { AreaApi, AreaOut, BulkApi, BulkPlantCreateResponse } from '../services';
 import { Controller, useForm } from 'react-hook-form';
 import { BASE_PATH } from '../services/base';
