@@ -50,7 +50,7 @@ const PlantListing = ({ plants, areas }: Props) => {
                     sx={{
                       background: 'linear-gradient(to bottom, rgba(0,0,0,0.7)0%, rgba(0,0,0,0.3)70%, rgba(0,0,0,0)100%)'
                     }}
-                    title={plant.name}
+                    title={plant.common_name}
                     subtitle={findArrayElementByID(areas, plant.area!).name}
                     position="top"
                   />
@@ -73,7 +73,7 @@ const PlantListing = ({ plants, areas }: Props) => {
                   )}
                   <ImageListItemBar
                     style={{ width: 300 }}
-                    title={plant.common_name}
+                    title={plant.name}
                     actionIcon={
                       <IconButton sx={{ color: 'rgba(255, 255, 255, 0.54)' }} aria-label={`info about ${plant.name}`}>
                         <Tooltip title={plant.scientific_name} placement="top">
