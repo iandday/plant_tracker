@@ -21,6 +21,7 @@ import { Helmet } from 'react-helmet-async';
 import flower from '../flower.jpg';
 import { EntryOut } from '../services/models/entry-out';
 import { ActivityOut } from '../services/models/activity-out';
+import dayjs from 'dayjs';
 
 const PlantDetail = () => {
   const { id } = useParams();
@@ -135,7 +136,7 @@ const PlantDetail = () => {
                   undefined,
                   undefined,
                   true,
-                  undefined,
+                  dayjs().format('YYYY-MM-DD'),
                   undefined,
                   undefined,
                   undefined,
