@@ -198,7 +198,6 @@ const EditPlant = () => {
                     render={({ field: { onChange, onBlur, value } }) => (
                       <TextField
                         fullWidth
-                        required
                         id="notes"
                         label="Notes"
                         type="filled"

@@ -99,7 +99,7 @@ const PlantDetail = () => {
           </Typography>
           <Typography variant="button">Notes: </Typography>
           <Typography variant="body1" marginLeft={2}>
-            {plantData?.notes}
+            {plantData?.notes === 'null' ? 'None' : plantData?.notes}
           </Typography>
           <Typography variant="button">Purchase Date: </Typography>
           <Typography variant="body1" marginLeft={2}>
