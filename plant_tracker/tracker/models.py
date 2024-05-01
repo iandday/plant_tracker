@@ -19,8 +19,11 @@ class Location(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
 
     def validate_unique(self, exclude=None):
-        qs = Location.objects.filter(name=self.name)
-        if qs.filter(user=self.user).exists():
+        if (
+            Location.objects.exclude(id=self.id)
+            .filter(user=self.user, name=self.name)
+            .exists()
+        ):
             raise ValidationError({"location": "Location must be unique per user"})
 
     def save(self, *args, **kwargs):
@@ -38,8 +41,11 @@ class Area(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
 
     def validate_unique(self, exclude=None):
-        qs = Area.objects.filter(name=self.name)
-        if qs.filter(user=self.user).exists():
+        if (
+            Area.objects.exclude(id=self.id)
+            .filter(user=self.user, name=self.name)
+            .exists()
+        ):
             raise ValidationError({"area": "Area must be unique per user"})
 
     def save(self, *args, **kwargs):
@@ -56,8 +62,11 @@ class Activity(models.Model):
     description = models.TextField(name="description", blank=True, null=True)
 
     def validate_unique(self, exclude=None):
-        qs = Activity.objects.filter(name=self.name)
-        if qs.filter(user=self.user).exists():
+        if (
+            Activity.objects.exclude(id=self.id)
+            .filter(user=self.user, name=self.name)
+            .exists()
+        ):
             raise ValidationError({"activity": "Activity must be unique per user"})
 
     def save(self, *args, **kwargs):
@@ -82,8 +91,11 @@ class Plant(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
 
     def validate_unique(self, exclude=None):
-        qs = Plant.objects.filter(name=self.name)
-        if qs.filter(user=self.user).exists():
+        if (
+            Plant.objects.exclude(id=self.id)
+            .filter(user=self.user, name=self.name)
+            .exists()
+        ):
             raise ValidationError({"plant": "Plant must be unique per user"})
 
     def save(self, *args, **kwargs):
