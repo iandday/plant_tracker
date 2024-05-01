@@ -85,7 +85,7 @@ class Plant(models.Model):
     purchase_date = models.DateField(name="purchase_date", blank=True, null=True)
     graveyard = models.BooleanField(name="graveyard", default=False)
     death_date = models.DateField(name="death_date", null=True, blank=True)
-    main_photo = models.ImageField(upload_to="images/", null=True)
+    main_photo = models.ImageField(blank=True, upload_to="images/", null=True)
     notes = models.TextField(name="notes", null=True, blank=True)
     area = models.ForeignKey(Area, on_delete=models.CASCADE)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
