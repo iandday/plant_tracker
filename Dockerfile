@@ -1,14 +1,4 @@
-FROM node:20-alpine as react_builder
-ARG VITE_BACKEND_URL
-ARG VITE_APP_NAME
-ENV VITE_BACKEND_URL=$VITE_BACKEND_URL
-ENV VITE_APP_NAME=$VITE_APP_NAME
-WORKDIR /app
-COPY ./plant_tracker/frontend/package.json .
-COPY ./plant_tracker/frontend/yarn.lock .
-RUN yarn install
-COPY ./plant_tracker/frontend . 
-RUN npm run build
+
 
 FROM python:3.10-alpine as base
 
@@ -42,8 +32,6 @@ USER appuser
 
 WORKDIR /app
 COPY --chown=apiuser:apiuser ./plant_tracker /app/plant_tracker
-COPY --from=react_builder /app/dist /app/plant_tracker/frontend/dist
-RUN ls -lah /app/plant_tracker/frontend/dist
 
 WORKDIR /app/plant_tracker
 EXPOSE 8000
