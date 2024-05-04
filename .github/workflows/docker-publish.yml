@@ -25,7 +25,7 @@ jobs:
           - context: ./
             dockerfile: ./Dockerfile
             image: ghcr.io/iandday/plant_tracker
-          - context: ./proxy
+          - context: ./
             dockerfile: ./proxy/Dockerfile
             image: ghcr.io/iandday/plant_tracker_proxy
     permissions:
