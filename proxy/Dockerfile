@@ -11,7 +11,7 @@ COPY ./frontend .
 RUN npm run build
 
 
-FROM nginxinc/nginx-unprivileged 
+FROM nginx
 
 ENV APP_HOST=django
 ENV APP_PORT=8000
