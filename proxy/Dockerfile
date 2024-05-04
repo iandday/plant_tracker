@@ -11,17 +11,11 @@ COPY ./frontend .
 RUN npm run build
 
 
-FROM nginx
-
-ENV APP_HOST=django
-ENV APP_PORT=8000
-ENV LISTEN_PORT=80
-
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+FROM nginxinc/nginx-unprivileged
 
 COPY ./proxy/proxy_params /etc/nginx/
 COPY ./proxy/default.conf /etc/nginx/conf.d/default.conf
-WORKDIR /dist
+
 COPY --from=react_builder /app/dist /dist
 
-ENTRYPOINT [ "nginx" ]
+CMD ["nginx", "-g", "daemon off;"]
