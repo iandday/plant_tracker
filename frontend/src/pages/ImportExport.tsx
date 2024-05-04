@@ -1,4 +1,4 @@
-import { Button, Grid, Input, Typography } from '@mui/material';
+import { Button, ButtonGroup, Grid, Input, Typography } from '@mui/material';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -65,10 +65,15 @@ const NewPlantBulk = () => {
       <Helmet>
         <title>{import.meta.env.VITE_APP_NAME + ' | Import/Export'}</title>
       </Helmet>
-      <button className="link" onClick={handleBulkCreateClick}>
-        {' '}
-        About Us{' '}
-      </button>
+      <Grid container spacing={2} justifyContent="center" alignItems="center">
+        <Grid item p={12} mt={3}>
+          <ButtonGroup variant="contained" aria-label="Basic button group">
+            <Button variant="contained" className="link" onClick={handleBulkCreateClick}>
+              Bulk Plant Import
+            </Button>
+          </ButtonGroup>
+        </Grid>
+      </Grid>
       {showBulkCreate ? (
         <>
           {!showBulkCreateResults ? (

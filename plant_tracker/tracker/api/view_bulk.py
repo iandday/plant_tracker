@@ -69,6 +69,7 @@ def bulk_create_plant(request, file: UploadedFile = File(...)):
                 purchase_date=datetime.datetime.strptime(date, "%Y%m%d"),
                 area=area,
                 user=user,
+                notes=row.get("notes", ""),
             )
             added.append(new_plant)
         except Exception as e:
