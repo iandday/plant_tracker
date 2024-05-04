@@ -264,6 +264,7 @@ const EditPlant = () => {
                             setValue('main_photo', file);
                           }}
                           type="file"
+                          inputProps={{ accept: 'image/png, image/gif, image/jpeg' }}
                           id="picture"
                           sx={{ mt: 5 }}
                         />
