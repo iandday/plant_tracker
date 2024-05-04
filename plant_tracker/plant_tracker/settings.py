@@ -76,7 +76,7 @@ ROOT_URLCONF = "plant_tracker.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, "frontend", "dist")],
+        # "DIRS": [os.path.join(BASE_DIR, "frontend", "dist")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -159,7 +159,7 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATIC_ROOT = "/static"
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "frontend", "dist")]
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, "frontend", "dist")]
 
 MEDIA_ROOT = env("MEDIA_PATH")
 MEDIA_URL = "media/"
