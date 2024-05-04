@@ -11,19 +11,17 @@ COPY ./frontend .
 RUN npm run build
 
 
-FROM nginx
+FROM nginxinc/nginx-unprivileged 
 
 ENV APP_HOST=django
 ENV APP_PORT=8000
 ENV LISTEN_PORT=80
 
-
-COPY ./proxy/start.sh /start.sh
-RUN chmod +x /start.sh
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 
 COPY ./proxy/proxy_params /etc/nginx/
 COPY ./proxy/default.conf /etc/nginx/conf.d/default.conf
 WORKDIR /dist
 COPY --from=react_builder /app/dist /dist
 
-ENTRYPOINT [ "sh", "-c", "/start.sh" ]
+ENTRYPOINT [ "nginx" ]
