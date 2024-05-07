@@ -75,18 +75,10 @@ class RegEnabledSchema(Schema):
 class EntryIn(ModelSchema):
     class Meta:
         model = Entry
-        fields = [
-            "Timestamp",
-            "activities",
-            "plant",
-            "notes",
-            "plant_health",
-        ]
-        fields_optional = [
-            "notes",
-            "plant_health",
-        ]
+        fields = ["Timestamp", "plant", "notes", "plant_health"]
+        fields_optional = ["notes", "plant_health"]
 
+    activities: list[str]
     # name: str
     # area_id: UUID4
     # common_name: Optional[str] = None

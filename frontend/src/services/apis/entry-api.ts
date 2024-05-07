@@ -34,8 +34,8 @@ export const EntryApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * Entry
          * @summary Create Entry
-         * @param {string} timestamp 
          * @param {Array<string>} activities 
+         * @param {string} timestamp 
          * @param {string} plantId 
          * @param {string | null} [notes] 
          * @param {number | null} [plantHealth] 
@@ -43,11 +43,11 @@ export const EntryApiAxiosParamCreator = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        trackerApiViewEntryCreateEntry: async (timestamp: string, activities: Array<string>, plantId: string, notes?: string | null, plantHealth?: number | null, file?: File, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'timestamp' is not null or undefined
-            assertParamExists('trackerApiViewEntryCreateEntry', 'timestamp', timestamp)
+        trackerApiViewEntryCreateEntry: async (activities: Array<string>, timestamp: string, plantId: string, notes?: string | null, plantHealth?: number | null, file?: File, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'activities' is not null or undefined
             assertParamExists('trackerApiViewEntryCreateEntry', 'activities', activities)
+            // verify required parameter 'timestamp' is not null or undefined
+            assertParamExists('trackerApiViewEntryCreateEntry', 'timestamp', timestamp)
             // verify required parameter 'plantId' is not null or undefined
             assertParamExists('trackerApiViewEntryCreateEntry', 'plantId', plantId)
             const localVarPath = `/api/entry/entry`;
@@ -67,14 +67,14 @@ export const EntryApiAxiosParamCreator = function (configuration?: Configuration
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
-
-            if (timestamp !== undefined) { 
-                localVarFormParams.append('Timestamp', timestamp as any);
-            }
-                if (activities) {
+            if (activities) {
                 localVarFormParams.append('activities', activities.join(COLLECTION_FORMATS.csv));
             }
 
+    
+            if (timestamp !== undefined) { 
+                localVarFormParams.append('Timestamp', timestamp as any);
+            }
     
             if (plantId !== undefined) { 
                 localVarFormParams.append('plant_id', plantId as any);
@@ -266,8 +266,8 @@ export const EntryApiFp = function(configuration?: Configuration) {
         /**
          * Entry
          * @summary Create Entry
-         * @param {string} timestamp 
          * @param {Array<string>} activities 
+         * @param {string} timestamp 
          * @param {string} plantId 
          * @param {string | null} [notes] 
          * @param {number | null} [plantHealth] 
@@ -275,8 +275,8 @@ export const EntryApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async trackerApiViewEntryCreateEntry(timestamp: string, activities: Array<string>, plantId: string, notes?: string | null, plantHealth?: number | null, file?: File, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EntryOut>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.trackerApiViewEntryCreateEntry(timestamp, activities, plantId, notes, plantHealth, file, options);
+        async trackerApiViewEntryCreateEntry(activities: Array<string>, timestamp: string, plantId: string, notes?: string | null, plantHealth?: number | null, file?: File, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EntryOut>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.trackerApiViewEntryCreateEntry(activities, timestamp, plantId, notes, plantHealth, file, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['EntryApi.trackerApiViewEntryCreateEntry']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
@@ -345,8 +345,8 @@ export const EntryApiFactory = function (configuration?: Configuration, basePath
         /**
          * Entry
          * @summary Create Entry
-         * @param {string} timestamp 
          * @param {Array<string>} activities 
+         * @param {string} timestamp 
          * @param {string} plantId 
          * @param {string | null} [notes] 
          * @param {number | null} [plantHealth] 
@@ -354,8 +354,8 @@ export const EntryApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        trackerApiViewEntryCreateEntry(timestamp: string, activities: Array<string>, plantId: string, notes?: string | null, plantHealth?: number | null, file?: File, options?: any): AxiosPromise<EntryOut> {
-            return localVarFp.trackerApiViewEntryCreateEntry(timestamp, activities, plantId, notes, plantHealth, file, options).then((request) => request(axios, basePath));
+        trackerApiViewEntryCreateEntry(activities: Array<string>, timestamp: string, plantId: string, notes?: string | null, plantHealth?: number | null, file?: File, options?: any): AxiosPromise<EntryOut> {
+            return localVarFp.trackerApiViewEntryCreateEntry(activities, timestamp, plantId, notes, plantHealth, file, options).then((request) => request(axios, basePath));
         },
         /**
          * Entry
@@ -409,8 +409,8 @@ export class EntryApi extends BaseAPI {
     /**
      * Entry
      * @summary Create Entry
-     * @param {string} timestamp 
      * @param {Array<string>} activities 
+     * @param {string} timestamp 
      * @param {string} plantId 
      * @param {string | null} [notes] 
      * @param {number | null} [plantHealth] 
@@ -419,8 +419,8 @@ export class EntryApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof EntryApi
      */
-    public trackerApiViewEntryCreateEntry(timestamp: string, activities: Array<string>, plantId: string, notes?: string | null, plantHealth?: number | null, file?: File, options?: AxiosRequestConfig) {
-        return EntryApiFp(this.configuration).trackerApiViewEntryCreateEntry(timestamp, activities, plantId, notes, plantHealth, file, options).then((request) => request(this.axios, this.basePath));
+    public trackerApiViewEntryCreateEntry(activities: Array<string>, timestamp: string, plantId: string, notes?: string | null, plantHealth?: number | null, file?: File, options?: AxiosRequestConfig) {
+        return EntryApiFp(this.configuration).trackerApiViewEntryCreateEntry(activities, timestamp, plantId, notes, plantHealth, file, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

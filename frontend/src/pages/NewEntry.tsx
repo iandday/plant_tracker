@@ -137,9 +137,10 @@ const NewEntry = () => {
   });
   const onSubmit = async (data: EntryCreateForm) => {
     try {
+      console.log(data.activities);
       const response = await entryAPI.trackerApiViewEntryCreateEntry(
-        data.timestamp.toISOString(),
         data.activities,
+        data.timestamp.toISOString(),
         id,
         data.notes,
         data.plant_health,

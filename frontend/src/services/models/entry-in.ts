@@ -22,16 +22,16 @@
 export interface EntryIn {
     /**
      * 
-     * @type {string}
-     * @memberof EntryIn
-     */
-    'Timestamp': string;
-    /**
-     * 
      * @type {Array<string>}
      * @memberof EntryIn
      */
     'activities': Array<string>;
+    /**
+     * 
+     * @type {string}
+     * @memberof EntryIn
+     */
+    'Timestamp': string;
     /**
      * 
      * @type {string}

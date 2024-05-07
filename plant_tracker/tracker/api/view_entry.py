@@ -45,7 +45,6 @@ def create_entry(request, payload: Form[EntryIn], file: File[UploadedFile] = Non
     data = {"user": get_user_model().objects.get(id=request.user.id)}
 
     for option in options:
-        logger.info(option)
         if option == "plant":
             data["plant"] = get_object_or_404(Plant, id=options["plant"])
         elif option == "activities":
@@ -53,8 +52,14 @@ def create_entry(request, payload: Form[EntryIn], file: File[UploadedFile] = Non
         else:
             data[option] = options[option]
     entry = Entry.objects.create(**data)
+
     for act in options["activities"]:
-        entry.activities.add(get_object_or_404(Activity, id=act))
+        # comes in as a list with one item, first item contains all uuids with a comma
+        if "," in act:
+            for uuid in act.split(","):
+                entry.activities.add(get_object_or_404(Activity, id=uuid))
+        else:
+            entry.activities.add(get_object_or_404(Activity, id=act))
     entry.save()
 
     if file:
