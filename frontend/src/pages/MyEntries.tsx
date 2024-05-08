@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
 import {
   Avatar,
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  CardHeader,
+  CardMedia,
   Grid,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
+  Icon,
+  IconButton,
   Typography
 } from '@mui/material';
 import { ActivityApi, EntryApi, PlantApi, PlantOut } from '../services';
@@ -18,6 +20,9 @@ import { ratingIcons } from '../components/ratings';
 import { Helmet } from 'react-helmet-async';
 import { EntryOut } from '../services/models/entry-out';
 import { ActivityOut } from '../services/models/activity-out';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ShareIcon from '@mui/icons-material/Share';
+import flower from '../flower.jpg';
 
 const MyEntries = () => {
   const api = new EntryApi(undefined, BASE_PATH, axiosInstance);
@@ -97,40 +102,52 @@ const MyEntries = () => {
           </Typography>
         </Grid>
       </Grid>
-      <Grid container spacing={2} direction="row" alignItems="center" justifyContent="center">
-        <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-          {entryData?.map((e) => {
-            return (
-              <ListItem key={e.id}>
-                <ListItemIcon>{ratingIcons[e.plant_health].icon}</ListItemIcon>
-                <ListItemButton component="a" href={'/entry/' + e.id}>
-                  <ListItemText
-                    primary={
-                      findArrayElementByID(plantData, e.plant).name +
-                      ': ' +
-                      findArrayElementByID(plantData, e.plant).common_name
+      <Grid container spacing={2} direction="row" justifyContent="center" alignItems={'stretch'} flexGrow={1}>
+        {entryData?.map((e) => {
+          return (
+            <Grid item xs={12} sm={6} md={3} key={e.id}>
+              <Card sx={{ maxWidth: 345, height: 450 }}>
+                <CardActionArea component="a" href={'/entry/' + e.id}>
+                  <CardHeader
+                    avatar={
+                      <Avatar sx={{ width: 28, height: 28 }}>
+                        <Icon sx={{ fontSize: 35 }}>{ratingIcons[e.plant_health].icon}</Icon>
+                      </Avatar>
                     }
-                    secondary={
-                      e.activities
+                    title={findArrayElementByID(plantData, e.plant).name}
+                    subheader={findArrayElementByID(plantData, e.plant).common_name}
+                  />
+                  <CardMedia
+                    component="img"
+                    height="194"
+                    image={e.photo ? `${import.meta.env.VITE_BACKEND_URL}${e.photo}` : flower}
+                  />
+                  <CardContent>
+                    <Typography color="text.secondary">
+                      {e.activities
                         .map((a) => {
                           let match = activityData!.find((act) => act.id === a);
                           return match!.name;
                         })
                         .join(', ') +
-                      ' at ' +
-                      e.Timestamp
-                    }
-                  />
-                  {e.photo ? (
-                    <ListItemAvatar>
-                      <Avatar src={`${import.meta.env.VITE_BACKEND_URL}${e.photo}`} />
-                    </ListItemAvatar>
-                  ) : null}
-                </ListItemButton>
-              </ListItem>
-            );
-          })}
-        </List>
+                        ' at ' +
+                        e.Timestamp}
+                    </Typography>
+                    <Typography variant="body2">{e.notes}</Typography>
+                  </CardContent>
+                </CardActionArea>
+                <CardActions>
+                  <IconButton aria-label="add to favorites">
+                    <FavoriteIcon />
+                  </IconButton>
+                  <IconButton aria-label="share">
+                    <ShareIcon />
+                  </IconButton>
+                </CardActions>
+              </Card>
+            </Grid>
+          );
+        })}
       </Grid>
     </>
   );

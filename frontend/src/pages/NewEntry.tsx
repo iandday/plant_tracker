@@ -291,6 +291,7 @@ const NewEntry = () => {
                         }}
                         type="file"
                         id="picture"
+                        inputProps={{ accept: 'image/png, image/gif, image/jpeg' }}
                       />
                     );
                   }}

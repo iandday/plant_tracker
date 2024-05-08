@@ -3,15 +3,16 @@ import {
   Button,
   ButtonGroup,
   Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  CardHeader,
   CardMedia,
   Grid,
-  ListItemAvatar,
-  ListItemButton,
+  Icon,
+  IconButton,
   Typography
 } from '@mui/material';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
 import { useNavigate, useParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { ActivityApi, AreaApi, AreaOut, EntryApi, PlantApi, PlantOut } from '../services';
@@ -22,6 +23,9 @@ import flower from '../flower.jpg';
 import { EntryOut } from '../services/models/entry-out';
 import { ActivityOut } from '../services/models/activity-out';
 import dayjs from 'dayjs';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ShareIcon from '@mui/icons-material/Share';
+import { ratingIcons } from '../components/ratings';
 
 const PlantDetail = () => {
   const { id } = useParams();
@@ -171,36 +175,62 @@ const PlantDetail = () => {
           </Card>
         </Grid>
       </Grid>
-
       {entryData && activityData && entryData.length > 0 ? (
         <>
           <Typography variant="h6" marginLeft={2}>
             Activity Entries
           </Typography>
-          <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-            {entryData.map((e) => (
-              <ListItem key={e.id}>
-                <ListItemButton component="a" href={'/entry/' + e.id}>
-                  <ListItemText
-                    primary={e.activities
-                      .map((a) => {
-                        let match = activityData.find((act) => act.id === a);
-                        return match!.name;
-                      })
-                      .join(', ')}
-                    secondary={e.Timestamp}
-                  />
-                  {e.photo ? (
-                    <ListItemAvatar>
-                      <Avatar src={`${import.meta.env.VITE_BACKEND_URL}${e.photo}`} />
-                    </ListItemAvatar>
-                  ) : null}
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
+          <Grid container spacing={2} direction="row" justifyContent="center" alignItems={'stretch'} flexGrow={1}>
+            {' '}
+            {entryData?.map((e) => {
+              return (
+                <Grid item xs={12} sm={6} md={3} key={e.id}>
+                  <Card sx={{ maxWidth: 345, height: 450 }}>
+                    <CardActionArea component="a" href={'/entry/' + e.id}>
+                      <CardHeader
+                        avatar={
+                          <Avatar sx={{ width: 28, height: 28 }}>
+                            <Icon sx={{ fontSize: 35 }}>{ratingIcons[e.plant_health].icon}</Icon>
+                          </Avatar>
+                        }
+                        title={plantData!.name}
+                        subheader={plantData!.common_name}
+                      />
+                      <CardMedia
+                        component="img"
+                        height="194"
+                        image={e.photo ? `${import.meta.env.VITE_BACKEND_URL}${e.photo}` : flower}
+                      />
+                      <CardContent>
+                        <Typography color="text.secondary">
+                          {e.activities
+                            .map((a) => {
+                              let match = activityData!.find((act) => act.id === a);
+                              return match!.name;
+                            })
+                            .join(', ') +
+                            ' at ' +
+                            e.Timestamp}
+                        </Typography>
+                        <Typography variant="body2">{e.notes}</Typography>
+                      </CardContent>
+                    </CardActionArea>
+                    <CardActions>
+                      <IconButton aria-label="add to favorites">
+                        <FavoriteIcon />
+                      </IconButton>
+                      <IconButton aria-label="share">
+                        <ShareIcon />
+                      </IconButton>
+                    </CardActions>
+                  </Card>
+                </Grid>
+              );
+            })}
+          </Grid>
         </>
       ) : null}
+      ;
     </>
   );
 };

@@ -54,7 +54,9 @@ export default function ResponsiveAppBar() {
   const pages = [
     { name: 'Plants', path: '/myplants' },
     { name: 'Graveyard', path: '/myGraveyard' },
-    { name: 'Entries', path: '/entry' }
+    { name: 'Entries', path: '/entry' },
+    { name: 'New Plant', path: '/newPlant' },
+    { name: 'New Entry', path: '/newEntry' }
   ];
   let settings = [
     { name: 'Profile', path: 'myProfile' },
@@ -69,7 +71,7 @@ export default function ResponsiveAppBar() {
     : (settings = [...settings, { name: 'Login', path: '/login' }]);
 
   return (
-    <AppBar position="static" color="secondary" enableColorOnDark>
+    <AppBar position="sticky" color="secondary" enableColorOnDark>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <PlantIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
@@ -148,13 +150,15 @@ export default function ResponsiveAppBar() {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page, id) => (
-              <Button
-                key={id}
-                onClick={(e) => handleNavMenuSelection(e, page.path)}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page.name}
-              </Button>
+              <>
+                <Button
+                  key={id}
+                  onClick={(e) => handleNavMenuSelection(e, page.path)}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  {page.name}
+                </Button>
+              </>
             ))}
           </Box>
 
