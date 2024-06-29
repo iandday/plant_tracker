@@ -37,19 +37,21 @@ class TokenObtainPairOut(Schema):
     refresh: str
     user: UserSchema
 
-
 class TokenObtainPair(TokenObtainPairInputSchema):
     def output_schema(self):
         out_dict = self.get_response_schema_init_kwargs()
         out_dict.update(user=UserSchema.from_orm(self._user))
         return TokenObtainPairOut(**out_dict)
 
-
-class TokenRefreshPair(TokenRefreshInputSchema):
-    def output_schema(self):
-        out_dict = self.get_response_schema_init_kwargs()
-        out_dict.update(user=UserSchema.from_orm(self._user))
-        return TokenObtainPairOut(**out_dict)
+class TokenRefreshPairOut(Schema):
+    access: str
+    refresh: str
+    
+# class TokenRefreshPair(TokenRefreshInputSchema):
+#     def output_schema(self):
+#         out_dict.to_response_schema()
+#         print(out_dict)
+#         return TokenRefreshPairOut(**out_dict)
 
 
 class RegisterIn(Schema):

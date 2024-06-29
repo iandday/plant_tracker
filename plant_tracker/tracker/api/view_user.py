@@ -2,11 +2,12 @@ import logging
 from .schemas import (
     RegisterIn,
     TokenObtainPairOut,
-    TokenRefreshPair,
+    TokenRefreshPairOut,
     UserSchema,
     TokenObtainPair,
     RegEnabledSchema,
 )
+from ninja_jwt.schema import TokenRefreshInputSchema
 from ninja import Router
 from ninja_jwt.authentication import JWTAuth
 from ninja_extra import status
@@ -32,13 +33,13 @@ def new_token(request, user_token: TokenObtainPair):
 
 @router.post(
     "/refresh",
-    response=TokenObtainPairOut,
+    response=TokenRefreshPairOut,
     url_name="token_refresh",
     auth=None,
     tags=["User"],
 )
-def refresh_token(request, refresh_token: TokenRefreshPair):
-    return refresh_token.output_schema()
+def refresh_token(request, refresh_token: TokenRefreshInputSchema):
+    return refresh_token.to_response_schema()
 
 
 @router.get("/me", response=UserSchema, url_name="me", auth=JWTAuth(), tags=["User"])
