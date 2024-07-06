@@ -18,4 +18,8 @@ COPY ./proxy/default.conf /etc/nginx/conf.d/default.conf
 
 COPY --from=react_builder /app/dist /dist
 
+RUN mkdir /media
+RUN mkdir /static
+RUN chmod a+x /media /static
+
 CMD ["nginx", "-g", "daemon off;"]
