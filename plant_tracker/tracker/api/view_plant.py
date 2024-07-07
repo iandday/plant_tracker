@@ -82,7 +82,7 @@ def get_plant(request, plant_id: UUID4):
     description="Plant",
 )
 def post_plant(
-    request, plant_id, payload: Form[PlantPost], file: File[UploadedFile] ):
+    request, plant_id, payload: Form[PlantPost], file: File[UploadedFile]=None ):
     user = get_user_model().objects.get(id=request.user.id)
     plant = get_object_or_404(Plant, id=plant_id, user=user)
     for attr, value in payload.dict(exclude_unset=True).items():
