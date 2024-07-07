@@ -170,19 +170,9 @@ class PlantPost(ModelSchema):
             "death_date",
             "notes",
         ]
-        fields_optional = "__all__"  # [
-        #     "common_name",
-        #     "scientific_name",
-        #     "purchase_date",
-        #     "graveyard",
-        #     "death_date",
-        #     "name",
-        # ]
-
-    # name: str
-    area_id: UUID4 = None
-    # common_name: Optional[str] = None
-    # scientific_name: Optional[str] = None
+        fields_optional = "__all__"  
+    
+    #area_id: UUID4 = None
     purchase_date: EmptyStrToDefault[date] = None
     graveyard: EmptyStrToDefault[bool] = False
     death_date: EmptyStrToDefault[date] = None

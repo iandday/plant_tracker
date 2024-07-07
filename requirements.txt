@@ -11,8 +11,8 @@ django-environ==0.11.2
 django-guardian==2.4.0
 django-import-export==3.3.7
 django-ninja==1.1.0
-django-ninja-crud==0.4.1
-django-ninja-extra==0.20.4
+django-ninja-crud==0.5.0
+django-ninja-extra==0.20.7
 django-ninja-jwt==5.3.0
 django-simple-history==3.5.0
 django-unfold==0.21.1

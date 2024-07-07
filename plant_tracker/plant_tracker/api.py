@@ -17,8 +17,8 @@ from tracker.api.view_activity import router as activity_router
 from tracker.api.view_bulk import router as bulk_router
 
 api = NinjaExtraAPI(
-    title="Book Store API",
-    description="Book Store API for renting books and notifying available/returned books in a store",
+    title="Plant Tracker API",
+    description="API for interacting with the Plant Tracker application",
     urls_namespace="api",
 )
 

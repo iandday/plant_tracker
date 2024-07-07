@@ -13,7 +13,6 @@ from tracker.api.schemas import (
 )
 from django.http import HttpRequest
 from ninja import File, Form, Router
-from ninja_crud import views, viewsets
 from django.contrib.auth import get_user_model
 from tracker.models import Location, Plant
 from ninja_jwt.authentication import JWTAuth
@@ -83,8 +82,7 @@ def get_plant(request, plant_id: UUID4):
     description="Plant",
 )
 def post_plant(
-    request, plant_id: UUID4, payload: Form[PlantPost], file: File[UploadedFile] = None
-):
+    request, plant_id, payload: Form[PlantPost], file: File[UploadedFile] ):
     user = get_user_model().objects.get(id=request.user.id)
     plant = get_object_or_404(Plant, id=plant_id, user=user)
     for attr, value in payload.dict(exclude_unset=True).items():
@@ -94,9 +92,10 @@ def post_plant(
                 plant.user = new_user
         else:
             setattr(plant, attr, value)
+            
     if file:
-        plant.main_photo.save(file.name, file)
-    plant.save()
+        plant.main_photo.save(F'plant-{plant_id}.{file.name.split(".")[-1]}', file)
+    plant.save() 
     return plant
 
 
