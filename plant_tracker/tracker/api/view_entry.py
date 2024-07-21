@@ -3,7 +3,7 @@ from typing import List
 
 from django.shortcuts import get_object_or_404
 from pydantic import UUID4
-from tracker.api.schemas import EntryOut, EntryIn, DeleteStatus
+from tracker.api.schemas import EntryOut, EntryIn, DeleteStatus, EntryPost
 from django.http import HttpRequest
 from ninja import File, Form, Router
 from ninja_crud import views, viewsets
@@ -14,6 +14,7 @@ from ninja_extra import status
 from ninja_extra.exceptions import APIException
 from ninja.files import UploadedFile
 from django.forms.models import model_to_dict
+import datetime
 
 router = Router()
 
@@ -95,29 +96,39 @@ def get_entry(request, entry_id: UUID4):
     return entry
 
 
-# @router.post(
-#     "/{entry_id}",
-#     response=EntryOut,
-#     auth=JWTAuth(),
-#     tags=["Entry"],
-#     description="Entry",
-# )
-# def post_entry(
-#     request, entry_id: UUID4, payload: Form[EntryPost], file: File[UploadedFile] = None
-# ):
-#     user = get_user_model().objects.get(id=request.user.id)
-#     entry = get_object_or_404(Entry, id=entry_id, user=user)
-#     for attr, value in payload.dict(exclude_unset=True).items():
-#         if attr == "user_id":
-#             new_user = get_user_model().objects.get(id=value)
-#             if user != new_user:
-#                 entry.user = new_user
-#         else:
-#             setattr(entry, attr, value)
-#     if file:
-#         entry.main_photo.save(file.name, file)
-#     entry.save()
-#     return entry
+@router.post(
+     "/{entry_id}",
+     response=EntryOut,
+     auth=JWTAuth(),
+     tags=["Entry"],
+     description="Entry",
+ )
+def post_entry(
+     request, entry_id: UUID4, payload: Form[EntryPost], file: File[UploadedFile] = None
+ ):
+     user = get_user_model().objects.get(id=request.user.id)
+     entry = get_object_or_404(Entry, id=entry_id, user=user)
+     print(payload)
+     for attr, value in payload.dict(exclude_unset=True).items():
+        print(attr, value)
+        if attr == "user_id":
+            new_user = get_user_model().objects.get(id=value)
+            if user != new_user:
+                entry.user = new_user
+        elif attr == 'plant':
+            new_plant = get_object_or_404(Plant, id=value, user=user)
+            entry.plant = new_plant
+        elif attr =='activities':
+            entry.activities.set(value)
+        elif attr == 'Timestamp':
+            print(value)
+            setattr(entry, 'Timestamp', value)
+        else:
+            setattr(entry, attr, value)
+     if file:
+         entry.photo.save(file.name, file)
+     entry.save()
+     return entry
 
 
 @router.delete(

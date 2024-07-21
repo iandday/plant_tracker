@@ -81,6 +81,7 @@ class EntryIn(ModelSchema):
         fields_optional = ["notes", "plant_health"]
 
     activities: list[str]
+    Timestamp: datetime
     # name: str
     # area_id: UUID4
     # common_name: Optional[str] = None
@@ -88,6 +89,15 @@ class EntryIn(ModelSchema):
     # purchase_date: EmptyStrToDefault[date] = None
     # graveyard: EmptyStrToDefault[bool] = False
     # death_date: EmptyStrToDefault[date] = None
+
+
+class EntryPost(ModelSchema):
+    class Meta:
+        model = Entry
+        fields = ["Timestamp", "plant", "notes", "plant_health"]
+        fields_optional = "__all__"  
+    activities: list[str]
+    Timestamp: EmptyStrToDefault[datetime] = None
 
 
 class EntryOut(ModelSchema):
@@ -171,8 +181,6 @@ class PlantPost(ModelSchema):
             "notes",
         ]
         fields_optional = "__all__"  
-    
-    #area_id: UUID4 = None
     purchase_date: EmptyStrToDefault[date] = None
     graveyard: EmptyStrToDefault[bool] = False
     death_date: EmptyStrToDefault[date] = None

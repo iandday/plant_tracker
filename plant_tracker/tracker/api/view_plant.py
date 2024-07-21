@@ -41,6 +41,8 @@ def list_plants(request, exclude_graveyard: bool = True, graveyard_only: bool = 
         plants = Plant.objects.filter(user=user, graveyard=False)
     elif graveyard_only:
         plants = Plant.objects.filter(user=user, graveyard=True)
+    else: 
+        plants = Plant.objects.filter(user=user)
     return plants
 
 
