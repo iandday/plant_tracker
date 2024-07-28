@@ -179,6 +179,7 @@ class PlantPost(ModelSchema):
             "graveyard",
             "death_date",
             "notes",
+            "area"
         ]
         fields_optional = "__all__"  
     purchase_date: EmptyStrToDefault[date] = None

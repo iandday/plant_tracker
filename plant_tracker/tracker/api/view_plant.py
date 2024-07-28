@@ -14,7 +14,7 @@ from tracker.api.schemas import (
 from django.http import HttpRequest
 from ninja import File, Form, Router
 from django.contrib.auth import get_user_model
-from tracker.models import Location, Plant
+from tracker.models import Area, Location, Plant
 from ninja_jwt.authentication import JWTAuth
 from ninja_extra import status
 from ninja_extra.exceptions import APIException
@@ -92,6 +92,9 @@ def post_plant(
             new_user = get_user_model().objects.get(id=value)
             if user != new_user:
                 plant.user = new_user
+        elif attr == "area":
+            new_area = get_object_or_404(Area, id=value)
+            plant.area = new_area
         else:
             setattr(plant, attr, value)
             
