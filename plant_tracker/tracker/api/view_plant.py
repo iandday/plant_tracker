@@ -9,6 +9,7 @@ from tracker.api.schemas import (
     PlantOut,
     PlantPost,
     DeleteStatus,
+    PlantSearch,
     RegEnabledSchema,
 )
 from django.http import HttpRequest
@@ -77,31 +78,31 @@ def get_plant(request, plant_id: UUID4):
 
 
 @router.post(
-    "/{plant_id}",
-    response=PlantOut,
-    auth=JWTAuth(),
-    tags=["Plant"],
-    description="Plant",
-)
+     "/{plant_id}",
+     response=PlantOut,
+     auth=JWTAuth(),
+     tags=["Plant"],
+     description="Plant",
+ )
 def post_plant(
-    request, plant_id, payload: Form[PlantPost], file: File[UploadedFile]=None ):
-    user = get_user_model().objects.get(id=request.user.id)
-    plant = get_object_or_404(Plant, id=plant_id, user=user)
-    for attr, value in payload.dict(exclude_unset=True).items():
-        if attr == "user_id":
-            new_user = get_user_model().objects.get(id=value)
-            if user != new_user:
-                plant.user = new_user
-        elif attr == "area":
-            new_area = get_object_or_404(Area, id=value)
-            plant.area = new_area
-        else:
-            setattr(plant, attr, value)
-            
-    if file:
-        plant.main_photo.save(F'plant-{plant_id}.{file.name.split(".")[-1]}', file)
-    plant.save() 
-    return plant
+     request, plant_id, payload: Form[PlantPost], file: File[UploadedFile]=None ):
+     user = get_user_model().objects.get(id=request.user.id)
+     plant = get_object_or_404(Plant, id=plant_id, user=user)
+     for attr, value in payload.dict(exclude_unset=True).items():
+         if attr == "user_id":
+             new_user = get_user_model().objects.get(id=value)
+             if user != new_user:
+                 plant.user = new_user
+         elif attr == "area":
+             new_area = get_object_or_404(Area, id=value)
+             plant.area = new_area
+         else:
+             setattr(plant, attr, value)
+           
+     if file:
+         plant.main_photo.save(F'plant-{plant_id}.{file.name.split(".")[-1]}', file)
+     plant.save() 
+     return plant
 
 
 @router.delete(

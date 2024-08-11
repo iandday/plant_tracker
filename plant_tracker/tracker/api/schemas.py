@@ -105,6 +105,7 @@ class EntryOut(ModelSchema):
         model = Entry
         fields = "__all__"
         fields_optional = ["photo"]
+        exclude = ["search_vector"]
 
 
 class LocationIn(Schema):
@@ -191,7 +192,7 @@ class PlantOut(ModelSchema):
     class Meta:
         model = Plant
         fields = "__all__"
-
+        exclude = ["search_vector"]
     # id: UUID4
     # main_photo_url: str = None
 
@@ -216,3 +217,8 @@ class ActivityOut(ModelSchema):
 class BulkPlantCreateResponse(Schema):
     created: list[PlantOut] = None
     errors: dict[str, str] = None
+
+class PlantSearch(Schema):
+    query: str
+    alive_only: bool
+    graveyard_only: bool

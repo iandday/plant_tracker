@@ -3,6 +3,8 @@ import uuid
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
 from django.conf import settings
+from django.contrib.postgres.indexes import GinIndex
+from django.contrib.postgres.search import SearchVectorField
 
 
 def validate_health_score(value):
@@ -89,7 +91,11 @@ class Plant(models.Model):
     notes = models.TextField(name="notes", null=True, blank=True)
     area = models.ForeignKey(Area, on_delete=models.CASCADE)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    search_vector = SearchVectorField(null=True)
 
+    class Meta:
+        indexes = (GinIndex(fields=["search_vector"]),)
+    
     def validate_unique(self, exclude=None):
         if (
             Plant.objects.exclude(id=self.id)
@@ -107,6 +113,7 @@ class Plant(models.Model):
 
 
 class Entry(models.Model):
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     timestamp = models.DateTimeField(name="Timestamp")
     activities = models.ManyToManyField(Activity)
@@ -117,3 +124,7 @@ class Entry(models.Model):
     )
     photo = models.ImageField(upload_to="images/", null=True)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    search_vector = SearchVectorField(null=True)
+    
+    class Meta:
+        indexes = (GinIndex(fields=["search_vector"]),)
