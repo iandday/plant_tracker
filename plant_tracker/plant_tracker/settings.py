@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.postgres", 
     "tracker",
     "users",
     "ninja_jwt",
@@ -205,7 +206,7 @@ NINJA_JWT = {
     "TOKEN_VERIFY_INPUT_SCHEMA": "ninja_jwt.schema.TokenVerifyInputSchema",
 }
 
-CSRF_TRUSTED_ORIGINS = ["https://*.ianday.me"]
+CSRF_TRUSTED_ORIGINS = ["https://*.ianday.me", "http://localhost"]
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:80",
     "http://localhost:5173",
