@@ -83,9 +83,10 @@ def search_entry(request: HttpRequest, response: HttpResponse, query: str = None
         results = Entry.objects.filter(**data_query)
         if query:
             results = Entry.objects.filter(
-                Q(search_vector__icontains=query) |
+                Q(user=user) & 
+                (Q(search_vector__icontains=query) |
                 Q(plant__name__icontains=query) |
-                Q(activities__name=query)
+                Q(activities__name=query))
             ).distinct()
 
             
